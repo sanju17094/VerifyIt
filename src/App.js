@@ -26,6 +26,7 @@ import Category from "./pages/Category";
 import Venue from "./pages/Venue";
 import Loginuser from "./pages/Loginuser";
 import Signup from "./pages/Signup";
+import UpdateCategory from "./pages/UpdateCategory"
 
 
 function App() {
@@ -40,6 +41,7 @@ function App() {
           <Route path="/category" element={<Category />} />
           <Route path="/venue" element={<Venue />} />
           <Route path="/categorylist" element={<Categorylist />} />
+          <Route path="/UpdateCategory/:_id" element={<UpdateCategory />} />
           {/* <Route path="/userprofile" element={<Loginuser />} />
           </Routes> */}
 

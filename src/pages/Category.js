@@ -3,38 +3,58 @@ import { Form } from "react-bootstrap";
 import Swal from "sweetalert2";
 import { Link } from 'react-router-dom';
 import React, { useState } from "react";
-
+import axios from "axios";
 
 function Category() {
   // For Category Validation
-  const [values, setValues] = useState({ 
-    category: '' })
+  const [input, setInput] = useState({
+    category_name: "",
+    status: false, // Default status to false
+    images: ""
+  });
 
-  function handleInput(event){
-    const { name, value } = event.target;
-    setValues({ ...values, [name]: value });
-  }
-  const handleSubmit = (event) => {
+  const handleInputChange = (event) => {
+    if (event && event.target) {
+      const { name, value, type, checked } = event.target;
+      const newValue = type === 'checkbox' ? checked : value;
+      setInput((input) => ({
+        ...input,
+        [name]: newValue,
+      }));
+    }
+    console.log(input, "<,,,,,,,,,,ino");
+  };
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    if (values.category.trim() === '') {
+    if (input.category_name.trim() === '') {
       Swal.fire({
         title: "Validation Error!",
         text: "Category cannot be empty",
         icon: "error"
       });
     } else {
-      handleClick();
+      try {
+        const response = await axios.post(
+          "http://localhost:4000/api/v1/kheloindore/category/create",
+          input
+        );
+        console.log("Category Added Successfully:", response);
+        Swal.fire({
+          title: "Submitted!",
+          text: "Category added successfully!",
+          icon: "success"
+        });
+      } catch (error) {
+        console.error("Error:", error.response ? error.response.data : error.message);
+        Swal.fire({
+          title: "Error!",
+          text: "Failed to add category",
+          icon: "error"
+        });
+      }
     }
-  }
-
-  const handleClick = () => {
-    Swal.fire({
-      title: "Submitted!",
-      text: "You clicked the button!",
-      icon: "success"
-    });
-   
-  }
+  };
 
   return (
     <div className="form">
@@ -43,11 +63,11 @@ function Category() {
         <Form.Control
           type="text"
           id="text"
-          name="category"
+          name="category_name"
           aria-describedby="passwordHelpBlock"
           className="form-control-sm"
-          value={values.category}
-          onChange={handleInput}
+          value={input.category_name}
+          onChange={handleInputChange}
         />
       </div>
 
@@ -55,8 +75,12 @@ function Category() {
         <div className="checkbox-container">
           <Form.Check
             type="checkbox"
+            id="statusCheckbox"
+            name="status"
             aria-label="option 1"
             className="checkbox-input"
+            checked={input.status}
+            onChange={handleInputChange}
           />
         </div>
         <Form.Label className="checkbox-label">Status</Form.Label>
@@ -64,7 +88,7 @@ function Category() {
 
       <div className="mb-3">
         <form>
-          <Link to="/Categorylist"><button onClick={handleSubmit} className="btn1" type="submit"  onChange={handleInput}>Submit</button></Link>
+          <button className="btn1" type="submit" onClick={handleSubmit}>Submit</button>
           <button className="btn2" >Cancel</button>
         </form>
       </div>
