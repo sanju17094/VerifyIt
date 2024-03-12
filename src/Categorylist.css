@@ -1,0 +1,54 @@
+
+/* Style for the container of the DataTable */
+.category-list-container {
+  padding: 2000px;
+  background-color: black;
+}
+
+/* Style for the DataTable */
+.category-data-table {
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+}
+
+/* Style for the table header */
+.category-data-table .rdt_TableHeader {
+  background-color: #f0f0f0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+/* Style for the table header cells */
+.category-data-table .rdt_TableHeaderCell {
+  font-weight: bold;
+}
+
+/* Style for the table body */
+.category-data-table .rdt_TableBody {
+  background-color: #ffffff;
+}
+
+/* Style for the table rows */
+.category-data-table .rdt_TableRow {
+  border-bottom: 1px solid #e0e0e0;
+}
+
+/* Style for the table cells */
+.category-data-table .rdt_TableCell {
+  padding: 10px 15px;
+}
+
+/* Style for the action buttons */
+.category-action-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Style for the edit and delete buttons */
+.category-action-buttons .ant-btn {
+  color: #1890ff; /* Blue color for the buttons */
+}
+
+/* Style for the icons */
+.category-action-buttons .anticon {
+  margin-right: 5px;
+}

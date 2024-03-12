@@ -1,0 +1,76 @@
+import "./App.css";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Dashboard from "./pages/Dashboard";
+import MainLayout from "./components/MainLayout";
+import Enquiries from "./pages/Enquiries";
+import Bloglist from "./pages/Bloglist";
+import Blogcatlist from "./pages/Blogcatlist";
+import Orders from "./pages/Orders";
+import Customers from "./pages/Customers";
+import Colorlist from "./pages/Colotlist";
+import Categorylist from "./pages/Categorylist";
+import Brandlist from "./pages/Brandlist";
+import Productlist from "./pages/Productlist";
+import Addblog from "./pages/Addblog";
+import Addblogcat from "./pages/Addblogcat";
+import Addcolor from "./pages/Addcolor";
+import Addcat from "./pages/Addcat";
+import Addbrand from "./pages/Addbrand";
+import Addproduct from "./pages/Addproduct";
+import Couponlist from "./pages/Couponlist";
+import AddCoupon from "./pages/AddCoupon";
+import ViewEnq from "./pages/ViewEnq";
+import ViewOrder from "./pages/ViewOrder";
+import UserProfile from "./pages/UserProfile";
+import Category from "./pages/Category";
+import Venue from "./pages/Venue";
+import Loginuser from "./pages/Loginuser";
+import Signup from "./pages/Signup";
+
+
+function App() {
+  return (
+
+    <Router>
+      <Routes>
+        <Route path="/" element={<MainLayout />} >
+          <Route path="/" element={<Dashboard/>} />
+          <Route path="/userprofile" element={<Loginuser />}>
+          </Route>
+          <Route path="/category" element={<Category />} />
+          <Route path="/venue" element={<Venue />} />
+          <Route path="/categorylist" element={<Categorylist />} />
+          {/* <Route path="/userprofile" element={<Loginuser />} />
+          </Routes> */}
+
+          <Route path="/" element={<Enquiries />} />
+          <Route path="/" element={<Bloglist />} />
+          <Route path="/" element={<Blogcatlist />} />
+          <Route path="/" element={<Orders />} />
+          <Route path="/" element={<Customers />} />
+          <Route path="/" element={<Colorlist />} />
+          
+          <Route path="/" element={<Brandlist />} />
+          <Route path="/" element={<Productlist />} />
+          <Route path="/" element={<Couponlist />} />
+          <Route path="/" element={<Addblog />} />
+          <Route path="blog/:id" element={<Addblog />} />
+          <Route path="blog-category" element={<Addblogcat />} />
+          <Route path="blog-category/:id" element={<Addblogcat />} />
+          <Route path="order/:id" element={<ViewOrder />} />
+          <Route path="color" element={<Addcolor />} />
+          <Route path="color/:id" element={<Addcolor />} />
+          <Route path="category/:id" element={<Addcat />} />
+          <Route path="brand" element={<Addbrand />} />
+          <Route path="brand/:id" element={<Addbrand />} />
+          <Route path="/" element={<Addproduct />} />
+          <Route path="/" element={<AddCoupon />} />
+          <Route path="coupon/:id" element={<AddCoupon />} />
+          <Route path="enquiries/:id" element={<ViewEnq />} />
+        </Route>
+      </Routes>
+    </Router>
+  );
+}
+
+export default App;

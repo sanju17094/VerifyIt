@@ -1,0 +1,22 @@
+{
+"users" :[
+    {
+        "id": 1,
+        "S_No": "1",
+        "Category_Type": "Cricket",
+        "Status": "Active"
+    },
+    {
+        "id": 2,
+        "S_No": "2",
+        "Category_Type": "Hockey",
+        "Status": "Active"
+    },
+    {
+        "id": 3,
+        "S_No": "3",
+        "Category_Type": "Football",
+        "Status": "Active"
+    }
+]
+}
