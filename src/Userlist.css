@@ -1,0 +1,21 @@
+.search-button {
+    background-color: #edf1f4; /* Change to desired background color */
+    color: black; 
+    border: none;
+    padding: 12px 24px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-right: 20px;
+   
+  }
+  
+  .searchInput {
+    width: 100%;
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+    padding: 10px;
+    font-size: 16px;
+    margin-left: 25px;
+    
+  }

@@ -2,66 +2,45 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { Form } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-function Category() {
+function Update() {
     const { _id } = useParams(); 
-    console.log(_id, "params in edit page");
-
-    const [input, setInput] = useState({
-        category_name: "",
-        status: false,
-        images: ""
-    });
+    
+    const [values, setValues] = useState({ });
 
     useEffect(() => {
-        fetchCategoryDetails();
-    }, []);
+        axios.get(`http://localhost:4000/api/v1/kheloindore/category/fetch-ind/`+_id)
+            .then(res => {
+                setValues({ category_name: res.data.category.category_name, status: res.data.category.status });
+            })
+            .catch(err => console.log(err))
+    }, [_id]);
 
-    const fetchCategoryDetails = async () => {
-        try {
-            const response = await axios.get(
-                `http://localhost:4000/api/v1/kheloindore/category/fetch-ind/${_id}` 
-            );
-            const { category_name, status, images } = response.data;
-            setInput({ category_name, status, images });
-        } catch (error) {
-            console.error("Error fetching category details:", error.message);
-            
-        }
-    };
-
-    const handleInputChange = (event) => {
-        const { name, value, type, checked } = event.target;
-        const newValue = type === "checkbox" ? checked : value;
-        setInput((prevInput) => ({
-            ...prevInput,
-            [name]: newValue
-        }));
-    };
-
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        try {
-            const response = await axios.put(
-                `http://localhost:4000/api/v1/kheloindore/category/update/${_id}`, 
-                input
-            );
-            console.log("Category Updated Successfully:", response);
-            Swal.fire({
-                title: "Updated!",
-                text: "Category updated successfully!",
-                icon: "success"
+    const navigate = useNavigate()
+    
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        axios.put(`http://localhost:4000/api/v1/kheloindore/category/update/` + _id, values)
+            .then(res => {
+                console.log(res, "after backend");
+                Swal.fire({
+                    title: "Updated!",
+                    text: "Category updated successfully!",
+                    icon: "success"
+                }).then(() => {
+                    navigate('/Categorylist');
+                });
+            })
+            .catch(err => {
+                console.log(err);
+                Swal.fire({
+                    title: "Error!",
+                    text: "Failed to update category",
+                    icon: "error"
+                });
             });
-        } catch (error) {
-            console.error("Error updating category:", error.message);
-            Swal.fire({
-                title: "Error!",
-                text: "Failed to update category",
-                icon: "error"
-            });
-        }
-    };
+    }
 
     return (
         <div className="form">
@@ -73,8 +52,9 @@ function Category() {
                     name="category_name"
                     aria-describedby="passwordHelpBlock"
                     className="form-control-sm"
-                    value={input.category_name}
-                    onChange={handleInputChange}
+                    value={values.category_name || ''}
+                    onChange={e => setValues({ ...values, category_name: e.target.value })}
+                    placeholder=""
                 />
             </div>
 
@@ -86,23 +66,21 @@ function Category() {
                         name="status"
                         aria-label="option 1"
                         className="checkbox-input"
-                        checked={input.status}
-                        onChange={handleInputChange}
+                        checked={values.status || false}
+                        onChange={e => setValues({ ...values, status: e.target.checked })}
                     />
                 </div>
                 <Form.Label className="checkbox-label">Status</Form.Label>
             </Form.Group>
 
             <div className="mb-3">
-                <form>
-                    <button className="btn1" type="submit" onClick={handleSubmit}>
-                        Update
-                    </button>
-                    <button className="btn2">Cancel</button>
-                </form>
+                <button className="btn1" type="submit" onClick={(e) => handleSubmit(e)}>
+                    Update
+                </button>
+                <button className="btn2">Cancel</button>
             </div>
         </div>
     );
 }
 
-export default Category;
+export default Update;

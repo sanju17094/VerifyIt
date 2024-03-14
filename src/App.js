@@ -27,6 +27,9 @@ import Venue from "./pages/Venue";
 import Loginuser from "./pages/Loginuser";
 import Signup from "./pages/Signup";
 import UpdateCategory from "./pages/UpdateCategory"
+import SubCategory from "./pages/SubCategory";
+import SubCategoryList from "./pages/SubCategoryList";
+import Userlist from "./pages/Userlist";
 
 
 function App() {
@@ -36,9 +39,12 @@ function App() {
       <Routes>
         <Route path="/" element={<MainLayout />} >
           <Route path="/" element={<Dashboard/>} />
-          <Route path="/userprofile" element={<Loginuser />}>
+          <Route path="/userprofile" element={<Loginuser/>}>
           </Route>
+          <Route path="/userlist" element={<Userlist/>} />
           <Route path="/category" element={<Category />} />
+          <Route path="/Subcategory" element={<SubCategory />} />
+          <Route path="/subcategorylist" element={<SubCategoryList /> } />
           <Route path="/venue" element={<Venue />} />
           <Route path="/categorylist" element={<Categorylist />} />
           <Route path="/UpdateCategory/:_id" element={<UpdateCategory />} />

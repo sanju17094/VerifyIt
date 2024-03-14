@@ -1,20 +1,16 @@
-import '../../src/Category.css';
+import '../../src/SubCategory.css';
 import { Form } from "react-bootstrap";
 import Swal from "sweetalert2";
 import { Link } from 'react-router-dom';
 import React, { useState } from "react";
 import axios from "axios";
-// import { useHistory } from 'react-router-dom';
 
 
-function Category() {
-  // For Category Validation
-  // const history = useHistory();
 
+function SubCategory() {
   const [input, setInput] = useState({
-    category_name: "",
+    subcategory_name: "",
     status: true, 
-    images: ""
   });
 
   const handleInputChange = (event) => {
@@ -31,32 +27,31 @@ function Category() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (input.category_name.trim() === '') {
+    if (input.subcategory_name.trim() === '') {
       Swal.fire({
         title: "Validation Error!",
-        text: "Category cannot be empty",
+        text: "Sub Category cannot be empty",
         icon: "error"
       });
     } else {
       try {
         const response = await axios.post(
-          "http://localhost:4000/api/v1/kheloindore/category/create",
+          "http://localhost:4000/api/v1/kheloindore/subcategory/create",
           input
         );
-        console.log("Category Added Successfully:", response);
+        console.log("Sub Category Added Successfully:", response);
         Swal.fire({
           title: "Submitted!",
-          text: "Category added successfully!",
+          text: "Sub Category added successfully!",
           icon: "success"
         }).then(() => {
-          // Redirect to Categorylist after successful submission
-          window.location.href = "/Categorylist";
+          window.location.href = "/SubCategoryList";
         });
       } catch (error) {
         console.error("Error:", error.response ? error.response.data : error.message);
         Swal.fire({
           title: "Error!",
-          text: "Failed to add category",
+          text: "Failed to add Sub category",
           icon: "error"
         });
       }
@@ -66,14 +61,14 @@ function Category() {
   return (
     <div className="form">
       <div className="mb-3">
-        <Form.Label htmlFor="text">Add Categories*</Form.Label>
+        <Form.Label htmlFor="text">Add SubCategory*</Form.Label>
         <Form.Control
           type="text"
           id="text"
-          name="category_name"
+          name="subcategory_name"
           aria-describedby="passwordHelpBlock"
           className="form-control-sm"
-          value={input.category_name}
+          value={input.subcategory_name}
           onChange={handleInputChange}
         />
       </div>
@@ -93,17 +88,6 @@ function Category() {
         <Form.Label className="checkbox-label">Status</Form.Label>
       </Form.Group>
 
-      {/* <div className="mb-3">
-        <Form.Group>
-          <Form.File
-            id="images"
-            label="Upload Images"
-            name="images"
-            onChange={handleInputChange}
-            multiple // Allow multiple files
-          />
-          </Form.Group>
-      </div> */}
       <div className="mb-3">
         <form>
           <button className="btn1" type="submit" onClick={handleSubmit}>Submit</button>
@@ -114,4 +98,4 @@ function Category() {
   );
 }
 
-export default Category;
+export default SubCategory;

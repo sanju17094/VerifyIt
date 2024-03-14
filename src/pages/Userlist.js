@@ -8,9 +8,9 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { BsSearch } from 'react-icons/bs';
-import '../../src/Categorylist.css';
+import '../../src/Userlist.css';
 
-function Categorylist() {
+function Userlist() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState('');
@@ -25,13 +25,14 @@ function Categorylist() {
   const fetchData = async () => {
     try {
       // Replace the URL with your actual API endpoint
-      const apiUrl = `http://localhost:4000/api/v1/kheloindore/category/fetch?page=${currentPage}&limit=${itemsPerPage}&search=${searchQuery}`;
+      const apiUrl = `http://localhost:4000/api/v1/kheloindore/user/getallUser?page=${currentPage}&limit=${itemsPerPage}&search=${searchQuery}`;
       const response = await fetch(apiUrl);
       const result = await response.json();
 
 
       if (response.ok) {
-        setData(result.categories); // Use result.categories instead of result.data
+        setData(result.data); 
+        console.log(result.data.first_name, ">>>>>>>>>>>>");
       } else {
         console.error('Failed to fetch data:', result.error);
       }
@@ -43,58 +44,12 @@ function Categorylist() {
     }
   };
 
-  const handleEdit = async (row) => {
-    console.log('Edit clicked for row:', row);
-    try {
-      const response = await fetch(`http://localhost:4000/api/v1/kheloindore/category/update/${row._id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          category_name: 'Updated Category Name'
-        })
-      });
-
-      if (response.ok) {
-        console.log('Category name updated successfully');
-      } else {
-        const responseData = await response.json();
-        console.error('Failed to update category name:', responseData.message || 'Unknown error');
-      }
-    } catch (error) {
-      console.error('Error updating category name:', error);
-    }
-  };
-
-  const handleDelete = async (row) => {
-    try {
-      const apiUrl = `http://localhost:4000/api/v1/kheloindore/category/delete/${row._id}`;
-
-      const response = await fetch(apiUrl, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (response.ok) {
-        Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
-        // Update your state or refetch data to reflect the deletion
-        fetchData();
-      } else {
-        console.error('Failed to delete category:', response.statusText);
-        Swal.fire('Error', 'Failed to delete category.', 'error');
-      }
-    } catch (error) {
-      console.error('Error deleting category:', error);
-      Swal.fire('Error', 'An error occurred while deleting the category.', 'error');
-    }
-  };
+  
+  
 
   const handleSearch = () => {
     const filteredData = data.filter((row) =>
-      row.category_name.toLowerCase().includes(searchText.toLowerCase())
+      row.first_name.toLowerCase().includes(searchText.toLowerCase())
       
     );
     console.log(filteredData,"<filteredData")
@@ -112,27 +67,12 @@ function Categorylist() {
       selector: (_, index) => index + 1 + (currentPage - 1) * itemsPerPage,
     },
     {
-      name: 'Category Type',
-      selector: (row) => row.category_name,
+      name: 'User Name',
+      selector: (row) => row.first_name +" "+row.last_name,
     },
     {
       name: 'Status',
       selector: (row) => row.status ? 'Active' : 'InActive',
-    },
-    {
-      name: 'Action',
-      cell: (row) => (
-        <Space size="middle">
-          <Link to={`/UpdateCategory/${row._id}`}>
-            <Button type="link" onClick={() => handleEdit(row)}>
-              <EditOutlined />
-            </Button>
-          </Link>
-          <Button type="link" onClick={() => handleDelete(row)}>
-            <DeleteOutlined />
-          </Button>
-        </Space>
-      ),
     },
   ];
 
@@ -140,8 +80,9 @@ function Categorylist() {
   return (
     <>
       <div>
-        <h1>Category List</h1>
+        <h1>User List</h1>
         <DataTable
+          className="dataTable"
           columns={columns}
           data={data}
           pagination
@@ -155,19 +96,17 @@ function Categorylist() {
           subHeader
           subHeaderComponent={(
             <Row className="justify-content-end align-items-center">
-              <button className="warning-button mr-2">Add Category</button>
               <Col xs={12} sm={6}>
                 <Form.Control
                   type="text"
-                  className="searchInput"
                   placeholder="Search..."
                   value={searchText}
                   onChange={handleSearchInputChange}
-                  style={{ width: '100%' }}
+                  className="searchInput"
                 />
               </Col>
               <Col xs={10} sm={2}>
-                {/* <button className="search-button" onClick={handleSearch}>
+              {/* <button className="search-button" onClick={handleSearch}>
                   <BsSearch />
                 </button> */}
               </Col>
@@ -180,4 +119,4 @@ function Categorylist() {
   );
 }
 
-export default Categorylist;
+export default Userlist;

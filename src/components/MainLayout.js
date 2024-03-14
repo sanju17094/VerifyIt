@@ -7,16 +7,24 @@ import {
   AiOutlineBgColors,
 } from "react-icons/ai";
 import { RiCouponLine } from "react-icons/ri";
+import { RiUserLine } from 'react-icons/ri';
+import { RiLoginCircleLine } from 'react-icons/ri';
+import { RiUserSearchLine } from 'react-icons/ri';
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Link } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 import { ImBlog } from "react-icons/im";
-import { IoIosNotifications } from "react-icons/io";
+import { IoIosNotifications, IoIosPerson } from 'react-icons/io';
 import { FaClipboardList, FaBloggerB } from "react-icons/fa";
 import { BiCategoryAlt } from "react-icons/bi";
 import { Layout, Menu, theme } from "antd";
 import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExampleIcon } from '@fortawesome/free-solid-svg-icons';
+import logoImage from "../../src/image.png";
+import '../../src/MainLayout.css'
+
 const { Header, Sider, Content } = Layout;
 const MainLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -29,8 +37,10 @@ const MainLayout = () => {
       <Sider trigger={null} collapsible collapsed={collapsed}>
         <div className="logo">
           <h2 className="text-white fs-5 text-center py-3 mb-0">
-            <span className="sm-logo">KI</span>
-            <span className="lg-logo">Khelo Indore</span>
+            <span className=""></span>
+            <img src={logoImage} alt="Khelo Indore Logo" className="sm-logo" />
+            <span className=""></span>
+            <img src={logoImage} alt="Khelo Indore Logo" className="lg-logo" />
           </h2>
         </div>
         <Menu
@@ -50,9 +60,21 @@ const MainLayout = () => {
               label: "Dashboard",
             },
             {
-              key: "userprofile",
-              icon: <AiOutlineUser className="fs-4" />,
+              key: "",
+              icon: <RiUserLine className="fs-4" />,
               label: "User",
+              children: [
+                {
+                  key: "userprofile",
+                  icon: <RiLoginCircleLine className="fs-4" />,
+                  label: "User Login",
+                },
+                {
+                  key: "userlist",
+                  icon: <RiUserSearchLine className="fs-4" />,
+                  label: "User List",
+                },
+              ],
             },
             {
               key: "category",
@@ -62,33 +84,33 @@ const MainLayout = () => {
                 {
                   key: "category",
                   icon: <AiOutlineShoppingCart className="fs-4" />,
-                  label: "Add Category",
-                },
-                {
-                  key: "list-product",
-                  icon: <AiOutlineShoppingCart className="fs-4" />,
-                  label: "Product List",
-                },
-                {
-                  key: "category",
-                  icon: <BiCategoryAlt className="fs-4" />,
                   label: "Category",
                 },
+                {
+                  key: "Subcategory",
+                  icon: <AiOutlineShoppingCart className="fs-4" />,
+                  label: "Sub Category",
+                },
+                // {
+                //   key: "category",
+                //   icon: <BiCategoryAlt className="fs-4" />,
+                //   label: "Category",
+                // },
                 {
                   key: "categorylist",
                   icon: <BiCategoryAlt className="fs-4" />,
                   label: "Category List",
                 },
                 {
-                  key: "color",
-                  icon: <AiOutlineBgColors className="fs-4" />,
-                  label: "Color",
+                  key: "subcategorylist",
+                  icon: <BiCategoryAlt className="fs-4" />,
+                  label: "SubCategory List",
                 },
-                {
-                  key: "list-color",
-                  icon: <AiOutlineBgColors className="fs-4" />,
-                  label: "Color List",
-                },
+                // {
+                //   key: "list-color",
+                //   icon: <AiOutlineBgColors className="fs-4" />,
+                //   label: "Color List",
+                // },
               ],
             },
             {
@@ -106,40 +128,40 @@ const MainLayout = () => {
                   icon: <ImBlog className="fs-4" />,
                   label: "Add Venue",
                 },
-                {
-                  key: "coupon-list",
-                  icon: <RiCouponLine className="fs-4" />,
-                  label: "Coupon",
-                },
+                // {
+                //   key: "coupon-list",
+                //   icon: <RiCouponLine className="fs-4" />,
+                //   label: "Coupon",
+                // },
               ],
             },
-            {
-              key: "blogs",
-              icon: <FaBloggerB className="fs-4" />,
-              label: "Map",
-              children: [
-                {
-                  key: "blog",
-                  icon: <ImBlog className="fs-4" />,
-                  label: "Add Blog",
-                },
-                {
-                  key: "blog-list",
-                  icon: <FaBloggerB className="fs-4" />,
-                  label: "Blog List",
-                },
-                {
-                  key: "blog-category",
-                  icon: <ImBlog className="fs-4" />,
-                  label: "Add Blog Category",
-                },
-                {
-                  key: "blog-category-list",
-                  icon: <FaBloggerB className="fs-4" />,
-                  label: "Blog Category List",
-                },
-              ],
-            },
+            // {
+            //   key: "blogs",
+            //   icon: <FaBloggerB className="fs-4" />,
+            //   label: "Map",
+            //   children: [
+            //     {
+            //       key: "blog",
+            //       icon: <ImBlog className="fs-4" />,
+            //       label: "Add Blog",
+            //     },
+            //     {
+            //       key: "blog-list",
+            //       icon: <FaBloggerB className="fs-4" />,
+            //       label: "Blog List",
+            //     },
+            //     {
+            //       key: "blog-category",
+            //       icon: <ImBlog className="fs-4" />,
+            //       label: "Add Blog Category",
+            //     },
+            //     {
+            //       key: "blog-category-list",
+            //       icon: <FaBloggerB className="fs-4" />,
+            //       label: "Blog Category List",
+            //     },
+            //   ],
+            // },
             {
               key: "enquiries",
               icon: <FaClipboardList className="fs-4" />,
@@ -165,8 +187,12 @@ const MainLayout = () => {
           )}
           <div className="d-flex gap-4 align-items-center">
             <div className="position-relative">
+              <Link to="/userprofile">
+                <IoIosPerson className="fs-4" />
+              </Link>
+
               <IoIosNotifications className="fs-4" />
-              <span className="badge bg-warning rounded-circle p-1 position-absolute">
+              <span className="badge bg-danger rounded-circle p-1 position-absolute">
                 3
               </span>
             </div>
@@ -186,7 +212,8 @@ const MainLayout = () => {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                <h5 className="mb-0">Admin</h5>
+
+                <h5 className="mb-0"><FontAwesomeIcon icon="fa-solid fa-user" />Admin</h5>
                 <p className="mb-0">admin12345@gmail.com</p>
               </div>
               <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">

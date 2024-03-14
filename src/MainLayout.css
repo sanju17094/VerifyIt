@@ -1,0 +1,12 @@
+.lg-logo {
+    height: 100%;
+    max-width: 50px; /* Limit the maximum width to 50px */
+    width: auto; /* Let the width adjust automatically */
+  }
+  
+
+.sm-logo{
+    height: 100%;
+    max-width: 50px; /* Limit the maximum width to 50px */
+    width: auto; /* Let the width adjust automatically */
+}

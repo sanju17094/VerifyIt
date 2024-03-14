@@ -1,54 +1,93 @@
 
-/* Style for the container of the DataTable */
-.category-list-container {
-  padding: 2000px;
-  background-color: black;
+.container {
+  padding: 20px;
+  position: absolute;
 }
 
-/* Style for the DataTable */
-.category-data-table {
-  border: 1px solid #e0e0e0;
+
+h1 {
+  font-size: 30px;
+  margin-bottom: 25px;
+}
+
+
+.subheader-row {
+  margin-bottom: 20px;
+}
+
+
+.search-input {
+  width: 100%;
+  border: 1px solid #ccc;
   border-radius: 5px;
+  padding: 8px 12px;
+  font-size: 16px;
 }
 
-/* Style for the table header */
-.category-data-table .rdt_TableHeader {
+/* Styles for the DataTable component */
+.data-table {
+  font-size: 16px;
+}
+
+/* Styles for the pagination */
+.pagination {
+  margin-top: 20px;
+}
+
+/* Styles for the table rows */
+.table-row {
+  cursor: pointer;
+}
+
+/* Styles for the table header */
+.table-header {
   background-color: #f0f0f0;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-/* Style for the table header cells */
-.category-data-table .rdt_TableHeaderCell {
   font-weight: bold;
 }
 
-/* Style for the table body */
-.category-data-table .rdt_TableBody {
-  background-color: #ffffff;
+/* Example CSS */
+.warning-button {
+  background-color: #ff9c07; /* Warning variant color */
+  color: white; /* Text color */
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  width: 50%;
+  font-size: 16px;
+  cursor: pointer;
 }
 
-/* Style for the table rows */
-.category-data-table .rdt_TableRow {
-  border-bottom: 1px solid #e0e0e0;
+.warning-button:hover {
+  background-color: #ffca28; /* Lighter shade of warning variant color on hover */
 }
 
-/* Style for the table cells */
-.category-data-table .rdt_TableCell {
-  padding: 10px 15px;
+/* Margin on the right side */
+.mr-2 {
+  margin-right: 8px; /* Adjust as needed */
+  margin-bottom: 20px;
 }
 
-/* Style for the action buttons */
-.category-action-buttons {
-  display: flex;
-  justify-content: space-between;
+.search-button {
+  background-color: #edf1f4; /* Change to desired background color */
+  color: black; 
+  border: none;
+  padding: 12px 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-left: 3px;
+
 }
 
-/* Style for the edit and delete buttons */
-.category-action-buttons .ant-btn {
-  color: #1890ff; /* Blue color for the buttons */
+.searchInput {
+  width: 100%;
+  border-radius: 5px;
+  border: 1px solid #ced4da;
+  padding: 10px;
+  font-size: 16px;
+  margin-right: 50px;
 }
 
-/* Style for the icons */
-.category-action-buttons .anticon {
-  margin-right: 5px;
+.dataTable {
+  font-size: medium;
 }
