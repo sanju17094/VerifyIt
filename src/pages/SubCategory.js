@@ -9,7 +9,7 @@ import axios from "axios";
 
 function SubCategory() {
   const [input, setInput] = useState({
-    subcategory_name: "",
+    Subcategory_name: "",
     status: true, 
   });
 
@@ -27,7 +27,7 @@ function SubCategory() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (input.subcategory_name.trim() === '') {
+    if (input.Subcategory_name.trim() === '') {
       Swal.fire({
         title: "Validation Error!",
         text: "Sub Category cannot be empty",
@@ -65,10 +65,10 @@ function SubCategory() {
         <Form.Control
           type="text"
           id="text"
-          name="subcategory_name"
+          name="Subcategory_name"
           aria-describedby="passwordHelpBlock"
           className="form-control-sm"
-          value={input.subcategory_name}
+          value={input.Subcategory_name}
           onChange={handleInputChange}
         />
       </div>

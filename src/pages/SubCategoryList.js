@@ -156,7 +156,7 @@ function SubCategorylist() {
           subHeader
           subHeaderComponent={(
             <Row className="justify-content-end align-items-center">
-              <Link to="/Category"><button className="warning-button mr-2">Add Category</button>
+              <Link to="/SubCategory"><button className="warning-button mr-2">Add SubCategory</button>
               </Link>
 
               <Col xs={12} sm={6}>
