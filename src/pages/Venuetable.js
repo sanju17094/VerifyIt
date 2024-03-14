@@ -3,12 +3,10 @@ import { Button, Space } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import DataTable from 'react-data-table-component';
 import Swal from 'sweetalert2';
-import { Link } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { BsSearch } from 'react-icons/bs';
-import '../../src/Userlist.css';
 
 function Userlist() {
   const [data, setData] = useState([]);
@@ -25,14 +23,14 @@ function Userlist() {
   const fetchData = async () => {
     try {
       // Replace the URL with your actual API endpoint
-      const apiUrl = `http://localhost:4000/api/v1/kheloindore/user/getallUser?page=${currentPage}&limit=${itemsPerPage}&search=${searchQuery}`;
+      const apiUrl = `http://localhost:4000/api/v1/kheloindore/venue/fetch?page=${currentPage}&limit=${itemsPerPage}&search=${searchQuery}`;
       const response = await fetch(apiUrl);
       const result = await response.json();
 
 
       if (response.ok) {
-        setData(result.data); 
-        console.log(result.data.first_name, ">>>>>>>>>>>>");
+        setData(result.data.venues); 
+        console.log(result.data.venues, ">>>>>>>>>>>>");
       } else {
         console.error('Failed to fetch data:', result.error);
       }
@@ -67,16 +65,22 @@ function Userlist() {
       selector: (_, index) => index + 1 + (currentPage - 1) * itemsPerPage,
     },
     {
-      name: 'First Name',
-      selector: (row) => row.first_name,
+      name: 'Venue Name',
+      selector: (row) => row.name,
     },
     {
-      name: 'Last Name',
+      name: 'Location',
+      selector: (row) => row.location.address,
+    },
+    {
+      name: 'Category',
       selector: (row) => row.last_name,
+      
     },
     {
-      name: 'Status',
-      selector: (row) => row.status ? 'Active' : 'Inactive',
+      name: 'Sub Category',
+      selector: (row) => row.last_name,
+      
     },
   ];
 
@@ -84,7 +88,7 @@ function Userlist() {
   return (
     <>
       <div>
-        <h1>All User</h1>
+        <h1>Venue List</h1>
         <DataTable
           className="dataTable"
           columns={columns}

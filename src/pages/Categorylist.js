@@ -155,7 +155,8 @@ function Categorylist() {
           subHeader
           subHeaderComponent={(
             <Row className="justify-content-end align-items-center">
-              <button className="warning-button mr-2">Add Category</button>
+             <Link to="/Category"><button className="warning-button mr-2">Add Category</button>
+              </Link>
               <Col xs={12} sm={6}>
                 <Form.Control
                   type="text"

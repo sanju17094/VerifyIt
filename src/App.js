@@ -30,6 +30,7 @@ import UpdateCategory from "./pages/UpdateCategory"
 import SubCategory from "./pages/SubCategory";
 import SubCategoryList from "./pages/SubCategoryList";
 import Userlist from "./pages/Userlist";
+import Venuetable from "./pages/Venuetable";
 
 
 function App() {
@@ -46,6 +47,7 @@ function App() {
           <Route path="/Subcategory" element={<SubCategory />} />
           <Route path="/subcategorylist" element={<SubCategoryList /> } />
           <Route path="/venue" element={<Venue />} />
+          <Route path="/venuelist" element={<Venuetable />} />
           <Route path="/categorylist" element={<Categorylist />} />
           <Route path="/UpdateCategory/:_id" element={<UpdateCategory />} />
           {/* <Route path="/userprofile" element={<Loginuser />} />

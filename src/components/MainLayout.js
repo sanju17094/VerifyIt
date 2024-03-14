@@ -10,6 +10,7 @@ import { RiCouponLine } from "react-icons/ri";
 import { RiUserLine } from 'react-icons/ri';
 import { RiLoginCircleLine } from 'react-icons/ri';
 import { RiUserSearchLine } from 'react-icons/ri';
+import { RiAdminLine } from 'react-icons/ri';
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Link } from "react-router-dom";
@@ -37,10 +38,8 @@ const MainLayout = () => {
       <Sider trigger={null} collapsible collapsed={collapsed}>
         <div className="logo">
           <h2 className="text-white fs-5 text-center py-3 mb-0">
-            <span className=""></span>
-            <img src={logoImage} alt="Khelo Indore Logo" className="sm-logo" />
-            <span className=""></span>
-            <img src={logoImage} alt="Khelo Indore Logo" className="lg-logo" />
+            <span className="sm-logo">KI</span>
+            <span className="lg-logo">Khelo Indore</span>
           </h2>
         </div>
         <Menu
@@ -62,17 +61,34 @@ const MainLayout = () => {
             {
               key: "",
               icon: <RiUserLine className="fs-4" />,
-              label: "User",
+              label: "Add Admin",
               children: [
                 {
-                  key: "userprofile",
+                  key: "adduser",
                   icon: <RiLoginCircleLine className="fs-4" />,
-                  label: "User Login",
+                  label: "Add",
                 },
                 {
+                  key: "adminlist",
+                  icon: <RiAdminLine className="fs-4" />,
+                  label: "Admin List",
+                },
+              ],
+            },
+            {
+              key: "",
+              icon: <RiUserLine className="fs-4" />,
+              label: "Web User",
+              children: [
+                // {
+                //   key: "userprofile",
+                //   icon: <RiLoginCircleLine className="fs-4" />,
+                //   label: "User Login",
+                // },
+                {
                   key: "userlist",
-                  icon: <RiUserSearchLine className="fs-4" />,
-                  label: "User List",
+                  icon: <RiLoginCircleLine className="fs-4" />,
+                  label: "All User",
                 },
               ],
             },
@@ -119,7 +135,7 @@ const MainLayout = () => {
               label: "Vendor",
             },
             {
-              key: "marketing",
+              key: "",
               icon: <RiCouponLine className="fs-4" />,
               label: "Venue",
               children: [
@@ -128,11 +144,11 @@ const MainLayout = () => {
                   icon: <ImBlog className="fs-4" />,
                   label: "Add Venue",
                 },
-                // {
-                //   key: "coupon-list",
-                //   icon: <RiCouponLine className="fs-4" />,
-                //   label: "Coupon",
-                // },
+                {
+                  key: "venuelist",
+                  icon: <RiCouponLine className="fs-4" />,
+                  label: "Venue List",
+                },
               ],
             },
             // {
@@ -199,12 +215,7 @@ const MainLayout = () => {
 
             <div className="d-flex gap-3 align-items-center dropdown">
               <div>
-                <img
-                  width={32}
-                  height={32}
-                  src="img.jpeg"
-                  alt=""
-                />
+              <img src={logoImage} alt="Khelo Indore Logo" className="lg-logo" />
               </div>
               <div
                 role="button"
