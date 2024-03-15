@@ -85,7 +85,8 @@ h1 {
   border: 1px solid #ced4da;
   padding: 10px;
   font-size: 16px;
-  margin-right: 50px;
+  
+  margin-left: 70%;
 }
 
 .dataTable {

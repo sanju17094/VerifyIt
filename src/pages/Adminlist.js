@@ -75,6 +75,14 @@ function Userlist() {
       selector: (row) => row.last_name,
     },
     {
+        name: 'Email Address',
+        selector: (row) => row.email,
+      },
+      {
+        name: 'Role',
+        selector: (row) => row.role,
+      },
+    {
       name: 'Status',
       selector: (row) => row.status ? 'Active' : 'Inactive',
     },
@@ -84,7 +92,7 @@ function Userlist() {
   return (
     <>
       <div>
-        <h1>All User</h1>
+        <h1>Admin List</h1>
         <DataTable
           className="dataTable"
           columns={columns}

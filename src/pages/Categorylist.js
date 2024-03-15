@@ -31,7 +31,7 @@ function Categorylist() {
 
 
       if (response.ok) {
-        setData(result.categories); // Use result.categories instead of result.data
+        setData(result.categories); 
       } else {
         console.error('Failed to fetch data:', result.error);
       }
@@ -117,7 +117,7 @@ function Categorylist() {
     },
     {
       name: 'Status',
-      selector: (row) => row.status ? 'Active' : 'InActive',
+      selector: (row) => row.status ? 'Active' : 'Inactive',
     },
     {
       name: 'Action',
@@ -164,7 +164,7 @@ function Categorylist() {
                   placeholder="Search..."
                   value={searchText}
                   onChange={handleSearchInputChange}
-                  style={{ width: '100%' }}
+                  style={{ width: '120%' }}
                 />
               </Col>
               <Col xs={10} sm={2}>

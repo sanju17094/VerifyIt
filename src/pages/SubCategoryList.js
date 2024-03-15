@@ -166,6 +166,7 @@ function SubCategorylist() {
                   value={searchText}
                   onChange={handleSearchInputChange}
                   className="searchInput"
+                  style={{ width: '120%' }}
                 />
               </Col>
               <Col xs={10} sm={2}>

@@ -1,20 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import DataTable from "react-data-table-component";
 import { Button, Space } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import DataTable from 'react-data-table-component';
 import Swal from 'sweetalert2';
+import { Link } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { BsSearch } from 'react-icons/bs';
 
-function Userlist() {
-  const [data, setData] = useState([]);
+function VenueList() {
+  const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
+
+  const itemsPerPage = 10; // Adjust as needed
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(10); // Adjust as needed
 
   useEffect(() => {
     fetchData();
@@ -22,17 +25,13 @@ function Userlist() {
 
   const fetchData = async () => {
     try {
-      // Replace the URL with your actual API endpoint
       const apiUrl = `http://localhost:4000/api/v1/kheloindore/venue/fetch?page=${currentPage}&limit=${itemsPerPage}&search=${searchQuery}`;
-      const response = await fetch(apiUrl);
-      const result = await response.json();
+      const response = await axios.get(apiUrl);
 
-
-      if (response.ok) {
-        setData(result.data.venues); 
-        console.log(result.data.venues, ">>>>>>>>>>>>");
+      if (response.status === 200) {
+        setRecords(response.data.venues);
       } else {
-        console.error('Failed to fetch data:', result.error);
+        console.error('Failed to fetch data:', response.statusText);
       }
 
       setLoading(false);
@@ -42,16 +41,32 @@ function Userlist() {
     }
   };
 
-  
-  
+  const handleDelete = async (row) => {
+    try {
+      const apiUrl = `http://localhost:4000/api/v1/kheloindore/venue/delete/${row._id}`;
+
+      const response = await axios.delete(apiUrl);
+
+      if (response.status === 200) {
+        Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+        fetchData(); // Or update state accordingly
+      } else {
+        console.error('Failed to delete venue:', response.statusText);
+        Swal.fire('Error', 'Failed to delete venue.', 'error');
+      }
+    } catch (error) {
+      console.error('Error deleting venue:', error);
+      Swal.fire('Error', 'An error occurred while deleting the venue.', 'error');
+    }
+  };
 
   const handleSearch = () => {
-    const filteredData = data.filter((row) =>
-      row.first_name.toLowerCase().includes(searchText.toLowerCase())
+    const filteredData = records.filter((row) =>
+      row.category_name.toLowerCase().includes(searchText.toLowerCase())
       
     );
     console.log(filteredData,"<filteredData")
-    setData(filteredData);
+    setRecords(filteredData);
   };
 
   const handleSearchInputChange = (e) => {
@@ -69,34 +84,41 @@ function Userlist() {
       selector: (row) => row.name,
     },
     {
-      name: 'Location',
-      selector: (row) => row.location.address,
-    },
-    {
       name: 'Category',
-      selector: (row) => row.last_name,
-      
+      selector: (row) => row.category_name,
     },
     {
       name: 'Sub Category',
-      selector: (row) => row.last_name,
-      
+      selector: (row) => row.sub_category,
+    },
+    {
+      name: 'Action',
+      cell: (row) => (
+        <Space size="middle">
+          <Link to={`/UpdateVenue/${row._id}`}>
+            <Button type="link">
+              <EditOutlined />
+            </Button>
+          </Link>
+          <Button type="link" onClick={() => handleDelete(row)}>
+            <DeleteOutlined />
+          </Button>
+        </Space>
+      ),
     },
   ];
-
 
   return (
     <>
       <div>
         <h1>Venue List</h1>
         <DataTable
-          className="dataTable"
           columns={columns}
-          data={data}
+          data={records}
           pagination
           paginationPerPage={itemsPerPage}
           paginationRowsPerPageOptions={[5, 10, 20]}
-          paginationTotalRows={data.length}
+          paginationTotalRows={records.length}
           progressPending={loading}
           onChangePage={(page) => setCurrentPage(page)}
           noHeader
@@ -107,16 +129,14 @@ function Userlist() {
               <Col xs={12} sm={6}>
                 <Form.Control
                   type="text"
+                  className="searchInput"
                   placeholder="Search..."
                   value={searchText}
                   onChange={handleSearchInputChange}
-                  className="searchInput"
+                  style={{ width: '100%' }}
                 />
               </Col>
               <Col xs={10} sm={2}>
-              {/* <button className="search-button" onClick={handleSearch}>
-                  <BsSearch />
-                </button> */}
               </Col>
             </Row>
           )}
@@ -127,4 +147,4 @@ function Userlist() {
   );
 }
 
-export default Userlist;
+export default VenueList;

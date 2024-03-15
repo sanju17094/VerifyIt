@@ -207,10 +207,10 @@ const MainLayout = () => {
                 <IoIosPerson className="fs-4" />
               </Link>
 
-              <IoIosNotifications className="fs-4" />
+              {/* <IoIosNotifications className="fs-4" />
               <span className="badge bg-danger rounded-circle p-1 position-absolute">
                 3
-              </span>
+              </span> */}
             </div>
 
             <div className="d-flex gap-3 align-items-center dropdown">

@@ -31,6 +31,7 @@ import SubCategory from "./pages/SubCategory";
 import SubCategoryList from "./pages/SubCategoryList";
 import Userlist from "./pages/Userlist";
 import Venuetable from "./pages/Venuetable";
+import Adminlist from "./pages/Adminlist";
 
 
 function App() {
@@ -43,6 +44,8 @@ function App() {
           <Route path="/userprofile" element={<Loginuser/>}>
           </Route>
           <Route path="/userlist" element={<Userlist/>} />
+          <Route path="/adminlist" element={<Adminlist/>} />
+
           <Route path="/category" element={<Category />} />
           <Route path="/Subcategory" element={<SubCategory />} />
           <Route path="/subcategorylist" element={<SubCategoryList /> } />
