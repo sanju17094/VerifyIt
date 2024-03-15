@@ -52,7 +52,7 @@ function Categorylist() {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          category_name: 'Updated Category Name'
+          category_name: data.category_name
         })
       });
 
@@ -168,9 +168,7 @@ function Categorylist() {
                 />
               </Col>
               <Col xs={10} sm={2}>
-                {/* <button className="search-button" onClick={handleSearch}>
-                  <BsSearch />
-                </button> */}
+                
               </Col>
             </Row>
           )}

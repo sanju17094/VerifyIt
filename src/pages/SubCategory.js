@@ -61,7 +61,8 @@ function SubCategory() {
   return (
     <div className="form">
       <div className="mb-3">
-        <Form.Label htmlFor="text">Add SubCategory*</Form.Label>
+        <Form.Label htmlFor="text">Add SubCategory*</Form.Label><br></br>
+        <h7>Add Subcategory Name</h7>
         <Form.Control
           type="text"
           id="text"

@@ -4,16 +4,14 @@ import Swal from "sweetalert2";
 import { Link } from 'react-router-dom';
 import React, { useState } from "react";
 import axios from "axios";
-// import { useHistory } from 'react-router-dom';
+
 
 
 function Category() {
-  // For Category Validation
-  // const history = useHistory();
 
   const [input, setInput] = useState({
     category_name: "",
-    status: true, 
+    status: true,
     images: ""
   });
 
@@ -63,10 +61,15 @@ function Category() {
     }
   };
 
+  const handlePhotoChange = (e) => {
+    const selectedFiles = Array.from(e.target.files);
+  };
+
   return (
     <div className="form">
       <div className="mb-3">
-        <Form.Label htmlFor="text">Add Categories*</Form.Label>
+        <Form.Label htmlFor="text">Add Category*</Form.Label><br></br>
+        <h7>Add Category Name</h7>
         <Form.Control
           type="text"
           id="text"
@@ -76,7 +79,21 @@ function Category() {
           value={input.category_name}
           onChange={handleInputChange}
         />
+        <br></br>
+        <Form.Group controlId="formPhotos">
+          <h7>Upload Photos</h7>
+          <Form.Control
+            type="file"
+            multiple
+            name="photos"
+            values={input.images}
+            onChange={handlePhotoChange}
+            style={{ width: '67%' }}
+            
+          />
+        </Form.Group>
       </div>
+
 
       <Form.Group controlId="formCheckbox">
         <div className="checkbox-container">
@@ -93,17 +110,6 @@ function Category() {
         <Form.Label className="checkbox-label">Status</Form.Label>
       </Form.Group>
 
-      {/* <div className="mb-3">
-        <Form.Group>
-          <Form.File
-            id="images"
-            label="Upload Images"
-            name="images"
-            onChange={handleInputChange}
-            multiple // Allow multiple files
-          />
-          </Form.Group>
-      </div> */}
       <div className="mb-3">
         <form>
           <button className="btn1" type="submit" onClick={handleSubmit}>Submit</button>

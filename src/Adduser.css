@@ -1,0 +1,71 @@
+.Container {
+  margin-top: 20px;
+}
+
+
+.FormLabel {
+  font-weight: bold;
+}
+
+.StarSymbol {
+  color: red;
+}
+
+.ButtonsContainer {
+  margin-top: 20px;
+  text-align: right;
+}
+
+
+.Button {
+  margin-right: 10px;
+}
+
+
+.FormControl {
+  margin-bottom: 10px;
+}
+
+
+.FormCheck {
+  margin-top: 10px;
+}
+
+
+/* AdminCreate.css */
+
+
+.StatusCheckbox {
+  margin-top: 10px; 
+}
+
+
+
+/* AdminCreate.css */
+
+.btn-yellow {
+  background-color: rgb(255, 214, 66);
+  color: black; 
+}
+
+.btn-yellow:hover {
+  background-color: rgb(249, 188, 34); 
+}
+
+
+.FormFieldRow {
+  margin: 20px; 
+}
+
+
+
+/* AdminCreate.css */
+
+.Form-row {
+  margin-bottom: 20px; 
+}
+
+.Form-row .Form-group {
+  margin-bottom: 10px; 
+}
+

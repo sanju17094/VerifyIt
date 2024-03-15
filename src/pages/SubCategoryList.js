@@ -52,7 +52,7 @@ function SubCategorylist() {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          subcategory_name: 'Updated SubCategory Name'
+          Subcategory_name: data.Subcategory_name
         })
       });
 
@@ -63,7 +63,7 @@ function SubCategorylist() {
         console.error('Failed to update subcategory name:', responseData.message || 'Unknown error');
       }
     } catch (error) {
-      console.error('Error updating category name:', error);
+      console.error('Error updating subcategory name:', error);
     }
   };
 
@@ -112,7 +112,7 @@ function SubCategorylist() {
       selector: (_, index) => index + 1 + (currentPage - 1) * itemsPerPage,
     },
     {
-      name: 'Category Type',
+      name: 'Subcategory Type',
       selector: (row) => row.Subcategory_name,
     },
     {
@@ -123,7 +123,7 @@ function SubCategorylist() {
       name: 'Action',
       cell: (row) => (
         <Space size="middle">
-          <Link to={`/UpdateCategory/${row._id}`}>
+          <Link to={`/UpdateSubcategory/${row._id}`}>
             <Button type="link" onClick={() => handleEdit(row)}>
               <EditOutlined />
             </Button>

@@ -100,12 +100,12 @@ const MainLayout = () => {
                 {
                   key: "category",
                   icon: <AiOutlineShoppingCart className="fs-4" />,
-                  label: "Category",
+                  label: "Add Category",
                 },
                 {
                   key: "Subcategory",
                   icon: <AiOutlineShoppingCart className="fs-4" />,
-                  label: "Sub Category",
+                  label: "Add Subcategory",
                 },
                 // {
                 //   key: "category",
@@ -120,7 +120,7 @@ const MainLayout = () => {
                 {
                   key: "subcategorylist",
                   icon: <BiCategoryAlt className="fs-4" />,
-                  label: "SubCategory List",
+                  label: "Subcategory List",
                 },
                 // {
                 //   key: "list-color",
@@ -178,11 +178,11 @@ const MainLayout = () => {
             //     },
             //   ],
             // },
-            {
-              key: "enquiries",
-              icon: <FaClipboardList className="fs-4" />,
-              label: "Enquiries",
-            },
+            // {
+            //   key: "enquiries",
+            //   icon: <FaClipboardList className="fs-4" />,
+            //   label: "Enquiries",
+            // },
           ]}
         />
       </Sider>
@@ -202,16 +202,16 @@ const MainLayout = () => {
             }
           )}
           <div className="d-flex gap-4 align-items-center">
-            <div className="position-relative">
+            {/* <div className="position-relative">
               <Link to="/userprofile">
                 <IoIosPerson className="fs-4" />
               </Link>
 
-              {/* <IoIosNotifications className="fs-4" />
+              <IoIosNotifications className="fs-4" />
               <span className="badge bg-danger rounded-circle p-1 position-absolute">
                 3
-              </span> */}
-            </div>
+              </span>
+            </div> */}
 
             <div className="d-flex gap-3 align-items-center dropdown">
               <div>
