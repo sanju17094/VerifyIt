@@ -33,9 +33,20 @@
   border-radius: 5px;
   transition: background-color 0.3s ease-in-out;
   font-weight: bold;
+  margin-right: 1%;
 }
 
 .submit-button:hover {
   background-color: #f9a602;
 }
 
+.cancel-button{
+  background-color: black;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease-in-out;
+  font-weight: bold;
+}

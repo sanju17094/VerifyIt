@@ -49,7 +49,7 @@ function VenueList() {
 
       if (response.status === 200) {
         Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
-        fetchData(); // Or update state accordingly
+        fetchData(); 
       } else {
         console.error('Failed to delete venue:', response.statusText);
         Swal.fire('Error', 'Failed to delete venue.', 'error');

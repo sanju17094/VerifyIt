@@ -83,8 +83,8 @@ function Userlist() {
 
   return (
     <>
-      <div>
-        <h1>All User</h1>
+    <h1>All User</h1>
+      <div className="cnt">
         <DataTable
           className="dataTable"
           columns={columns}

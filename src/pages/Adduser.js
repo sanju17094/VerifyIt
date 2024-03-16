@@ -4,6 +4,7 @@ import axios from "axios";
 import { Container, Row, Col, Form } from "react-bootstrap";
 import '../../src/Adduser.css';
 import Swal from "sweetalert2";
+import {Link} from "react-router-dom"
 
 const AdminCreate = () => {
   const [formData, setFormData] = useState({
@@ -65,6 +66,7 @@ const AdminCreate = () => {
       const response = await axios.post("http://localhost:4000/api/v1/kheloindore/admin/create", formData);
       console.log(response.data);
       alert("Admin added successfully");
+      window.location.href = "/Adminlist";
     } catch (error) {
       alert("Failed to add Admin");
       console.error("Error:", error);
@@ -198,10 +200,11 @@ const AdminCreate = () => {
                 onChange={handleChange}
                 required
               >
+            
                 <option value="">Select Role</option>
-                <option value="admin">Super Admin</option>
-                <option value="user">Admin</option>
-                <option value="user">Vender</option>
+                <option value="Super Admin">Super Admin</option>
+                <option value="Admin">Admin</option>
+                <option value="Vendor">Vender</option>
               </Form.Control>
             </Form.Group>
           </Form>
@@ -226,10 +229,16 @@ const AdminCreate = () => {
         <div className="ButtonsContainer">
           <button type="button" className="btn btn-yellow" onClick={handleSubmit}>
             Submit
-          </button>{" "}
-          <button type="button" className="btn btn-dark" onClick={handleCancel}>
-            Cancel
           </button>
+          <Link to="/Adminlist">
+              <button
+                type="button"
+                className="btn btn-dark"
+                onClick={handleCancel}
+              >
+                Cancel
+              </button>
+            </Link>
         </div>
       </Row>
     </Container>

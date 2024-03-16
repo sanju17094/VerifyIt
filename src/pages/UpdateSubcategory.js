@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { Form } from "react-bootstrap";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 
 function Update() {
     const { _id } = useParams(); 
@@ -12,7 +12,7 @@ function Update() {
     useEffect(() => {
         axios.get(`http://localhost:4000/api/v1/kheloindore/subcategory/fetch-ind/`+_id)
             .then(res => {
-                setValues({ Subcategory_name: res.data.Subcategory.Subcategory_name, status: res.data.Subcategory.status });
+                setValues({ Subcategory_name: res.data.category.Subcategory_name, status: res.data.category.status });
             })
             .catch(err => console.log(err))
     }, [_id]);
@@ -46,6 +46,7 @@ function Update() {
         <div className="form">
             <div className="mb-3">
                 <Form.Label htmlFor="text">Update Subcategory</Form.Label>
+                <span className="StarSymbol">*</span>
                 <Form.Control
                     type="text"
                     id="text"
@@ -77,7 +78,7 @@ function Update() {
                 <button className="btn1" type="submit" onClick={(e) => handleSubmit(e)}>
                     Update
                 </button>
-                <button className="btn2">Cancel</button>
+                <Link to="/SubCategoryList"><button className="btn2">Cancel</button></Link>
             </div>
         </div>
     );

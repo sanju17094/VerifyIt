@@ -3,6 +3,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import { Form } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 function Update() {
   const { _id } = useParams();
@@ -54,6 +55,7 @@ function Update() {
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <Form.Label htmlFor="text">Update Category</Form.Label>
+          <span className="StarSymbol">*</span>
           <Form.Control
             type="text"
             id="text"
@@ -82,10 +84,10 @@ function Update() {
         </Form.Group>
 
         <div className="mb-3">
-          <button className="btn1" type="submit">
+          <button className="btn1" type="submit" onClick={(e) => handleSubmit(e)}>
             Update
           </button>
-          <button className="btn2">Cancel</button>
+        <Link to="/Categorylist"><button className="btn2">Cancel</button></Link>
         </div>
       </form>
     </div>

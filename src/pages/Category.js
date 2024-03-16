@@ -14,7 +14,7 @@ function Category() {
     status: true,
     images: ""
   });
-
+console.log(input,"<input")
   const handleInputChange = (event) => {
     if (event && event.target) {
       const { name, value, type, checked } = event.target;
@@ -37,9 +37,21 @@ function Category() {
       });
     } else {
       try {
+        const formData = new FormData();
+        formData.append('category_name', input.category_name);
+        formData.append('status', input.status);
+        for (let i = 0; i < input.images.length; i++) {
+          formData.append('images', input.images[i]);
+        }
+  
         const response = await axios.post(
           "http://localhost:4000/api/v1/kheloindore/category/create",
-          input
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          }
         );
         console.log("Category Added Successfully:", response);
         Swal.fire({
@@ -62,7 +74,11 @@ function Category() {
   };
 
   const handlePhotoChange = (e) => {
-    const selectedFiles = Array.from(e.target.files);
+    const selectedFiles = e.target.files;
+    setInput((prevState) => ({
+      ...prevState,
+      images: selectedFiles,
+    }));
   };
 
   return (

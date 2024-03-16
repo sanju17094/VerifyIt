@@ -1,35 +1,85 @@
-import React, { useState } from "react";
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import "../../src/Venue.css";
 import Swal from "sweetalert2";
-
+import React, { useState, useEffect } from "react";
+import { MultiSelect } from 'primereact/multiselect';
+        
 const VenueBooking = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
     address: "",
-    city: "",
     state: "",
     zipCode: "",
     country: "",
-    location: "",
     photos: "",
     Category:"",
     SubCategory:"",
-
   });
+  useEffect(() => {
+    fetchCategories();
+    fetchSubcategories();
+     // Assuming you have a function to fetch subcategories without specifying a category ID
+  }, []);
+  console.log(formData,"fromdata value check")
+  const [categories, setCategories] = useState([]);
+  const fetchCategories = async () => {
+    try {
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+      const response = await axios.get(
+        "http://localhost:4000/api/v1/kheloindore/category/fetch"
+      );
+      console.log(response.data.categories,"<response.data.categories")
+      setCategories(response.data.categories);
+     console.log(categories.category_name,"<category.category_name") 
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
   };
 
+
+  const [subcategories, setSubcategories] = useState([]);
+  const fetchSubcategories = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:4000/api/v1/kheloindore/subcategory/fetch"
+      );
+      setSubcategories(response.data.categories);
+    } catch (error) {
+      console.error("Error fetching subcategories:", error);
+    }
+  };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+  
+    // Update Category field
+    if (name === "category") {
+      setFormData({
+        ...formData,
+        Category: value
+      });
+    }
+    // Update SubCategory field
+    else if (name === "subcategory") {
+      setFormData({
+        ...formData,
+        SubCategory: value
+      });
+    }
+    // Update other fields
+    else {
+      setFormData({
+        ...formData,
+        [name]: value
+      });
+    }
+  };
+  
+  
   
 
   const handleSubmit = async (e) => {
@@ -41,12 +91,9 @@ const VenueBooking = () => {
       email: "Email Address",
       phone: "Phone Number",
       address: "Address",
-      city: "City",
       state: "State",
       country: "Country",
-      location: "Location",
       zipCode: "Zipcode",
-      // photos: "Photos",
       Category: "Category",
       SubCategory:"SubCategory",
 
@@ -59,22 +106,15 @@ const VenueBooking = () => {
       }
     }
   
-    if (emptyFields.length > 0) {
-      const fieldToFill = emptyFields[0];
-      Swal.fire({
-        icon: "error",
-        title: "Validation Error",
-        text: `Please fill out the required field: ${fieldToFill}`,
-      });
-      return;
-    }
+   
   
     try {
       const response = await axios.post(
-        "http://localhost:4000/api/v1/kheloindore/venue/add",
+        "http://localhost:4000/api/v1/kheloindore/venue/addVenue",
         formData
       );
-      console.log(response.data);
+      console.log(response,"<,,,,,,,,,,responce");
+      console.log(formData,"<formData")
       Swal.fire({
         icon: "success",
         title: "Success!",
@@ -176,57 +216,42 @@ const VenueBooking = () => {
               onChange={handleChange}
             />
           </Form.Group>
+          <Form.Group controlId="formCategory">
+  <Form.Label className="heading">
+    Category <span className="StarSymbol">*</span>
+  </Form.Label>
+  <MultiSelect
+                  value={formData.Category}
+                  onChange={(e) => setFormData({ ...formData, Category: e.value })}
+                  options={categories.map((category) => ({
+                    label: category.category_name,
+                    value: category.category_name,
+                  }))}
+                  optionLabel="label"
+                  placeholder="Select categories"
+                />
+</Form.Group>
 
-          <Form.Group controlId="formLocation">
-            <Form.Label className="heading">
-              City
-              <span className="StarSymbol">*</span>
-            </Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter City"
-              name="city"
-              value={formData.city}
-              onChange={handleChange}
-            />
-          </Form.Group>
 
-          
-         <Form.Group controlId="formCategory">
-            <Form.Label className="heading">
-              Category
-              <span className="StarSymbol">*</span>
-            </Form.Label>
-            <Form.Select
-              name="category"
-              value={formData.category}
-              onChange={handleChange}
-            >
-              <option value="">Select a category</option>
-              <option value="Category 1">Category 1</option>
-              <option value="Category 2">Category 2</option>
-              <option value="Category 3">Category 3</option>
-              {/* Add more options as needed */}
-            </Form.Select>
-          </Form.Group>
-
-          <Form.Group controlId="formsubCategory">
-            <Form.Label className="heading">
-              Sub Category
-              <span className="StarSymbol">*</span>
-            </Form.Label>
-            <Form.Select
-              name="subcategory"
-              value={formData.subcategory}
-              onChange={handleChange}
-            >
-              <option value="">Select Sub category</option>
-              <option value="Category 1">subCategory 1</option>
-              <option value="Category 2">subCategory 2</option>
-              <option value="Category 3">subCategory 3</option>
-              {/* Add more options as needed */}
-            </Form.Select>
-          </Form.Group>
+<Form.Group controlId="formSubCategory">
+  <Form.Label className="heading">
+    Subcategory <span className="StarSymbol">*</span>
+  </Form.Label>
+  <Form.Select
+    name="subcategory"
+    value={formData.subcategory}
+    onChange={(e) => {
+      handleChange(e); // Call handleChange function
+    }}
+  >
+    <option value="">Select a subcategory</option>
+    {subcategories.map((subcategory) => (
+      <option key={subcategory._id} value={subcategory._id}>
+        {subcategory.Subcategory_name}
+      </option>
+    ))}
+  </Form.Select>
+</Form.Group>
 
         </Col>
         <Col md={4}>
