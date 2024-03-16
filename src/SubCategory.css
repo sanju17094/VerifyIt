@@ -4,6 +4,12 @@
     background-color: #f4f4f4;
     border-radius: 8px;
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2); /* Box shadow */
+    margin-top: 3%;
+  }
+
+  h7{
+    color: #0f0e0e;
+    font-weight: bold;
   }
   
   .form .mb-3 {

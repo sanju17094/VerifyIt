@@ -1,10 +1,15 @@
-.Container {
+.adduser {
   margin-top: 20px;
+  border: 1px solid #ccc; /* Change border color for better visibility */
+  width: 97%;
+  padding: 20px; /* Add padding for better spacing */
+  background-color: #f9f9f9; /* Add background color for contrast */
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2); /* Box shadow */
 }
-
 
 .FormLabel {
   font-weight: bold;
+  color: #333; /* Change label text color for better contrast */
 }
 
 .StarSymbol {
@@ -16,56 +21,51 @@
   text-align: right;
 }
 
-
-.Button {
-  margin-right: 10px;
-}
-
-
 .FormControl {
   margin-bottom: 10px;
+  padding: 8px; /* Add padding to form controls */
+  border: 1px solid #ccc; /* Add border to form controls for clarity */
+  border-radius: 4px; /* Add border-radius for rounded corners */
 }
-
 
 .FormCheck {
   margin-top: 10px;
 }
 
-
-/* AdminCreate.css */
-
-
 .StatusCheckbox {
-  margin-top: 10px; 
+  margin-top: 10px;
 }
-
-
-
-/* AdminCreate.css */
 
 .btn-yellow {
   background-color: rgb(255, 214, 66);
-  color: black; 
+  color: white;
 }
 
 .btn-yellow:hover {
-  background-color: rgb(249, 188, 34); 
+  background-color: rgb(249, 188, 34);
 }
-
 
 .FormFieldRow {
-  margin: 20px; 
+  margin: 20px;
 }
 
-
-
-/* AdminCreate.css */
-
 .Form-row {
-  margin-bottom: 20px; 
+  margin-bottom: 20px;
 }
 
 .Form-row .Form-group {
-  margin-bottom: 10px; 
+  margin-bottom: 10px;
 }
 
+.heading {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #0f0e0e;
+}
+
+.StatusCheckbox{
+  color: #0f0e0e;
+  font-weight: bold;
+
+}

@@ -66,10 +66,12 @@ function Category() {
   };
 
   return (
+    <>
+    <h3>Add Category</h3>
     <div className="form">
       <div className="mb-3">
-        <Form.Label htmlFor="text">Add Category*</Form.Label><br></br>
         <h7>Add Category Name</h7>
+        <span className="StarSymbol">*</span>
         <Form.Control
           type="text"
           id="text"
@@ -82,6 +84,7 @@ function Category() {
         <br></br>
         <Form.Group controlId="formPhotos">
           <h7>Upload Photos</h7>
+          <span className="StarSymbol">*</span>
           <Form.Control
             type="file"
             multiple
@@ -117,6 +120,7 @@ function Category() {
         </form>
       </div>
     </div>
+    </>
   );
 }
 

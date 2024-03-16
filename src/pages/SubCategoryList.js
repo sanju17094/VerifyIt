@@ -31,7 +31,7 @@ function SubCategorylist() {
 
 
       if (response.ok) {
-        setData(result.categories); 
+        setData(result.categories)
       } else {
         console.error('Failed to fetch data:', result.error);
       }
@@ -139,8 +139,8 @@ function SubCategorylist() {
 
   return (
     <>
-      <div>
-        <h1>Sub Category List</h1>
+    <h1>Sub Category List</h1>
+      <div className="cnt">
         <DataTable
           className="dataTable"
           columns={columns}
@@ -170,9 +170,6 @@ function SubCategorylist() {
                 />
               </Col>
               <Col xs={10} sm={2}>
-                {/* <button className="search-button" onClick={handleSearch}>
-                  <BsSearch />
-                </button> */}
               </Col>
             </Row>
           )}

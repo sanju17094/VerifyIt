@@ -31,7 +31,7 @@ function Categorylist() {
 
 
       if (response.ok) {
-        setData(result.categories); 
+        setData(result.categories);
       } else {
         console.error('Failed to fetch data:', result.error);
       }
@@ -95,9 +95,9 @@ function Categorylist() {
   const handleSearch = () => {
     const filteredData = data.filter((row) =>
       row.category_name.toLowerCase().includes(searchText.toLowerCase())
-      
+
     );
-    console.log(filteredData,"<filteredData")
+    console.log(filteredData, "<filteredData")
     setData(filteredData);
   };
 
@@ -139,8 +139,8 @@ function Categorylist() {
 
   return (
     <>
-      <div>
-        <h1>Category List</h1>
+      <h1>Category List</h1>
+      <div className="cnt">
         <DataTable
           columns={columns}
           data={data}
@@ -155,7 +155,7 @@ function Categorylist() {
           subHeader
           subHeaderComponent={(
             <Row className="justify-content-end align-items-center">
-             <Link to="/Category"><button className="warning-button mr-2">Add Category</button>
+              <Link to="/Category"><button className="warning-button mr-2">Add Category</button>
               </Link>
               <Col xs={12} sm={6}>
                 <Form.Control
@@ -168,7 +168,7 @@ function Categorylist() {
                 />
               </Col>
               <Col xs={10} sm={2}>
-                
+
               </Col>
             </Row>
           )}

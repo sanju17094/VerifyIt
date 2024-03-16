@@ -1,13 +1,12 @@
 
-.container {
-  padding: 20px;
-  position: absolute;
+.cnt {
+  width: 100%;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+  margin-top: 3%;
 }
-
 
 h1 {
   font-size: 30px;
-  margin-bottom: 25px;
 }
 
 
@@ -24,12 +23,12 @@ h1 {
   font-size: 16px;
 }
 
-/* Styles for the DataTable component */
+
 .data-table {
   font-size: 16px;
 }
 
-/* Styles for the pagination */
+
 .pagination {
   margin-top: 20px;
 }
@@ -85,10 +84,5 @@ h1 {
   border: 1px solid #ced4da;
   padding: 10px;
   font-size: 16px;
-  
   margin-left: 70%;
-}
-
-.dataTable {
-  font-size: medium;
 }

@@ -1,9 +1,9 @@
-
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 import { Container, Row, Col, Form } from "react-bootstrap";
 import '../../src/Adduser.css';
+import Swal from "sweetalert2";
 
 const AdminCreate = () => {
   const [formData, setFormData] = useState({
@@ -34,11 +34,33 @@ const AdminCreate = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.first_name || !formData.last_name || !formData.email || !formData.password || !formData.mobile || !formData.role) {
-      alert("Please fill out all required fields");
+
+    if (!formData.first_name) {
+      showAlert("First Name");
+      return;
+    }
+    if (!formData.last_name) {
+      showAlert("Last Name");
+      return;
+    }
+    if (!formData.mobile) {
+      showAlert("Mobile Number");
+      return;
+    }
+    if (!formData.email) {
+      showAlert("Email Address");
+      return;
+    }
+    if (!formData.password) {
+      showAlert("Password");
+      return;
+    }
+    if (!formData.role) {
+      showAlert("Admin Role");
       return;
     }
 
+   
     try {
       const response = await axios.post("http://localhost:4000/api/v1/kheloindore/admin/create", formData);
       console.log(response.data);
@@ -62,15 +84,24 @@ const AdminCreate = () => {
     });
   };
 
+
+  const showAlert = (fieldName) => {
+    Swal.fire({
+      icon: "error",
+      title: "Validation Error",
+      text: `Please fill out the field: ${fieldName}`,
+    });
+  };
+
   return (
-    <Container>
-     
-     
-      <Row className="Form-row">
+    <>
+    <h3>Admin Create</h3>
+    <Container className="adduser" style={{ marginTop: '20px' }}>
+      <Row className="Form-row" style={{ marginBottom: '20px' }}>
         <Col md={4}>
           <Form>
             <Form.Group controlId="formFirstName">
-              <Form.Label>First Name
+              <Form.Label className="heading">First Name
               <span className="StarSymbol">*</span>
               </Form.Label>
               <Form.Control
@@ -82,12 +113,48 @@ const AdminCreate = () => {
                 required
               />
             </Form.Group>
+          </Form>
+        </Col>
+        <Col md={4}>
+          <Form>
+            <Form.Group controlId="formLastName">
+              <Form.Label className="heading">Last Name  
+              <span className="StarSymbol">*</span></Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter Last Name"
+                name="last_name"
+                value={formData.last_name}
+                onChange={handleChange}
+                required
+              />
+            </Form.Group>
+          </Form>
+        </Col>
+        <Col md={4}>
+          <Form>
+            <Form.Group controlId="formMobileNumber">
+              <Form.Label className="heading">Mobile Number
+              <span className="StarSymbol">*</span>
+              </Form.Label>
+              <Form.Control
+                type="tel"
+                placeholder="Enter Mobile Number"
+                name="mobile"
+                value={formData.mobile}
+                onChange={handleChange}
+                required
+              />
+            </Form.Group>
+          </Form>
+        </Col>
+      </Row>
 
-
-          
-
+      <Row style={{ marginBottom: '20px' }}>
+        <Col md={4}>
+          <Form>
             <Form.Group controlId="formEmail">
-              <Form.Label>Email Address
+              <Form.Label className="heading">Email Address
               <span className="StarSymbol">*</span>
               </Form.Label>
               <Form.Control
@@ -103,21 +170,8 @@ const AdminCreate = () => {
         </Col>
         <Col md={4}>
           <Form>
-            <Form.Group controlId="formLastName">
-              <Form.Label>Last Name  
-              <span className="StarSymbol">*</span></Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter Last Name"
-                name="last_name"
-                value={formData.last_name}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
-
             <Form.Group controlId="formPassword">
-              <Form.Label>Password
+              <Form.Label className="heading">Password
               <span className="StarSymbol">*</span>
               </Form.Label>
               <Form.Control
@@ -133,22 +187,8 @@ const AdminCreate = () => {
         </Col>
         <Col md={4}>
           <Form>
-            <Form.Group controlId="formMobileNumber">
-              <Form.Label>Mobile Number
-              <span className="StarSymbol">*</span>
-              </Form.Label>
-              <Form.Control
-                type="tel"
-                placeholder="Enter Mobile Number"
-                name="mobile"
-                value={formData.mobile}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
-
             <Form.Group controlId="formAdminRole">
-              <Form.Label>Admin Role
+              <Form.Label className="heading">Admin Role
               <span className="StarSymbol">*</span>
               </Form.Label>
               <Form.Control
@@ -169,9 +209,9 @@ const AdminCreate = () => {
       </Row>
 
       <Row>
-        <Col md={4}>
+        <Col md={2}>
           <Form.Group controlId="formStatus">
-            <Form.Check
+            <Form.Check 
               type="checkbox"
               label="Status"
               checked={formData.status}
@@ -183,7 +223,7 @@ const AdminCreate = () => {
       </Row>
 
       <Row>
-      <div className="ButtonsContainer">
+        <div className="ButtonsContainer">
           <button type="button" className="btn btn-yellow" onClick={handleSubmit}>
             Submit
           </button>{" "}
@@ -193,6 +233,7 @@ const AdminCreate = () => {
         </div>
       </Row>
     </Container>
+    </>
   );
 };
 

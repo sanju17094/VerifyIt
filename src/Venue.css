@@ -5,6 +5,7 @@
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   background-color: #f8f9fa;
+  width: 100%;
 }
 
 .form-group {
@@ -23,17 +24,18 @@
   box-shadow: none;
 }
 
-.btn-submit {
-  background-color: #007bff;
-  border-color: #007bff;
-  padding: 10px 20px;
-  border-radius: 5px;
+.submit-button {
+  background-color: #ffb700;
   color: #fff;
-  font-size: 16px;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease-in-out;
+  font-weight: bold;
 }
 
-.btn-submit:hover {
-  background-color: #0056b3;
-  border-color: #0056b3;
-  cursor: pointer;
+.submit-button:hover {
+  background-color: #f9a602;
 }
+

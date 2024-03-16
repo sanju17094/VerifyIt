@@ -59,10 +59,12 @@ function SubCategory() {
   };
 
   return (
+    <>
+    <h3>Add Subcategory</h3>
     <div className="form">
       <div className="mb-3">
-        <Form.Label htmlFor="text">Add SubCategory*</Form.Label><br></br>
         <h7>Add Subcategory Name</h7>
+        <span className="StarSymbol">*</span>
         <Form.Control
           type="text"
           id="text"
@@ -96,6 +98,7 @@ function SubCategory() {
         </form>
       </div>
     </div>
+    </>
   );
 }
 

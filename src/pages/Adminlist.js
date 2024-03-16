@@ -10,13 +10,13 @@ import Col from 'react-bootstrap/Col';
 import { BsSearch } from 'react-icons/bs';
 import '../../src/Userlist.css';
 
-function Adminlist() {
+function Userlist() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(10); 
+  const [itemsPerPage] = useState(10); // Adjust as needed
 
   useEffect(() => {
     fetchData();
@@ -25,7 +25,7 @@ function Adminlist() {
   const fetchData = async () => {
     try {
       // Replace the URL with your actual API endpoint
-      const apiUrl = `http://localhost:4000/api/v1/kheloindore/user/getallUser?page=${currentPage}&limit=${itemsPerPage}&search=${searchQuery}`;
+      const apiUrl = `http://localhost:4000/api/v1/kheloindore/admin/fetch?page=${currentPage}&limit=${itemsPerPage}&search=${searchQuery}`;
       const response = await fetch(apiUrl);
       const result = await response.json();
 
@@ -43,57 +43,6 @@ function Adminlist() {
       setLoading(false);
     }
   };
-
-
-  const handleEdit = async (row) => {
-    console.log('Edit clicked for row:', row);
-    try {
-      const response = await fetch(`http://localhost:4000/api/v1/kheloindore/admin/update/${row._id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          // category_name: 'Updated Category Name'
-        })
-      });
-
-      if (response.ok) {
-        console.log('Admin name updated successfully');
-      } else {
-        const responseData = await response.json();
-        console.error('Failed to update Admin name:', responseData.message || 'Unknown error');
-      }
-    } catch (error) {
-      console.error('Error updating admin name:', error);
-    }
-  };
-
-
-  const handleDelete = async (row) => {
-    try {
-      const apiUrl = `http://localhost:4000/api/v1/kheloindore/admin/delete/${row._id}`;
-      const response = await fetch(apiUrl, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (response.ok) {
-        Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
-        // Update your state or refetch data to reflect the deletion
-        fetchData();
-      } else {
-        console.error('Failed to delete admin:', response.statusText);
-        Swal.fire('Error', 'Failed to delete admin.', 'error');
-      }
-    } catch (error) {
-      console.error('Error deleting admin:', error);
-      Swal.fire('Error', 'An error occurred while deleting the admin.', 'error');
-    }
-  };
-
 
   
   
@@ -137,21 +86,6 @@ function Adminlist() {
       name: 'Status',
       selector: (row) => row.status ? 'Active' : 'Inactive',
     },
-    {
-      name: 'Action',
-      cell: (row) => (
-        <Space size="middle">
-          <Link to={`/UpdateAdmin/${row._id}`}>
-            <Button type="link" onClick={() => handleEdit(row)}>
-              <EditOutlined />
-            </Button>
-          </Link>
-          <Button type="link" onClick={() => handleDelete(row)}>
-            <DeleteOutlined />
-          </Button>
-        </Space>
-      ),
-    },
   ];
 
 
@@ -185,6 +119,9 @@ function Adminlist() {
                 />
               </Col>
               <Col xs={10} sm={2}>
+              {/* <button className="search-button" onClick={handleSearch}>
+                  <BsSearch />
+                </button> */}
               </Col>
             </Row>
           )}
@@ -195,4 +132,4 @@ function Adminlist() {
   );
 }
 
-export default Adminlist;
+export default Userlist;

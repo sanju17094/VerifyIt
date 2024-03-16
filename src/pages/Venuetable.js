@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { BsSearch } from 'react-icons/bs';
+import '../../src/Categorylist.css';
 
 function VenueList() {
   const [records, setRecords] = useState([]);
@@ -110,8 +110,8 @@ function VenueList() {
 
   return (
     <>
-      <div>
-        <h1>Venue List</h1>
+    <h1>Venue List</h1>
+      <div className="cnt">
         <DataTable
           columns={columns}
           data={records}

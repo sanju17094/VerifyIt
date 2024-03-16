@@ -34,6 +34,7 @@ import Userlist from "./pages/Userlist";
 import Venuetable from "./pages/Venuetable";
 import Adminlist from "./pages/Adminlist";
 import Adduser from "./pages/Adduser";
+import UpdateAdmin from "./pages/UpdateAdmin";
 
 
 function App() {
@@ -57,6 +58,7 @@ function App() {
           <Route path="/categorylist" element={<Categorylist />} />
           <Route path="/UpdateCategory/:_id" element={<UpdateCategory />} />
           <Route path="/UpdateSubcategory/:_id" element={<UpdateSubcategory />} />
+          <Route path="/UpdateAdmin/:_id" element={<UpdateAdmin />} />
           {/* <Route path="/userprofile" element={<Loginuser />} />
           </Routes> */}
 
