@@ -25,11 +25,11 @@ function VenueList() {
 
   const fetchData = async () => {
     try {
-      const apiUrl = `http://localhost:4000/api/v1/kheloindore/venue/fetch?page=${currentPage}&limit=${itemsPerPage}&search=${searchQuery}`;
+      const apiUrl = `http://localhost:4000/api/v1/kheloindore/venue/getVenue?page=${currentPage}&limit=${itemsPerPage}&search=${searchQuery}`;
       const response = await axios.get(apiUrl);
 
       if (response.status === 200) {
-        setRecords(response.data.venues);
+        setRecords(response.data.venue);
       } else {
         console.error('Failed to fetch data:', response.statusText);
       }

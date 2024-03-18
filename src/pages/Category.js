@@ -15,6 +15,7 @@ function Category() {
     images: ""
   });
 console.log(input,"<input")
+
   const handleInputChange = (event) => {
     if (event && event.target) {
       const { name, value, type, checked } = event.target;
@@ -132,7 +133,7 @@ console.log(input,"<input")
       <div className="mb-3">
         <form>
           <button className="btn1" type="submit" onClick={handleSubmit}>Submit</button>
-          <button className="btn2" >Cancel</button>
+          <Link to="/Categorylist"><button className="btn2" >Cancel</button></Link>
         </form>
       </div>
     </div>

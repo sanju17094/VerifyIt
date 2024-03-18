@@ -16,10 +16,11 @@ const VenueBooking = () => {
     state: "",
     zipCode: "",
     country: "",
-    photos: "",
-    Category: "",
-    SubCategory: "",
+    images:"",
+    Category: [], // Changed to an array for multiple selection
+    SubCategory: [], // Changed to an array for multiple selection
   });
+  console.log(formData, "dfgdgfdf")
   useEffect(() => {
     fetchCategories();
     fetchSubcategories();
@@ -55,6 +56,12 @@ const VenueBooking = () => {
   };
   const handleChange = (e) => {
     const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  
+    
 
     // Update Category field
     if (name === "category") {
@@ -111,8 +118,8 @@ const VenueBooking = () => {
     try {
       const response = await axios.post(
         "http://localhost:4000/api/v1/kheloindore/venue/addVenue",
-        formData
-      );
+        formData)
+       
       console.log(response, "<,,,,,,,,,,responce");
       console.log(formData, "<formData")
       Swal.fire({
@@ -216,42 +223,45 @@ const VenueBooking = () => {
                 onChange={handleChange}
               />
             </Form.Group>
+
+            
+
+
+            <Form.Group controlId="formLocation">
+              <Form.Label className="heading">
+                Zipcode
+                <span className="StarSymbol">*</span>
+              </Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter Zipcode"
+                name="zipCode"
+                value={formData.zipCode}
+                onChange={handleChange}
+              />
+            </Form.Group>
+
+
             <Form.Group controlId="formCategory">
               <Form.Label className="heading">
                 Category <span className="StarSymbol">*</span>
               </Form.Label>
               <MultiSelect
-                 value={formData.Category}
-                  onChange={(e) => setFormData({ ...formData, Category: e.value })}
-                  options={categories.map((category) => ({
+                name="category"
+                value={formData.category}
+                options={categories.map((category) => ({
                   label: category.category_name,
-                  value: category.category_name,
+                  value: category._id,
                 }))}
-                optionLabel="label"
+                onChange={(e) => setFormData({ ...formData, category: e.value })}
                 placeholder="Select categories"
+                className="multiselect-input" // Add a class for styling if needed
               />
             </Form.Group>
 
 
-            <Form.Group controlId="formSubCategory">
-              <Form.Label className="heading">
-                Subcategory <span className="StarSymbol">*</span>
-              </Form.Label>
-              <Form.Select
-                name="subcategory"
-                value={formData.subcategory}
-                onChange={(e) => {
-                  handleChange(e); // Call handleChange function
-                }}
-              >
-                <option value="">Select a subcategory</option>
-                {subcategories.map((subcategory) => (
-                  <option key={subcategory._id} value={subcategory._id}>
-                    {subcategory.Subcategory_name}
-                  </option>
-                ))}
-              </Form.Select>
-            </Form.Group>
+
+            
 
           </Col>
           <Col md={4}>
@@ -285,17 +295,20 @@ const VenueBooking = () => {
               />
             </Form.Group>
 
-            <Form.Group controlId="formLocation">
+            <Form.Group controlId="formSubCategory">
               <Form.Label className="heading">
-                Zipcode
-                <span className="StarSymbol">*</span>
+                Subcategory <span className="StarSymbol">*</span>
               </Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter Zipcode"
-                name="zipCode"
-                value={formData.zipCode}
-                onChange={handleChange}
+              <MultiSelect
+                name="subcategory"
+                value={formData.SubCategory}
+                options={subcategories.map((subcategory) => ({
+                  label: subcategory.Subcategory_name,
+                  value: subcategory._id,
+                }))}
+                onChange={(e) => setFormData({ ...formData, SubCategory: e.value })}
+                placeholder="Select subcategories"
+                className="multiselect-input" // Add a class for styling if needed
               />
             </Form.Group>
 

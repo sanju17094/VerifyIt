@@ -94,7 +94,7 @@ function SubCategory() {
       <div className="mb-3">
         <form>
           <button className="btn1" type="submit" onClick={handleSubmit}>Submit</button>
-          <button className="btn2" >Cancel</button>
+          <Link to = "/SubCategoryList"><button className="btn2" >Cancel</button></Link>
         </form>
       </div>
     </div>
