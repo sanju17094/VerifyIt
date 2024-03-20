@@ -154,7 +154,6 @@ function Adminlist() {
 
   return (
     <>
-    <h1>Admin List</h1>
       <div className="cnt">
         <DataTable
           className="dataTable"
@@ -171,6 +170,8 @@ function Adminlist() {
           subHeader
           subHeaderComponent={(
             <Row className="justify-content-end align-items-center">
+            <Link to="/Adduser"><button className="add-button mr-2">Add Admin</button>
+              </Link>
               <Col xs={12} sm={6}>
                 <Form.Control
                   type="text"

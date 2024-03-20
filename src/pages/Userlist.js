@@ -83,7 +83,6 @@ function Userlist() {
 
   return (
     <>
-    <h1>All User</h1>
       <div className="cnt">
         <DataTable
           className="dataTable"
@@ -100,6 +99,8 @@ function Userlist() {
           subHeader
           subHeaderComponent={(
             <Row className="justify-content-end align-items-center">
+            <Link to="/"><button className="add-button mr-2">Add User</button>
+              </Link>
               <Col xs={12} sm={6}>
                 <Form.Control
                   type="text"
@@ -111,9 +112,6 @@ function Userlist() {
                 />
               </Col>
               <Col xs={10} sm={2}>
-              {/* <button className="search-button" onClick={handleSearch}>
-                  <BsSearch />
-                </button> */}
               </Col>
             </Row>
           )}

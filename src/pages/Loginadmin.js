@@ -3,7 +3,7 @@ import '../../src/Loginuser.css'
 import axios from "axios";
 import Swal from 'sweetalert2'
 
-function Loginuser() {
+function Loginadmin() {
   const [mobile, setmobile] = useState('')
   const [password, setpassword] = useState('')
   console.log({ mobile, password })
@@ -53,4 +53,4 @@ function Loginuser() {
   );
 }
 
-export default Loginuser; 
+export default Loginadmin; 

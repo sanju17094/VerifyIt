@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import '../../src/Categorylist.css';
+import '../../src/Userlist.css';
 
 function VenueList() {
   const [records, setRecords] = useState([]);
@@ -110,7 +110,6 @@ function VenueList() {
 
   return (
     <>
-    <h1>Venue List</h1>
       <div className="cnt">
         <DataTable
           columns={columns}
@@ -126,6 +125,8 @@ function VenueList() {
           subHeader
           subHeaderComponent={(
             <Row className="justify-content-end align-items-center">
+            <Link to="/Venue"><button className="add-button mr-2">Add Venue</button>
+              </Link>
               <Col xs={12} sm={6}>
                 <Form.Control
                   type="text"

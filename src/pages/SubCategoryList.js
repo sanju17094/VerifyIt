@@ -8,7 +8,7 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { BsSearch } from 'react-icons/bs';
-import '../../src/Categorylist.css';
+import '../../src/Userlist.css';
 
 function SubCategorylist() {
   const [data, setData] = useState([]);
@@ -139,7 +139,6 @@ function SubCategorylist() {
 
   return (
     <>
-    <h1>Sub Category List</h1>
       <div className="cnt">
         <DataTable
           className="dataTable"
@@ -156,7 +155,7 @@ function SubCategorylist() {
           subHeader
           subHeaderComponent={(
             <Row className="justify-content-end align-items-center">
-              <Link to="/SubCategory"><button className="warning-button mr-2">Add SubCategory</button>
+              <Link to="/SubCategory"><button className="add-button mr-2">Add SubCategory</button>
               </Link>
 
               <Col xs={12} sm={6}>

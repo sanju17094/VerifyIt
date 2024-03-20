@@ -1,7 +1,7 @@
 .lg-logo {
     height: 100%;
-    max-width: 40px; /* Limit the maximum width to 50px */
-    width: auto; /* Let the width adjust automatically */
+    max-width: 40px; 
+    width: auto; 
   }
   
 
@@ -9,4 +9,8 @@
     height: 100%;
     max-width: 50px; /* Limit the maximum width to 50px */
     width: auto; /* Let the width adjust automatically */
+}
+
+.sidelogo{
+  background-color: rgb(255, 95, 21);
 }

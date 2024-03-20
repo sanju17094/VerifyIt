@@ -7,8 +7,7 @@ import { Link } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { BsSearch } from 'react-icons/bs';
-import '../../src/Categorylist.css';
+import '../../src/Userlist.css';
 
 function Categorylist() {
   const [data, setData] = useState([]);
@@ -110,14 +109,17 @@ function Categorylist() {
     {
       name: 'S.No.',
       selector: (_, index) => index + 1 + (currentPage - 1) * itemsPerPage,
+      className: 'font1'
     },
     {
-      name: 'Category Type',
+      name: 'Name',
       selector: (row) => row.category_name,
+      className: 'font2'
     },
     {
       name: 'Status',
       selector: (row) => row.status ? 'Active' : 'Inactive',
+      className: 'font3'
     },
     {
       name: 'Action',
@@ -125,11 +127,11 @@ function Categorylist() {
         <Space size="middle">
           <Link to={`/UpdateCategory/${row._id}`}>
             <Button type="link" onClick={() => handleEdit(row)}>
-              <EditOutlined />
+            <EditOutlined style={{ fontSize: '20px', color: '#fcfcfa', borderRadius: '5px', padding: '5px', backgroundColor: '#fee43d' }} />
             </Button>
           </Link>
           <Button type="link" onClick={() => handleDelete(row)}>
-            <DeleteOutlined />
+            <DeleteOutlined style={{ fontSize: '20px', color: '#E7F3FF', borderRadius: '5px', padding: '5px', backgroundColor: '#3d9c06' }} />
           </Button>
         </Space>
       ),
@@ -139,9 +141,9 @@ function Categorylist() {
 
   return (
     <>
-      <h1>Category List</h1>
       <div className="cnt">
         <DataTable
+          className="dataTable"
           columns={columns}
           data={data}
           pagination
@@ -155,7 +157,7 @@ function Categorylist() {
           subHeader
           subHeaderComponent={(
             <Row className="justify-content-end align-items-center">
-              <Link to="/Category"><button className="warning-button mr-2">Add Category</button>
+              <Link to="/Category"><button className="add-button mr-2">Add Category</button>
               </Link>
               <Col xs={12} sm={6}>
                 <Form.Control

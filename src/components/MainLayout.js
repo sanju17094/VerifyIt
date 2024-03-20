@@ -9,7 +9,10 @@ import {
 import { RiCouponLine } from "react-icons/ri";
 import { RiUserLine } from 'react-icons/ri';
 import { RiLoginCircleLine } from 'react-icons/ri';
+import { FaChalkboard} from 'react-icons/fa';
+import { FaShoppingBag } from 'react-icons/fa';
 import { RiUserSearchLine } from 'react-icons/ri';
+import { FaCalendarAlt } from 'react-icons/fa';
 import { RiAdminLine } from 'react-icons/ri';
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -36,7 +39,7 @@ const MainLayout = () => {
   return (
     <Layout /* onContextMenu={(e) => e.preventDefault()} */>
       <Sider trigger={null} collapsible collapsed={collapsed}>
-        <div className="logo">
+        <div className="sidelogo">
           <h2 className="text-white fs-5 text-center py-3 mb-0">
             <span className="sm-logo">KI</span>
             <span className="lg-logo">Khelo Indore</span>
@@ -59,9 +62,27 @@ const MainLayout = () => {
               label: "Dashboard",
             },
             {
+              key: "userlist",
+              icon: <RiUserLine className="fs-4" />,
+              label: "Users",
+              // children: [
+              //   {
+              //     key: "userprofile",
+              //     icon: <RiLoginCircleLine className="fs-4" />,
+              //     label: "User Login",
+              //   },
+              //   {
+              //     key: "userlist",
+              //     icon: <RiLoginCircleLine className="fs-4" />,
+              //     label: "User's",
+              //   },
+              // ],
+            },
+
+            {
               key: "",
               icon: <RiUserLine className="fs-4" />,
-              label: "Admin's",
+              label: "Admins",
               children: [
                 {
                   key: "adduser",
@@ -75,27 +96,11 @@ const MainLayout = () => {
                 },
               ],
             },
+           
             {
               key: "",
-              icon: <RiUserLine className="fs-4" />,
-              label: "Web User",
-              children: [
-                // {
-                //   key: "userprofile",
-                //   icon: <RiLoginCircleLine className="fs-4" />,
-                //   label: "User Login",
-                // },
-                {
-                  key: "userlist",
-                  icon: <RiLoginCircleLine className="fs-4" />,
-                  label: "All User",
-                },
-              ],
-            },
-            {
-              key: "category",
               icon: <BiCategoryAlt className="fs-4" />,
-              label: "Category",
+              label: "Categories",
               children: [
                 {
                   key: "category",
@@ -130,14 +135,9 @@ const MainLayout = () => {
               ],
             },
             {
-              key: "orders",
-              icon: <FaClipboardList className="fs-4" />,
-              label: "Vendor",
-            },
-            {
               key: "",
               icon: <RiCouponLine className="fs-4" />,
-              label: "Venue",
+              label: "Venues",
               children: [
                 {
                   key: "venue",
@@ -151,38 +151,48 @@ const MainLayout = () => {
                 },
               ],
             },
-            // {
-            //   key: "blogs",
-            //   icon: <FaBloggerB className="fs-4" />,
-            //   label: "Map",
-            //   children: [
-            //     {
-            //       key: "blog",
-            //       icon: <ImBlog className="fs-4" />,
-            //       label: "Add Blog",
-            //     },
-            //     {
-            //       key: "blog-list",
-            //       icon: <FaBloggerB className="fs-4" />,
-            //       label: "Blog List",
-            //     },
-            //     {
-            //       key: "blog-category",
-            //       icon: <ImBlog className="fs-4" />,
-            //       label: "Add Blog Category",
-            //     },
-            //     {
-            //       key: "blog-category-list",
-            //       icon: <FaBloggerB className="fs-4" />,
-            //       label: "Blog Category List",
-            //     },
-            //   ],
-            // },
-            // {
-            //   key: "enquiries",
-            //   icon: <FaClipboardList className="fs-4" />,
-            //   label: "Enquiries",
-            // },
+            {
+              key: "",
+              icon: <FaBloggerB className="fs-4" />,
+              label: "Coaching",
+              // children: [
+              //   {
+              //     key: "blog",
+              //     icon: <ImBlog className="fs-4" />,
+              //     label: "Add Blog",
+              //   },
+              //   {
+              //     key: "blog-list",
+              //     icon: <FaBloggerB className="fs-4" />,
+              //     label: "Blog List",
+              //   },
+              //   {
+              //     key: "blog-category",
+              //     icon: <ImBlog className="fs-4" />,
+              //     label: "Add Blog Category",
+              //   },
+              //   {
+              //     key: "blog-category-list",
+              //     icon: <FaBloggerB className="fs-4" />,
+              //     label: "Blog Category List",
+              //   },
+              // ],
+            },
+            {
+              key: "enquiries",
+              icon: <FaChalkboard className="fs-4" />,
+              label: "Personal Training",
+            },
+            {
+              key: "orders",
+              icon: <FaCalendarAlt className="fs-4" />,
+              label: "Events",
+            },
+            {
+              key: "orders",
+              icon: <FaShoppingBag className="fs-4" />,
+              label: "Shop",
+            },
           ]}
         />
       </Sider>

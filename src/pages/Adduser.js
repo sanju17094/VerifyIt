@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 import { Container, Row, Col, Form } from "react-bootstrap";
-import '../../src/Adduser.css';
+// import '../../src/Adduser.css';
 import Swal from "sweetalert2";
 import {Link} from "react-router-dom"
 

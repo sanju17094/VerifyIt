@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import * as Yup from 'yup';
-import '../../src/UserLogin.css';
+//import '../../src/UserLogin.css';
 import { useNavigate } from 'react-router-dom';
 
 const UserLogin = () => {
@@ -73,6 +74,7 @@ const LoginForm = ({ setOtpSent }) => {
         <Field type="text" id="mobile" name="mobile" />
         <ErrorMessage name="mobile" component="div" className="error" />
         <button type="submit">Send OTP</button>
+        <p>If you are an admin, click <Link to="/Loginadmin">here</Link> to login as admin.</p>
       </Form>
     </Formik>
   );
@@ -117,6 +119,7 @@ const OtpForm = ({ setToken, navigate }) => {
   };
 
   return (
+    
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
@@ -129,6 +132,7 @@ const OtpForm = ({ setToken, navigate }) => {
         <button type="submit">Login</button>
       </Form>
     </Formik>
+    
   );
 };
 
