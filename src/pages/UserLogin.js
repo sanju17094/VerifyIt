@@ -4,13 +4,13 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import * as Yup from 'yup';
 import '../../src/UserLogin.css';
-// import { useHistory } from 'react-router-dom';
-
+import { useNavigate } from 'react-router-dom';
 
 const UserLogin = () => {
   const [otpSent, setOtpSent] = useState(false);
   const [token, setToken] = useState('');
-  console.log(token, "<<<<<<<<<<<<<<<<<<<,token")
+  const navigate = useNavigate();
+
   const handleLogout = () => {
     setToken('');
     localStorage.removeItem('token'); // Remove token from local storage
@@ -27,7 +27,7 @@ const UserLogin = () => {
       ) : !otpSent ? (
         <LoginForm setOtpSent={setOtpSent} />
       ) : (
-        <OtpForm setToken={setToken} />
+        <OtpForm setToken={setToken} navigate={navigate} />
       )}
     </div>
   );
@@ -62,7 +62,6 @@ const LoginForm = ({ setOtpSent }) => {
     }
   };
 
-
   return (
     <Formik
       initialValues={initialValues}
@@ -79,7 +78,7 @@ const LoginForm = ({ setOtpSent }) => {
   );
 };
 
-const OtpForm = ({ setToken }) => {
+const OtpForm = ({ setToken, navigate }) => {
   const initialValues = {
     otp: '',
   };
@@ -92,23 +91,22 @@ const OtpForm = ({ setToken }) => {
 
   const handleLogin = async (values) => {
     try {
-      const response = await axios.post('http://localhost:4000/api/v1/kheloindore/user/login/mobile/otp', {
-        otp: values.otp
-      }, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
+      const response = await axios.post(
+        'http://localhost:4000/api/v1/kheloindore/user/login/mobile/otp',
+        { otp: values.otp },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
         }
-      });
+      );
       if (response.data.success) {
         const authToken = response.data.KHELO_INDORE;
         const sanitizedToken = authToken ? authToken.replace(/["']/g, '') : '';
         setToken(sanitizedToken);
         localStorage.setItem('token', response.data.token);
         Swal.fire('Success!', 'Login successful!', 'success');
-        window.location.href = "/MainLayout";
-
-        // Redirect to the dashboard upon successful login
-        // history.push('/Dashboard');
+        navigate('/dashboard'); // Redirect to the dashboard or desired route
       } else {
         Swal.fire('Error!', 'Invalid OTP. Please try again.', 'error');
       }
@@ -117,7 +115,6 @@ const OtpForm = ({ setToken }) => {
       Swal.fire('Error!', 'Failed to verify OTP. Please try again.', 'error');
     }
   };
-
 
   return (
     <Formik

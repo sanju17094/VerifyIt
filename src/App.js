@@ -44,10 +44,10 @@ function App() {
 
     <Router>
       <Routes>
-        <Route path="/" element={<UserLogin />} >
-        <Route path="/" element={< MainLayout />} ></Route>
-        <Route path="/Loginadmin" element={<UserLogin />} />
-          <Route path="/" element={<Dashboard/>} />
+        <Route path="/" element={<UserLogin />} />
+        <Route path="/" element={<MainLayout />} >
+        {/* <Route path="/" element={<UserLogin />} /> */}
+          <Route path="/dashboard" element={<Dashboard/>} />
          
           
           {/* <Route path="/userprofile" element={ }>
