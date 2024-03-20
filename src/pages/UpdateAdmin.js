@@ -5,7 +5,6 @@ import Swal from "sweetalert2";
 import { Container, Row, Col, Form } from "react-bootstrap";
 import { useParams, useNavigate } from "react-router-dom";
 import "../../src/Adduser.css";
-import { faBullseye } from "@fortawesome/free-solid-svg-icons";
 
 const UpdateAdmin = () => {
   const { _id } = useParams();
@@ -71,6 +70,7 @@ const UpdateAdmin = () => {
   return (
     <>
       <h3>Update Admin</h3>
+      <form onSubmit={handleSubmit}>
       <Container className="adduser">
         <Row className="Form-row">
           <Col md={4}>
@@ -189,13 +189,14 @@ const UpdateAdmin = () => {
           <div className="ButtonsContainer">
             <button type="button" className="btn btn-yellow" onClick={handleSubmit}>
               Update
-            </button>{" "}
+            </button>
             <button type="button" className="btn btn-dark" onClick={handleCancel}>
               Cancel
             </button>
           </div>
         </Row>
       </Container>
+      </form>
     </>
   );
 };

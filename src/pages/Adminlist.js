@@ -52,9 +52,6 @@ function Adminlist() {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          first_name: data.first_name,
-          last_name: data.last_name,
-
         })
       });
 

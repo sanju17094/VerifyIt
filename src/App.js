@@ -24,7 +24,7 @@ import ViewOrder from "./pages/ViewOrder";
 import UserProfile from "./pages/UserProfile";
 import Category from "./pages/Category";
 import Venue from "./pages/Venue";
-import Loginuser from "./pages/Loginuser";
+import Loginadmin from "./pages/Loginadmin";
 import Signup from "./pages/Signup";
 import UpdateCategory from "./pages/UpdateCategory";
 import UpdateSubcategory from "./pages/UpdateSubcategory";
@@ -35,6 +35,8 @@ import Venuetable from "./pages/Venuetable";
 import Adminlist from "./pages/Adminlist";
 import Adduser from "./pages/Adduser";
 import UpdateAdmin from "./pages/UpdateAdmin";
+import Login from "./pages/Login";
+import UserLogin from "./pages/UserLogin";
 
 
 function App() {
@@ -42,13 +44,18 @@ function App() {
 
     <Router>
       <Routes>
-        <Route path="/" element={<MainLayout />} >
+        <Route path="/" element={<UserLogin />} >
+        <Route path="/" element={< MainLayout />} ></Route>
+        <Route path="/Loginadmin" element={<UserLogin />} />
           <Route path="/" element={<Dashboard/>} />
-          <Route path="/userprofile" element={<Loginuser/>}>
-          </Route>
+         
+          
+          {/* <Route path="/userprofile" element={ }>
+          </Route> */}
           <Route path="/userlist" element={<Userlist/>} />
           <Route path="/adminlist" element={<Adminlist/>} />
           <Route path="/adduser" element={<Adduser/>} />
+          
 
           <Route path="/category" element={<Category />} />
           <Route path="/Subcategory" element={<SubCategory />} />

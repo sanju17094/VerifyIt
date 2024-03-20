@@ -14,7 +14,7 @@ function Category() {
     status: true,
     images: ""
   });
-console.log(input,"<input")
+  console.log(input, "<input")
 
   const handleInputChange = (event) => {
     if (event && event.target) {
@@ -30,7 +30,7 @@ console.log(input,"<input")
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (input.category_name.trim() === '') {
+    if (input.category_name.trim() === '' && input.images.length === 0){
       Swal.fire({
         title: "Validation Error!",
         text: "Category cannot be empty",
@@ -44,7 +44,7 @@ console.log(input,"<input")
         for (let i = 0; i < input.images.length; i++) {
           formData.append('images', input.images[i]);
         }
-  
+
         const response = await axios.post(
           "http://localhost:4000/api/v1/kheloindore/category/create",
           formData,
@@ -84,59 +84,59 @@ console.log(input,"<input")
 
   return (
     <>
-    <h3>Add Category</h3>
-    <div className="form">
-      <div className="mb-3">
-        <h7>Add Category Name</h7>
-        <span className="StarSymbol">*</span>
-        <Form.Control
-          type="text"
-          id="text"
-          name="category_name"
-          aria-describedby="passwordHelpBlock"
-          className="form-control-sm"
-          value={input.category_name}
-          onChange={handleInputChange}
-        />
-        <br></br>
-        <Form.Group controlId="formPhotos">
-          <h7>Upload Photos</h7>
+      <h3>Add Category</h3>
+      <div className="form">
+        <div className="mb-3">
+          <h7>Add Category Name</h7>
           <span className="StarSymbol">*</span>
           <Form.Control
-            type="file"
-            multiple
-            name="photos"
-            values={input.images}
-            onChange={handlePhotoChange}
-            style={{ width: '67%' }}
-            
-          />
-        </Form.Group>
-      </div>
-
-
-      <Form.Group controlId="formCheckbox">
-        <div className="checkbox-container">
-          <Form.Check
-            type="checkbox"
-            id="statusCheckbox"
-            name="status"
-            aria-label="option 1"
-            className="checkbox-input"
-            checked={input.status}
+            type="text"
+            id="text"
+            name="category_name"
+            aria-describedby="passwordHelpBlock"
+            className="form-control-sm"
+            value={input.category_name}
             onChange={handleInputChange}
           />
-        </div>
-        <Form.Label className="checkbox-label">Status</Form.Label>
-      </Form.Group>
+          <br></br>
+          <Form.Group controlId="formPhotos">
+            <h7>Upload Photos</h7>
+            <span className="StarSymbol">*</span>
+            <Form.Control
+              type="file"
+              multiple
+              name="photos"
+              values={input.images}
+              onChange={handlePhotoChange}
+              style={{ width: '67%' }}
 
-      <div className="mb-3">
-        <form>
-          <button className="btn1" type="submit" onClick={handleSubmit}>Submit</button>
-          <Link to="/Categorylist"><button className="btn2" >Cancel</button></Link>
-        </form>
+            />
+          </Form.Group>
+        </div>
+
+
+        <Form.Group controlId="formCheckbox">
+          <div className="checkbox-container">
+            <Form.Check
+              type="checkbox"
+              id="statusCheckbox"
+              name="status"
+              aria-label="option 1"
+              className="checkbox-input"
+              checked={input.status}
+              onChange={handleInputChange}
+            />
+          </div>
+          <Form.Label className="checkbox-label">Status</Form.Label>
+        </Form.Group>
+
+        <div className="mb-3">
+          <form>
+            <button className="btn1" type="submit" onClick={handleSubmit}>Submit</button>
+            <Link to="/Categorylist"><button className="btn2" >Cancel</button></Link>
+          </form>
+        </div>
       </div>
-    </div>
     </>
   );
 }

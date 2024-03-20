@@ -61,7 +61,7 @@ const MainLayout = () => {
             {
               key: "",
               icon: <RiUserLine className="fs-4" />,
-              label: "Add Admin",
+              label: "Admin's",
               children: [
                 {
                   key: "adduser",
@@ -241,9 +241,9 @@ const MainLayout = () => {
                   <Link
                     className="dropdown-item py-1 mb-1"
                     style={{ height: "auto", lineHeight: "20px" }}
-                    to="/"
+                    to="/Loginadmin"
                   >
-                    Signout
+                    Login
                   </Link>
                 </li>
               </div>

@@ -10,15 +10,16 @@ import { MultiSelect } from 'primereact/multiselect';
 const VenueBooking = () => {
   const [formData, setFormData] = useState({
     name: "",
-    email: "",
-    phone: "",
     address: "",
     state: "",
     zipCode: "",
-    country: "",
-    images:"",
-    Category: [], // Changed to an array for multiple selection
-    SubCategory: [], // Changed to an array for multiple selection
+    city: "",
+    images: "",
+    Category: [],
+    SubCategory: [],
+    amenities: "",
+    venuerules: "",
+
   });
   console.log(formData, "dfgdgfdf")
   useEffect(() => {
@@ -60,8 +61,8 @@ const VenueBooking = () => {
       ...formData,
       [name]: value,
     });
-  
-    
+
+
 
     // Update Category field
     if (name === "category") {
@@ -99,7 +100,7 @@ const VenueBooking = () => {
       phone: "Phone Number",
       address: "Address",
       state: "State",
-      country: "Country",
+      city: "city",
       zipCode: "Zipcode",
       Category: "Category",
       SubCategory: "SubCategory",
@@ -119,7 +120,7 @@ const VenueBooking = () => {
       const response = await axios.post(
         "http://localhost:4000/api/v1/kheloindore/venue/addVenue",
         formData)
-       
+
       console.log(response, "<,,,,,,,,,,responce");
       console.log(formData, "<formData")
       Swal.fire({
@@ -153,78 +154,99 @@ const VenueBooking = () => {
             <Form onSubmit={handleSubmit}>
               <Form.Group controlId="formName">
                 <Form.Label className="heading">
-                  Venue Name
+                  Title
                   <span className="StarSymbol">*</span>
                 </Form.Label>
                 <Form.Control
                   type="text"
-                  placeholder="Enter Venue Name"
+                  placeholder="Enter Title"
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
                 />
               </Form.Group>
 
+
+
               <Form.Group controlId="formAddress">
                 <Form.Label className="heading">
-                  Address
+                  City
                   <span className="StarSymbol">*</span>
                 </Form.Label>
                 <Form.Control
                   type="text"
-                  placeholder="Enter address"
-                  name="address"
-                  value={formData.address}
+                  placeholder="Enter city"
+                  name="city"
+                  value={formData.city}
                   onChange={handleChange}
                 />
               </Form.Group>
 
-              <Form.Group controlId="formAddress">
+              <Form.Group controlId="formName">
                 <Form.Label className="heading">
-                  Country
+                  Amenities
                   <span className="StarSymbol">*</span>
                 </Form.Label>
                 <Form.Control
                   type="text"
-                  placeholder="Enter Country"
-                  name="country"
-                  value={formData.country}
+                  placeholder="Enter Amenities"
+                  name="amenities"
+                  value={formData.amenities}
                   onChange={handleChange}
                 />
               </Form.Group>
 
-              <Form.Group controlId="formPhotos">
+              <Form.Group controlId="formName">
                 <Form.Label className="heading">
-                  Upload Photos
+                  Venue Rules
                   <span className="StarSymbol">*</span>
                 </Form.Label>
                 <Form.Control
-                  type="file"
-                  multiple // This attribute allows selecting multiple files
-                  name="photos"
-                  onChange={handlePhotoChange}
+                  type="text"
+                  placeholder="Enter Venue Rules"
+                  name="venuerules"
+                  value={formData.venuerules}
+                  onChange={handleChange}
                 />
               </Form.Group>
+
+
+              <Form.Group controlId="formCategory">
+                <Form.Label className="heading">
+                  Category <span className="StarSymbol">*</span>
+                </Form.Label>
+                <MultiSelect
+                  name="category"
+                  value={formData.category}
+                  options={categories.map((category) => ({
+                    label: category.category_name,
+                    value: category._id,
+                  }))}
+                  onChange={(e) => setFormData({ ...formData, category: e.value })}
+                  placeholder="Select categories"
+                  className="multiselect-input" // Add a class for styling if needed
+                />
+              </Form.Group>
+
+
             </Form>
           </Col>
           <Col md={4}>
             {/* Second column content can go here */}
 
-            <Form.Group controlId="formName">
+            <Form.Group controlId="formAddress">
               <Form.Label className="heading">
-                Email Address
+                Location
                 <span className="StarSymbol">*</span>
               </Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Enter Email "
-                name="email"
-                value={formData.email}
+                placeholder="Enter address"
+                name="address"
+                value={formData.address}
                 onChange={handleChange}
               />
             </Form.Group>
-
-            
 
 
             <Form.Group controlId="formLocation">
@@ -237,60 +259,6 @@ const VenueBooking = () => {
                 placeholder="Enter Zipcode"
                 name="zipCode"
                 value={formData.zipCode}
-                onChange={handleChange}
-              />
-            </Form.Group>
-
-
-            <Form.Group controlId="formCategory">
-              <Form.Label className="heading">
-                Category <span className="StarSymbol">*</span>
-              </Form.Label>
-              <MultiSelect
-                name="category"
-                value={formData.category}
-                options={categories.map((category) => ({
-                  label: category.category_name,
-                  value: category._id,
-                }))}
-                onChange={(e) => setFormData({ ...formData, category: e.value })}
-                placeholder="Select categories"
-                className="multiselect-input" // Add a class for styling if needed
-              />
-            </Form.Group>
-
-
-
-            
-
-          </Col>
-          <Col md={4}>
-            {/* Third column content can go here */}
-
-            <Form.Group controlId="formLocation">
-              <Form.Label className="heading">
-                Phone Number
-                <span className="StarSymbol">*</span>
-              </Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter Phone Number"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-              />
-            </Form.Group>
-
-            <Form.Group controlId="formAddress">
-              <Form.Label className="heading">
-                State
-                <span className="StarSymbol">*</span>
-              </Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter State"
-                name="state"
-                value={formData.state}
                 onChange={handleChange}
               />
             </Form.Group>
@@ -311,6 +279,38 @@ const VenueBooking = () => {
                 className="multiselect-input" // Add a class for styling if needed
               />
             </Form.Group>
+          </Col>
+          <Col md={4}>
+            {/* Third column content can go here */}
+            <Form.Group controlId="formAddress">
+              <Form.Label className="heading">
+                State
+                <span className="StarSymbol">*</span>
+              </Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter State"
+                name="state"
+                value={formData.state}
+                onChange={handleChange}
+              />
+            </Form.Group>
+
+
+            <Form.Group controlId="formPhotos">
+              <Form.Label className="heading">
+                Upload Photos
+                <span className="StarSymbol">*</span>
+              </Form.Label>
+              <Form.Control
+                type="file"
+                multiple // This attribute allows selecting multiple files
+                name="photos"
+                onChange={handlePhotoChange}
+              />
+            </Form.Group>
+
+
 
           </Col>
         </Row>
