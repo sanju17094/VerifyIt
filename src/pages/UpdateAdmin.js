@@ -43,7 +43,7 @@ const UpdateAdmin = () => {
     }
   
     try {
-      const response = await axios.put(`http://localhost:4000/api/v1/kheloindore/admin/update/${_id}`);
+      const response = await axios.put(`http://localhost:4000/api/v1/kheloindore/super-admin/update-user/${_id}`);
       console.log(response.data);
       Swal.fire({
         title: 'Updated!',

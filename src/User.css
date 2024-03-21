@@ -3,13 +3,33 @@
   margin-bottom: 20px;
   padding: 20px;
   border-radius: 8px;
-  /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
-  background-color: #f8f9fa;
+  font-weight: bold;
   width: 100%;
+  box-shadow:none!important;
+  background-color:#fff;
+  border:none;
 }
+#h3{
+  font-size: 28px;
+}
+mb-4 {
+  margin-bottom: 1.5rem !important;
+} 
 
 .form-group {
   margin-bottom: 15px;
+ 
+}
+.custom-dropdown {
+  position: relative;
+}
+
+.custom-dropdown .dropdown-arrow {
+  position: absolute;
+  top: 50%;
+  right: 10px; /* Adjust as needed */
+  transform: translateY(-50%);
+  pointer-events: none;
 }
 
 .form-control {
@@ -25,7 +45,7 @@
 }
 
 .submit-button {
-  background-color: #ffb700;
+  background-color: #ff5f15;
   color: #fff;
   border: none;
   padding: 10px 20px;
@@ -34,6 +54,9 @@
   transition: background-color 0.3s ease-in-out;
   font-weight: bold;
   margin-right: 1%;
+}
+.cancel-button{
+  background-color: #303030;
 }
 
 .submit-button:hover {

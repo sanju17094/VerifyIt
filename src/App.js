@@ -37,6 +37,12 @@ import Adduser from "./pages/Adduser";
 import UpdateAdmin from "./pages/UpdateAdmin";
 import Login from "./pages/Login";
 import UserLogin from "./pages/UserLogin";
+import Protected from "./components/Protected";
+import ChoachingList from "./pages/ChoachingList";
+import PersonalTrainingList from "./pages/PersonalTrainingList";
+import EventList from "./pages/EventList";
+import Shoplist from "./pages/Shoplist";
+import User from "./pages/User";
 
 
 function App() {
@@ -48,7 +54,6 @@ function App() {
         <Route path="/" element={<MainLayout />} >
         {/* <Route path="/" element={<UserLogin />} /> */}
           <Route path="/dashboard" element={<Dashboard/>} />
-          
          
           
           {/* <Route path="/userprofile" element={ }>
@@ -56,6 +61,15 @@ function App() {
           <Route path="/userlist" element={<Userlist/>} />
           <Route path="/adminlist" element={<Adminlist/>} />
           <Route path="/adduser" element={<Adduser/>} />
+          <Route path="/coaching" element={<ChoachingList/>} />
+          <Route path="/personaltraining" element={<PersonalTrainingList/>} />
+          <Route path="/events" element={<EventList/>} />
+          <Route path="/shop" element={<Shoplist/>} />
+          <Route path="/user" element={<User/>} />
+
+
+         
+          
           
 
           <Route path="/category" element={<Category />} />

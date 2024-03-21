@@ -1,9 +1,6 @@
 .form {
   width: 500px; /* Adjust width as needed */
-  padding: 20px;
-  background-color: #f4f4f4;
-  border-radius: 8px;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2); 
+  background-color: white;
   margin-top: 3%;
 }
 
@@ -25,8 +22,6 @@ h7{
   width: 67%;
   padding: 8px;
   font-size: 16px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
 }
 
 .btn1, .btn2 {
@@ -40,7 +35,7 @@ h7{
 }
 
 .btn1 {
-  background-color: #ffb700;
+  background-color: rgb(255, 95, 21);
   color: #fff;
 }
 
@@ -75,3 +70,18 @@ h7{
   margin-top: 17px;
 }
 
+/* Add these styles to your Category.css file */
+
+.dropzone {
+  position: relative;
+}
+
+.dropzone .preview-image {
+  width: 50px; /* Adjust the width as needed */
+  height: 50px; /* Adjust the height as needed */
+  margin-right: 10px; /* Optional: Add margin between images */
+}
+
+.dropzone-text {
+  cursor: pointer;
+}

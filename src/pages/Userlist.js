@@ -44,8 +44,54 @@ function Userlist() {
     }
   };
 
-  
-  
+  const handleEdit = async (row) => {
+    console.log('Edit clicked for row:', row);
+    try {
+      const response = await fetch(`http://localhost:4000/api/v1/kheloindore/category/update/${row._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          category_name: data.category_name
+        })
+      });
+
+      if (response.ok) {
+        console.log('Category name updated successfully');
+      } else {
+        const responseData = await response.json();
+        console.error('Failed to update category name:', responseData.message || 'Unknown error');
+      }
+    } catch (error) {
+      console.error('Error updating category name:', error);
+    }
+  };
+
+  const handleDelete = async (row) => {
+    try {
+      const apiUrl = `http://localhost:4000/api/v1/kheloindore/category/delete/${row._id}`;
+
+      const response = await fetch(apiUrl, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+        // Update your state or refetch data to reflect the deletion
+        fetchData();
+      } else {
+        console.error('Failed to delete category:', response.statusText);
+        Swal.fire('Error', 'Failed to delete category.', 'error');
+      }
+    } catch (error) {
+      console.error('Error deleting category:', error);
+      Swal.fire('Error', 'An error occurred while deleting the category.', 'error');
+    }
+  };
 
   const handleSearch = () => {
     const filteredData = data.filter((row) =>
@@ -63,26 +109,48 @@ function Userlist() {
 
   const columns = [
     {
-      name: 'S.No.',
+      name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>S.No.</span>,
       selector: (_, index) => index + 1 + (currentPage - 1) * itemsPerPage,
+      width: '10%',
     },
     {
-      name: 'First Name',
+      name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>First Name</span>,
       selector: (row) => row.first_name,
+      width: '30%',
     },
     {
-      name: 'Last Name',
+      name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Last Name</span>,
       selector: (row) => row.last_name,
+      width: '30%',
     },
     {
-      name: 'Status',
+      name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}> Status </span>,
       selector: (row) => row.status ? 'Active' : 'Inactive',
+      width: '20%',
+    },
+    {
+      name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Action</span>,
+      width: '10%',
+      editable: true,
+      cell: (row) => (
+        <div style={{ display: 'flex' }}>
+          <Link to={`/UpdateCategor/${row._id}`} style={{ marginLeft: '1%' }}>
+            <EditOutlined style={{ fontSize: '20px', color: '#fcfcfa', borderRadius: '5px', padding: '5px', backgroundColor: '#ff5f15' }} onClick={() => handleEdit(row)} />
+          </Link>
+          <DeleteOutlined style={{ fontSize: '20px', color: '#E7F3FF', borderRadius: '5px', padding: '5px', backgroundColor: '#3d9c06', marginLeft: '5px' }} onClick={() => handleDelete(row)} />
+        </div>
+      ),
     },
   ];
 
 
   return (
     <>
+     <Row className="justify-content-end align-items-left">
+     <Link to="/User"><button className="add-button mr-2">Add User</button>
+     </Link>
+     </Row>
+    <h3 class="mb-4 title">Users</h3>
       <div className="cnt">
         <DataTable
           className="dataTable"
@@ -99,8 +167,6 @@ function Userlist() {
           subHeader
           subHeaderComponent={(
             <Row className="justify-content-end align-items-center">
-            <Link to="/"><button className="add-button mr-2">Add User</button>
-              </Link>
               <Col xs={12} sm={6}>
                 <Form.Control
                   type="text"

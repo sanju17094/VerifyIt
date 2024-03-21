@@ -76,40 +76,40 @@ function VenueList() {
 
   const columns = [
     {
-      name: 'S.No.',
+      name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>S.No.</span>,
       selector: (_, index) => index + 1 + (currentPage - 1) * itemsPerPage,
     },
     {
-      name: 'Venue Name',
+      name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Venue Name</span>,
       selector: (row) => row.name,
     },
     {
-      name: 'Category',
+      name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Category</span>,
       selector: (row) => row.category_name,
     },
     {
-      name: 'Sub Category',
+      name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Sub Category</span>,
       selector: (row) => row.sub_category,
     },
     {
-      name: 'Action',
+      name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Action</span>,
+      width: '10%',
       cell: (row) => (
-        <Space size="middle">
-          <Link to={`/UpdateVenue/${row._id}`}>
-            <Button type="link">
-              <EditOutlined />
-            </Button>
+        <div style={{ display: 'flex' }}>
+          <Link to={`/UpdateVenue/${row._id}`}  style={{ marginLeft: '1%' }}>
+            <EditOutlined style={{ fontSize: '20px', color: '#fcfcfa', borderRadius: '5px', padding: '5px', backgroundColor: '#ff5f15' }}  />
           </Link>
-          <Button type="link" onClick={() => handleDelete(row)}>
-            <DeleteOutlined />
-          </Button>
-        </Space>
+          <DeleteOutlined style={{ fontSize: '20px', color: '#E7F3FF', borderRadius: '5px', padding: '5px', backgroundColor: '#3d9c06', marginLeft: '5px' }} onClick={() => handleDelete(row)} />
+          </div>
       ),
     },
   ];
 
   return (
     <>
+    <Link to="/Venue"><button className="add-button mr-2">Add Venue</button>
+    </Link>
+    <h3 class="mb-4 title">Venues</h3>
       <div className="cnt">
         <DataTable
           columns={columns}
@@ -125,8 +125,6 @@ function VenueList() {
           subHeader
           subHeaderComponent={(
             <Row className="justify-content-end align-items-center">
-            <Link to="/Venue"><button className="add-button mr-2">Add Venue</button>
-              </Link>
               <Col xs={12} sm={6}>
                 <Form.Control
                   type="text"

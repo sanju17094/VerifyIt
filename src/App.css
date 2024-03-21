@@ -1,6 +1,6 @@
 :root {
   --color-212529: #212529;
-  --color-ffd333: #ffd333;
+  --color-ffd333: #ff5f15;
   --color-47ad24: #47ad24;
   --color-e52e2e: #e52e2e;
   --color-828599: #828599;
@@ -19,7 +19,7 @@
   font-family: Roboto !important;
 }
 .quill {
-  background-color: rgb(233, 177, 10);
+  background-color:rgb(255, 95, 21);
 }
 
 .form-control {

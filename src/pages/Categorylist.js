@@ -107,33 +107,35 @@ function Categorylist() {
 
   const columns = [
     {
-      name: 'S.No.',
+      name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>S.No.</span>,
       selector: (_, index) => index + 1 + (currentPage - 1) * itemsPerPage,
-      className: 'font1'
+      editable: true,
+      width: '10%',
+
     },
     {
-      name: 'Name',
+      name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Name</span>,
       selector: (row) => row.category_name,
-      className: 'font2'
+      editable: true,
+      width: '60%',
     },
     {
-      name: 'Status',
+      name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Status</span>,
       selector: (row) => row.status ? 'Active' : 'Inactive',
-      className: 'font3'
+      editable: true,
+      width: '20%',
     },
     {
-      name: 'Action',
+      name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Action</span>,
+      width: '10%',
+      editable: true,
       cell: (row) => (
-        <Space size="middle">
-          <Link to={`/UpdateCategory/${row._id}`}>
-            <Button type="link" onClick={() => handleEdit(row)}>
-            <EditOutlined style={{ fontSize: '20px', color: '#fcfcfa', borderRadius: '5px', padding: '5px', backgroundColor: '#fee43d' }} />
-            </Button>
+        <div style={{ display: 'flex' }}>
+          <Link to={`/UpdateCategory/${row._id}`} style={{ marginLeft: '1%' }}>
+            <EditOutlined style={{ fontSize: '20px', color: '#fcfcfa', borderRadius: '5px', padding: '5px', backgroundColor: '#ff5f15' }} onClick={() => handleEdit(row)} />
           </Link>
-          <Button type="link" onClick={() => handleDelete(row)}>
-            <DeleteOutlined style={{ fontSize: '20px', color: '#E7F3FF', borderRadius: '5px', padding: '5px', backgroundColor: '#3d9c06' }} />
-          </Button>
-        </Space>
+          <DeleteOutlined style={{ fontSize: '20px', color: '#E7F3FF', borderRadius: '5px', padding: '5px', backgroundColor: '#3d9c06', marginLeft: '5px' }} onClick={() => handleDelete(row)} />
+        </div>
       ),
     },
   ];
@@ -141,8 +143,11 @@ function Categorylist() {
 
   return (
     <>
+    <Link to="/Category"><button className="add-button mr-2">Add Category</button>
+    </Link>
+    <h3 class="mb-4 title">Categories</h3>
       <div className="cnt">
-        <DataTable
+        <DataTable 
           className="dataTable"
           columns={columns}
           data={data}
@@ -157,8 +162,6 @@ function Categorylist() {
           subHeader
           subHeaderComponent={(
             <Row className="justify-content-end align-items-center">
-              <Link to="/Category"><button className="add-button mr-2">Add Category</button>
-              </Link>
               <Col xs={12} sm={6}>
                 <Form.Control
                   type="text"

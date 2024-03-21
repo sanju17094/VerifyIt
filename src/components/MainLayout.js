@@ -9,7 +9,7 @@ import {
 import { RiCouponLine } from "react-icons/ri";
 import { RiUserLine } from 'react-icons/ri';
 import { RiLoginCircleLine } from 'react-icons/ri';
-import { FaChalkboard} from 'react-icons/fa';
+import { FaChalkboard } from 'react-icons/fa';
 import { FaShoppingBag } from 'react-icons/fa';
 import { RiUserSearchLine } from 'react-icons/ri';
 import { FaCalendarAlt } from 'react-icons/fa';
@@ -42,7 +42,9 @@ const MainLayout = () => {
         <div className="sidelogo">
           <h2 className="text-white fs-5 text-center py-3 mb-0">
             <span className="sm-logo">KI</span>
+            <img src={logoImage} alt="Khelo Indore Logo" className="lg-logo" />
             <span className="lg-logo">Khelo Indore</span>
+                
           </h2>
         </div>
         <Menu
@@ -80,79 +82,79 @@ const MainLayout = () => {
             },
 
             {
-              key: "",
+              key: "adminlist",
               icon: <RiUserLine className="fs-4" />,
-              label: "Admins",
-              children: [
-                {
-                  key: "adduser",
-                  icon: <RiLoginCircleLine className="fs-4" />,
-                  label: "Add",
-                },
-                {
-                  key: "adminlist",
-                  icon: <RiAdminLine className="fs-4" />,
-                  label: "Admin List",
-                },
-              ],
+              label: "Admin",
+              // children: [
+              //   {
+              //     key: "adduser",
+              //     icon: <RiLoginCircleLine className="fs-4" />,
+              //     label: "Add",
+              //   },
+              //   {
+              //     key: "adminlist",
+              //     icon: <RiAdminLine className="fs-4" />,
+              //     label: "Admin List",
+              //   },
+              // ],
             },
-           
+
             {
-              key: "",
+              key: "categorylist",
               icon: <BiCategoryAlt className="fs-4" />,
               label: "Categories",
-              children: [
-                {
-                  key: "category",
-                  icon: <AiOutlineShoppingCart className="fs-4" />,
-                  label: "Add Category",
-                },
-                {
-                  key: "Subcategory",
-                  icon: <AiOutlineShoppingCart className="fs-4" />,
-                  label: "Add Subcategory",
-                },
+              // children: [
+              //   {
+              //     key: "category",
+              //     icon: <AiOutlineShoppingCart className="fs-4" />,
+              //     label: "Add Category",
+              //   },
+                // {
+                //   key: "Subcategory",
+                //   icon: <AiOutlineShoppingCart className="fs-4" />,
+                //   label: "Add Subcategory",
+                // },
                 // {
                 //   key: "category",
                 //   icon: <BiCategoryAlt className="fs-4" />,
                 //   label: "Category",
                 // },
-                {
-                  key: "categorylist",
-                  icon: <BiCategoryAlt className="fs-4" />,
-                  label: "Category List",
-                },
-                {
-                  key: "subcategorylist",
-                  icon: <BiCategoryAlt className="fs-4" />,
-                  label: "Subcategory List",
-                },
+                // {
+                //   key: "categorylist",
+                //   icon: <BiCategoryAlt className="fs-4" />,
+                //   label: "Category List",
+                // },
+                // {
+                //   key: "subcategorylist",
+                //   icon: <BiCategoryAlt className="fs-4" />,
+                //   label: "Subcategory List",
+                // },
                 // {
                 //   key: "list-color",
                 //   icon: <AiOutlineBgColors className="fs-4" />,
                 //   label: "Color List",
                 // },
-              ],
+              //],
             },
             {
-              key: "",
+              key: "venuelist",
               icon: <RiCouponLine className="fs-4" />,
               label: "Venues",
-              children: [
-                {
-                  key: "venue",
-                  icon: <ImBlog className="fs-4" />,
-                  label: "Add Venue",
-                },
-                {
-                  key: "venuelist",
-                  icon: <RiCouponLine className="fs-4" />,
-                  label: "Venue List",
-                },
-              ],
+              // children: [
+              //   {
+              //     key: "venue",
+              //     icon: <ImBlog className="fs-4" />,
+              //     label: "Add Venue",
+              //   },
+              //   {
+              //     key: "venuelist",
+              //     icon: <RiCouponLine className="fs-4" />,
+              //     label: "Venue List",
+              //   },
+              // ],
             },
             {
-              key: "",
+              key: "coaching",
               icon: <FaBloggerB className="fs-4" />,
               label: "Coaching",
               // children: [
@@ -179,17 +181,17 @@ const MainLayout = () => {
               // ],
             },
             {
-              key: "enquiries",
+              key: "personaltraining",
               icon: <FaChalkboard className="fs-4" />,
               label: "Personal Training",
             },
             {
-              key: "orders",
+              key: "events",
               icon: <FaCalendarAlt className="fs-4" />,
               label: "Events",
             },
             {
-              key: "orders",
+              key: "shop",
               icon: <FaShoppingBag className="fs-4" />,
               label: "Shop",
             },
@@ -225,7 +227,7 @@ const MainLayout = () => {
 
             <div className="d-flex gap-3 align-items-center dropdown">
               <div>
-              <img src={logoImage} alt="Khelo Indore Logo" className="lg-logo" />
+                <img src={logoImage} alt="Khelo Indore Logo" className="lg-logo" />
               </div>
               <div
                 role="button"

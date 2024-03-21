@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 import { Container, Row, Col, Form } from "react-bootstrap";
-// import '../../src/Adduser.css';
+import '../../src/Adduser.css';
 import Swal from "sweetalert2";
 import {Link} from "react-router-dom"
 
@@ -97,7 +97,6 @@ const AdminCreate = () => {
 
   return (
     <>
-    <h3>Admin Create</h3>
     <Container className="adduser" style={{ marginTop: '20px' }}>
       <Row className="Form-row" style={{ marginBottom: '20px' }}>
         <Col md={4}>
@@ -227,7 +226,7 @@ const AdminCreate = () => {
 
       <Row>
         <div className="ButtonsContainer">
-          <button type="button" className="btn btn-yellow" onClick={handleSubmit}>
+          <button type="button" className="btn btn-yellow mx-2" onClick={handleSubmit}>
             Submit
           </button>
           <Link to="/Adminlist">

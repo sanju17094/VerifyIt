@@ -111,42 +111,39 @@ function Adminlist() {
 
   const columns = [
     {
-      name: 'S.No.',
+      name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>S.No.</span>,
       selector: (_, index) => index + 1 + (currentPage - 1) * itemsPerPage,
     },
     {
-      name: 'First Name',
+      name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>First Name</span>,
       selector: (row) => row.first_name,
     },
     {
-      name: 'Last Name',
+      name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Last Name</span>,
       selector: (row) => row.last_name,
     },
     {
-        name: 'Email Address',
+        name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Email Address</span>,
         selector: (row) => row.email,
       },
       {
-        name: 'Role',
+        name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Role</span>,
         selector: (row) => row.role,
       },
     {
-      name: 'Status',
+      name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Status</span>,
       selector: (row) => row.status ? 'Active' : 'Inactive',
     },
     {
-      name: 'Action',
+      name:  <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Action</span>,
+      width: '10%',
       cell: (row) => (
-        <Space size="middle">
-          <Link to={`/UpdateAdmin/${row._id}`}>
-            <Button type="link" onClick={() => handleEdit(row)}>
-              <EditOutlined />
-            </Button>
+        <div style={{ display: 'flex' }}>
+          <Link to={`/UpdateAdmin/${row._id}`} style={{ marginLeft: '1%' }}>
+            <EditOutlined style={{ fontSize: '20px', color: '#fcfcfa', borderRadius: '5px', padding: '5px', backgroundColor: '#ff5f15' }} onClick={() => handleEdit(row)} />
           </Link>
-          <Button type="link" onClick={() => handleDelete(row)}>
-            <DeleteOutlined />
-          </Button>
-        </Space>
+          <DeleteOutlined style={{ fontSize: '20px', color: '#E7F3FF', borderRadius: '5px', padding: '5px', backgroundColor: '#3d9c06', marginLeft: '5px' }} onClick={() => handleDelete(row)} />
+        </div>
       ),
     },
   ];
@@ -154,6 +151,9 @@ function Adminlist() {
 
   return (
     <>
+    <Link to="/Adduser"><button className="add-button mr-2">Add Admin</button>
+    </Link>
+    <h3 class="mb-4 title">Admin</h3>
       <div className="cnt">
         <DataTable
           className="dataTable"
@@ -170,8 +170,6 @@ function Adminlist() {
           subHeader
           subHeaderComponent={(
             <Row className="justify-content-end align-items-center">
-            <Link to="/Adduser"><button className="add-button mr-2">Add Admin</button>
-              </Link>
               <Col xs={12} sm={6}>
                 <Form.Control
                   type="text"

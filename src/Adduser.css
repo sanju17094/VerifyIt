@@ -1,10 +1,9 @@
 .adduser {
   margin-top: 20px;
-  border: 1px solid #ccc; /* Change border color for better visibility */
   width: 100%;
   padding: 20px; /* Add padding for better spacing */
-  background-color: #f9f9f9; /* Add background color for contrast */
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2); /* Box shadow */
+  background-color: white; /* Add background color for contrast */
+  box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.2); /* Box shadow */
 }
 
 .FormLabel {
@@ -17,8 +16,8 @@
 }
 
 .ButtonsContainer {
-  margin-top: 20px;
-  text-align: right;
+  margin-top: 1%;
+  text-align: left;
 }
 
 .FormControl {
@@ -37,13 +36,13 @@
 }
 
 .btn-yellow {
-  background-color: rgb(255, 214, 66);
+  background-color: rgb(255, 95, 21);
   color: white;
-  margin-right: 1%;
+  margin-left: 1%;
 }
 
 .btn-yellow:hover {
-  background-color: rgb(249, 188, 34);
+  background-color: rgb(255, 95, 21);
 }
 
 .FormFieldRow {
