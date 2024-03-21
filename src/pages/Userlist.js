@@ -146,11 +146,9 @@ function Userlist() {
 
   return (
     <>
-     <Row className="justify-content-end align-items-left">
-     <Link to="/User"><button className="add-button mr-2">Add User</button>
+     <h3 class="mb-4 title">Users</h3>
+     <Link to="/User"><button className="add-button mb-6">Add User</button>
      </Link>
-     </Row>
-    <h3 class="mb-4 title">Users</h3>
       <div className="cnt">
         <DataTable
           className="dataTable"

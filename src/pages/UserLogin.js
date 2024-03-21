@@ -4,8 +4,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import * as Yup from 'yup';
-//import '../../src/Login.css';
-
+import '../../src/UserLogin.css';
 import { useNavigate } from 'react-router-dom';
 
 const UserLogin = () => {
@@ -19,6 +18,7 @@ const UserLogin = () => {
   };
 
   return (
+    <div className='use'>
     <div className="box">
       <h1>User Login</h1>
       {token ? (
@@ -31,6 +31,7 @@ const UserLogin = () => {
       ) : (
         <OtpForm setToken={setToken} navigate={navigate} />
       )}
+    </div>
     </div>
   );
 };

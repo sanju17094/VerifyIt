@@ -10,12 +10,7 @@
     
   }
 
-  /* .cnt{
-    padding: 12px 24px;
- 
-  }  */
-
-  .add-button{
+  .add-button {
     background-color: rgb(255, 95, 21);
     color: white; 
     border: none;
@@ -24,8 +19,10 @@
     cursor: pointer;
     transition: background-color 0.3s ease; 
     font-weight: bold;
-    margin-left: 90%;
-  }
+    width: 180px; 
+    margin-left: 85%;
+    margin-bottom:2%;
+}
 
 
   

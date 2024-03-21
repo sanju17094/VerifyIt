@@ -1,4 +1,4 @@
-use .box {
+.box {
     width: 400px;
     margin: 50px auto;
     padding: 20px;
@@ -18,24 +18,24 @@ use .box {
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);  
   } */
 
-  .use  h1 {
+  h1 {
     font-size: 24px;
     margin-bottom: 20px;
   }
   
-  .use .form-group {
+  .form-group {
     margin-bottom: 20px;
   }
   
-  .use label {
+  label {
     display: block;
     font-weight: bold;
     margin-bottom: 5px;
   }
   
-  .use input[type="text"],
-  .use input[type="password"],
-  .use button {
+  input[type="text"],
+  input[type="password"],
+  button {
     width: calc(100% - 22px); 
     padding: 10px;
     border: 1px solid #ccc;
@@ -43,12 +43,12 @@ use .box {
     box-sizing: border-box;
   }
   
-  .use .error {
+  .error {
     color: red;
     margin-top: 5px;
   }
   
-  .use button {
+  button {
     background-color: #ffd333;
     color: #fff;
     cursor: pointer;
@@ -57,7 +57,7 @@ use .box {
     margin-top: 3%;
   }
   
-  .use  button:hover {
+  button:hover {
     background-color: #ffd333;
   }
   
