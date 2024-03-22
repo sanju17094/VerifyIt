@@ -1,63 +1,60 @@
-use .box {
-    width: 400px;
-    margin: 50px auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-    border: none;
-  }
-  
-  /* .box1 {
-    width: 400px;
-    margin: 50px auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);  
-  } */
+.use {
+    position: absolute;
+    top: 10%;
+    left: 40%;
+}
 
-  .use  h1 {
+.use .box {
+    width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow */
+    border: 1px solid #ccc;
+}
+
+.use h1 {
     font-size: 24px;
     margin-bottom: 20px;
-  }
-  
-  .use .form-group {
+}
+
+.use .form-group {
     margin-bottom: 20px;
-  }
-  
-  .use label {
+    border: solid 2px;
+}
+
+.use label {
     display: block;
     font-weight: bold;
     margin-bottom: 5px;
-  }
-  
-  .use input[type="text"],
-  .use input[type="password"],
-  .use button {
-    width: calc(100% - 22px); 
+}
+
+.use input[type="text"],
+.use input[type="password"],
+.use button {
+    width: calc(100%); 
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
     box-sizing: border-box;
-  }
-  
-  .use .error {
+    margin-top: 1%;
+}
+
+.use .error {
     color: red;
     margin-top: 5px;
-  }
-  
-  .use button {
+}
+
+.use button {
     background-color: #ffd333;
     color: #fff;
     cursor: pointer;
     border: none; 
     padding: 10px 0; 
-    margin-top: 3%;
-  }
-  
-  .use  button:hover {
+    margin-top: 0%;
+}
+
+.use button:hover {
     background-color: #ffd333;
-  }
-  
+}

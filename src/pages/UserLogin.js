@@ -18,6 +18,7 @@ const UserLogin = () => {
   };
 
   return (
+    <div className='container' >
     <div className='use'>
     <div className="box">
       <h1>User Login</h1>
@@ -31,6 +32,7 @@ const UserLogin = () => {
       ) : (
         <OtpForm setToken={setToken} navigate={navigate} />
       )}
+    </div>
     </div>
     </div>
   );
@@ -75,7 +77,7 @@ const LoginForm = ({ setOtpSent }) => {
         <label htmlFor="mobile">Enter Mobile Number:</label>
         <Field type="text" id="mobile" name="mobile" />
         <ErrorMessage name="mobile" component="div" className="error" />
-        <button type="submit">Send OTP</button>
+        <button className="mt-3" type="submit">Send OTP</button>
         <p>If you are an admin, click <Link to="/Loginadmin">here</Link> to login as admin.</p>
       </Form>
     </Formik>
