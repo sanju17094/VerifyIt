@@ -59,7 +59,7 @@ function App() {
           {/* <Route path="/userprofile" element={ }>
           </Route> */}
           <Route path="/userlist" element={<Userlist/>} />
-          <Route path="/adminlist" element={<Adminlist/>} />
+          {/* <Route path="/adminlist" element={<Adminlist/>} /> */}
           <Route path="/adduser" element={<Adduser/>} />
           <Route path="/coaching" element={<ChoachingList/>} />
           <Route path="/personaltraining" element={<PersonalTrainingList/>} />

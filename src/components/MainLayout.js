@@ -81,23 +81,23 @@ const MainLayout = () => {
               // ],
             },
 
-            {
-              key: "adminlist",
-              icon: <RiUserLine className="fs-4" />,
-              label: "Admin",
-              // children: [
-              //   {
-              //     key: "adduser",
-              //     icon: <RiLoginCircleLine className="fs-4" />,
-              //     label: "Add",
-              //   },
-              //   {
-              //     key: "adminlist",
-              //     icon: <RiAdminLine className="fs-4" />,
-              //     label: "Admin List",
-              //   },
-              // ],
-            },
+            // {
+            //   key: "adminlist",
+            //   icon: <RiUserLine className="fs-4" />,
+            //   label: "Admin",
+            //   // children: [
+            //   //   {
+            //   //     key: "adduser",
+            //   //     icon: <RiLoginCircleLine className="fs-4" />,
+            //   //     label: "Add",
+            //   //   },
+            //   //   {
+            //   //     key: "adminlist",
+            //   //     icon: <RiAdminLine className="fs-4" />,
+            //   //     label: "Admin List",
+            //   //   },
+            //   // ],
+            // },
 
             {
               key: "categorylist",

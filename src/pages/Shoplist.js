@@ -118,13 +118,13 @@ function Shoplist() {
       name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Name</span>,
       selector: (row) => row.category_name,
       editable: true,
-      width: '60%',
+      width: '70%',
     },
     {
       name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Status</span>,
       selector: (row) => row.status ? 'Active' : 'Inactive',
       editable: true,
-      width: '20%',
+      width: '10%',
     },
     {
       name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Action</span>,

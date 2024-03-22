@@ -78,22 +78,15 @@ function VenueList() {
     {
       name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>S.No.</span>,
       selector: (_, index) => index + 1 + (currentPage - 1) * itemsPerPage,
+      width: '10%'
     },
     {
       name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Venue Name</span>,
       selector: (row) => row.name,
     },
     {
-      name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Category</span>,
-      selector: (row) => row.category_name,
-    },
-    {
-      name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Sub Category</span>,
-      selector: (row) => row.sub_category,
-    },
-    {
       name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Action</span>,
-      width: '10%',
+      width: '12%',
       cell: (row) => (
         <div style={{ display: 'flex' }}>
           <Link to={`/UpdateVenue/${row._id}`}  style={{ marginLeft: '1%' }}>

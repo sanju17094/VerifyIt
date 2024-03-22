@@ -3,11 +3,10 @@
   margin-bottom: 20px;
   padding: 20px;
   border-radius: 8px;
+  /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+  background-color: rgb(255, 255, 255);
   font-weight: bold;
   width: 100%;
-  box-shadow:none!important;
-  background-color:#fff;
-  border:none;
 }
 #h3{
   font-size: 28px;
@@ -60,7 +59,7 @@ mb-4 {
 }
 
 .submit-button:hover {
-  background-color: #f9a602;
+  background-color: #ff5f15 !important;
 }
 
 .cancel-button{

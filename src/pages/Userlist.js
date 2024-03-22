@@ -111,26 +111,26 @@ function Userlist() {
     {
       name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>S.No.</span>,
       selector: (_, index) => index + 1 + (currentPage - 1) * itemsPerPage,
-      width: '10%',
+      width: '7%',
     },
     {
       name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>First Name</span>,
       selector: (row) => row.first_name,
-      width: '30%',
+      width: '15%',
     },
     {
       name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Last Name</span>,
       selector: (row) => row.last_name,
-      width: '30%',
+      width: '62%',
     },
     {
       name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}> Status </span>,
       selector: (row) => row.status ? 'Active' : 'Inactive',
-      width: '20%',
+      width: '7%',
     },
     {
       name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Action</span>,
-      width: '10%',
+      width: '7%',
       editable: true,
       cell: (row) => (
         <div style={{ display: 'flex' }}>
@@ -146,9 +146,10 @@ function Userlist() {
 
   return (
     <>
-     <h3 class="mb-4 title">Users</h3>
-     <Link to="/User"><button className="add-button mb-6">Add User</button>
+     
+     <Link to="/User"><button className="add-button ">Add User</button>
      </Link>
+     <h3 class="mb-4 title">Users</h3>
       <div className="cnt">
         <DataTable
           className="dataTable"
