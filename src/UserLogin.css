@@ -47,7 +47,7 @@
 }
 
 .use button {
-    background-color: #ffd333;
+    background-color: #ff5f15;
     color: #fff;
     cursor: pointer;
     border: none; 
@@ -55,6 +55,4 @@
     margin-top: 0%;
 }
 
-.use button:hover {
-    background-color: #ffd333;
-}
+

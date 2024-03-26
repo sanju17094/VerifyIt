@@ -24,7 +24,7 @@ function Categorylist() {
   const fetchData = async () => {
     try {
       // Replace the URL with your actual API endpoint
-      const apiUrl = `http://localhost:4000/api/v1/kheloindore/category/fetch?page=${currentPage}&limit=${itemsPerPage}&search=${searchQuery}`;
+      const apiUrl = `https://api-kheloindore.swapinfotech.com/api/v1/kheloindore/category/fetch?page=${currentPage}&limit=${itemsPerPage}&search=${searchQuery}`;
       const response = await fetch(apiUrl);
       const result = await response.json();
 
@@ -45,7 +45,7 @@ function Categorylist() {
   const handleEdit = async (row) => {
     console.log('Edit clicked for row:', row);
     try {
-      const response = await fetch(`http://localhost:4000/api/v1/kheloindore/category/update/${row._id}`, {
+      const response = await fetch(`https://api-kheloindore.swapinfotech.com/api/v1/kheloindore/category/update/${row._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -68,7 +68,7 @@ function Categorylist() {
 
   const handleDelete = async (row) => {
     try {
-      const apiUrl = `http://localhost:4000/api/v1/kheloindore/category/delete/${row._id}`;
+      const apiUrl = `https://api-kheloindore.swapinfotech.com/api/v1/kheloindore/category/delete/${row._id}`;
 
       const response = await fetch(apiUrl, {
         method: 'DELETE',
@@ -131,7 +131,7 @@ function Categorylist() {
       editable: true,
       cell: (row) => (
         <div style={{ display: 'flex' }}>
-          <Link to={`/UpdateCategory/${row._id}`} style={{ marginLeft: '1%' }}>
+          <Link to={`/categories/edit/${row._id}`} style={{ marginLeft: '1%' }}>
             <EditOutlined style={{ fontSize: '20px', color: '#fcfcfa', borderRadius: '5px', padding: '5px', backgroundColor: '#ff5f15' }} onClick={() => handleEdit(row)} />
           </Link>
           <DeleteOutlined style={{ fontSize: '20px', color: '#E7F3FF', borderRadius: '5px', padding: '5px', backgroundColor: '#3d9c06', marginLeft: '5px' }} onClick={() => handleDelete(row)} />
@@ -143,7 +143,7 @@ function Categorylist() {
 
   return (
     <>
-    <Link to="/Category"><button className="add-button mr-2">Add Category</button>
+    <Link to="/categories/add"><button className="add-button mr-2">Add Category</button>
     </Link>
     <h3 class="mb-4 title">Categories</h3>
       <div className="cnt">

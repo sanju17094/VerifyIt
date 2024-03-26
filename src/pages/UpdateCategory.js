@@ -1,23 +1,50 @@
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { Form } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { FiUpload, FiX } from 'react-icons/fi';
 
 function Update() {
   const { _id } = useParams();
   const navigate = useNavigate();
   
   const [values, setValues] = useState({ category_name: '', status: false });
+  const [file, setFile] = useState(null);
+  const [filePreview, setFilePreview] = useState(null); // Define setFilePreview here
+
+  // useEffect(() => {
+  //   axios.get(`https://api-kheloindore.swapinfotech.com/api/v1/kheloindore/category/fetch-ind/${_id}`)
+  //     .then(res => {
+  //       setValues({ category_name: res.data.category.category_name, status: res.data.category.status });
+  //       // Check if category has an image
+  //       if (res.data.category.images.length > 0) {
+  //         const imageUrl = res.data.category.images[0]; // Assuming only one image is allowed
+  //         setFile(imageUrl);
+  //       }
+  //     })
+  //     .catch(err => console.log(err));
+  // }, [_id]);
+
 
   useEffect(() => {
-    axios.get(`http://localhost:4000/api/v1/kheloindore/category/fetch-ind/${_id}`)
+    axios.get(`https://api-kheloindore.swapinfotech.com/api/v1/kheloindore/category/fetch-ind/${_id}`)
       .then(res => {
         setValues({ category_name: res.data.category.category_name, status: res.data.category.status });
+        
+        // Check if category has an image
+        if (res.data.category.images.length > 0) {
+          const imageUrl = res.data.category.images[0]; // Assuming only one image is allowed
+          setFile(imageUrl);
+          setFilePreview(imageUrl); // Set filePreview with the image URL
+        }
       })
       .catch(err => console.log(err));
   }, [_id]);
+  
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -28,7 +55,14 @@ function Update() {
         icon: 'error'
       });
     } else {
-      axios.put(`http://localhost:4000/api/v1/kheloindore/category/update/${_id}`, values)
+      const formData = new FormData();
+      formData.append('category_name', values.category_name);
+      formData.append('status', values.status);
+      if (file) {
+        formData.append('photo', file);
+      }
+      
+      axios.put(`https://api-kheloindore.swapinfotech.com/api/v1/kheloindore/category/update/${_id}`, formData)
         .then(res => {
           console.log(res, 'after backend');
           Swal.fire({
@@ -36,7 +70,7 @@ function Update() {
             text: 'Category updated successfully!',
             icon: 'success'
           }).then(() => {
-            navigate('/Categorylist');
+            navigate('/categories');
           });
         })
         .catch(err => {
@@ -47,6 +81,14 @@ function Update() {
             icon: 'error'
           });
         });
+    }
+  };
+
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    if (selectedFile) {
+      setFile(selectedFile);
+      setFilePreview(URL.createObjectURL(selectedFile));
     }
   };
 
@@ -68,6 +110,64 @@ function Update() {
           />
         </div>
 
+       
+
+        <div className="mb-3">
+          <h6 style={{fontWeight:'bold',marginBottom:'10px'}}>Update Photo</h6>
+          <div
+            onDrop={(e) => {
+              e.preventDefault();
+              const droppedFile = e.dataTransfer.files[0];
+              setFile(droppedFile);
+            }}
+            onDragOver={(e) => e.preventDefault()}
+            style={{ border: '2px dashed #ccc', padding: '20px', textAlign: 'center', width: '300px' }}
+          >
+            <h3 style={{fontSize: '18px'}}>Drag & Drop here</h3>
+            <div style={{ marginBottom: '10px' }}>
+              <FiUpload style={{ fontSize: '48px', marginBottom: '10px' }} />
+              <input type="file" onChange={handleFileChange} style={{ display: 'none' }} />
+              <button className='btn3' onClick={() => document.querySelector('input[type=file]').click()}> Or Click to Select </button>
+            </div>
+            
+{/* 
+            {filePreview && (
+  <div style={{ position: 'relative', display: 'inline-block' }}>
+    <img src={filePreview} alt="Selected Photo" style={{ width: '100px', height: '100px', margin: '5px' }} />
+    <button
+      onClick={() => {
+        setFile(null);
+        setFilePreview(null);
+      }}
+      style={{ position: 'absolute', top: '5px', right: '5px', background: 'none', border: 'none', cursor: 'pointer' }}
+    >
+      <FiX />
+    </button>
+  </div>
+)} */}
+
+
+
+{filePreview && (
+  <div style={{ position: 'relative', display: 'inline-block' }}>
+    <img src={filePreview} alt="Selected Photo" style={{ width: '100px', height: '100px', margin: '5px' }} />
+    <button
+      onClick={() => {
+        setFile(null);
+        setFilePreview(null);
+      }}
+      style={{ position: 'absolute', top: '5px', right: '5px', background: 'none', border: 'none', cursor: 'pointer' }}
+    >
+      <FiX />
+    </button>
+  </div>
+)}
+
+
+          </div>
+        </div>
+
+
         <Form.Group controlId="formCheckbox">
           <div className="checkbox-container">
             <Form.Check
@@ -87,7 +187,7 @@ function Update() {
           <button className="btn1" type="submit" onClick={(e) => handleSubmit(e)}>
             Update
           </button>
-        <Link to="/Categorylist"><button className="btn2">Cancel</button></Link>
+          <Link to="/categories"><button className="btn2">Cancel</button></Link>
         </div>
       </form>
     </div>
@@ -95,3 +195,4 @@ function Update() {
 }
 
 export default Update;
+

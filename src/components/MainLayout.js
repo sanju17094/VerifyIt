@@ -64,7 +64,7 @@ const MainLayout = () => {
               label: "Dashboard",
             },
             {
-              key: "userlist",
+              key: "users",
               icon: <RiUserLine className="fs-4" />,
               label: "Users",
               // children: [
@@ -100,7 +100,7 @@ const MainLayout = () => {
             // },
 
             {
-              key: "categorylist",
+              key: "categories",
               icon: <BiCategoryAlt className="fs-4" />,
               label: "Categories",
               // children: [
@@ -137,7 +137,7 @@ const MainLayout = () => {
               //],
             },
             {
-              key: "venuelist",
+              key: "venues",
               icon: <RiCouponLine className="fs-4" />,
               label: "Venues",
               // children: [
@@ -181,7 +181,7 @@ const MainLayout = () => {
               // ],
             },
             {
-              key: "personaltraining",
+              key: "personal-training",
               icon: <FaChalkboard className="fs-4" />,
               label: "Personal Training",
             },

@@ -26,7 +26,7 @@ import Category from "./pages/Category";
 import Venue from "./pages/Venue";
 import Loginadmin from "./pages/Loginadmin";
 import Signup from "./pages/Signup";
-import UpdateCategory from "./pages/UpdateCategory";
+import UpdateCategory from './pages/UpdateCategory';
 import UpdateSubcategory from "./pages/UpdateSubcategory";
 import SubCategory from "./pages/SubCategory";
 import SubCategoryList from "./pages/SubCategoryList";
@@ -58,27 +58,25 @@ function App() {
           
           {/* <Route path="/userprofile" element={ }>
           </Route> */}
-          <Route path="/userlist" element={<Userlist/>} />
+          <Route path="/users" element={<Userlist/>} />
           {/* <Route path="/adminlist" element={<Adminlist/>} /> */}
           <Route path="/adduser" element={<Adduser/>} />
+          <Route path="/coaching/add" element={<ChoachingList/>} />
           <Route path="/coaching" element={<ChoachingList/>} />
-          <Route path="/personaltraining" element={<PersonalTrainingList/>} />
+          <Route path="//personal-traning/add" element={<PersonalTrainingList/>} />
+          <Route path="/personal-training" element={<PersonalTrainingList/>} />
+          <Route path="/events/add" element={<EventList/>} />
           <Route path="/events" element={<EventList/>} />
+          <Route path="/shop/add" element={<Shoplist/>} />
           <Route path="/shop" element={<Shoplist/>} />
-          <Route path="/user" element={<User/>} />
-
-
-         
-          
-          
-
-          <Route path="/category" element={<Category />} />
+          <Route path="/users/add" element={<User/>} />
+          <Route path="/categories/add" element={<Category />} />
           <Route path="/Subcategory" element={<SubCategory />} />
           <Route path="/subcategorylist" element={<SubCategoryList /> } />
-          <Route path="/venue" element={<Venue />} />
-          <Route path="/venuelist" element={<Venuetable />} />
-          <Route path="/categorylist" element={<Categorylist />} />
-          <Route path="/UpdateCategory/:_id" element={<UpdateCategory />} />
+          <Route path="/venues/add" element={<Venue />} />
+          <Route path="/venues" element={<Venuetable />} />
+          <Route path="/categories" element={<Categorylist />} />
+          <Route path="/categories/edit/:_id" element={<UpdateCategory />} />
           <Route path="/UpdateSubcategory/:_id" element={<UpdateSubcategory />} />
           <Route path="/UpdateAdmin/:_id" element={<UpdateAdmin />} />
           {/* <Route path="/userprofile" element={<Loginuser />} />

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import DataTable from "react-data-table-component";
 import { Button, Space } from 'antd';
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined, ArrowLeftOutlined } from '@ant-design/icons'; // Added ArrowLeftOutlined
 import Swal from 'sweetalert2';
 import { Link } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
@@ -25,31 +25,35 @@ function VenueList() {
 
   const fetchData = async () => {
     try {
-      const apiUrl = `http://localhost:4000/api/v1/kheloindore/venue/getVenue?page=${currentPage}&limit=${itemsPerPage}&search=${searchQuery}`;
+      const apiUrl = `https://api-kheloindore.swapinfotech.com/api/v1/kheloindore/venue/getVenue?page=${currentPage}&limit=${itemsPerPage}&search=${searchQuery}`;
       const response = await axios.get(apiUrl);
-
+  
       if (response.status === 200) {
-        setRecords(response.data.venue);
+        // Update the state with venue details including category name
+        setRecords(response.data.venue.map(venue => ({
+          ...venue,
+          categoryName: venue.category, // Assuming category_name is the field in category object
+        })));
       } else {
         console.error('Failed to fetch data:', response.statusText);
       }
-
+  
       setLoading(false);
     } catch (error) {
       console.error('Error fetching data:', error);
       setLoading(false);
     }
   };
-
+  
   const handleDelete = async (row) => {
     try {
-      const apiUrl = `http://localhost:4000/api/v1/kheloindore/venue/delete/${row._id}`;
-
+      const apiUrl = `https://api-kheloindore.swapinfotech.com/api/v1/kheloindore/venue/delete/${row._id}`;
+  
       const response = await axios.delete(apiUrl);
-
+  
       if (response.status === 200) {
-        Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
-        fetchData(); 
+        Swal.fire('Deleted!', 'Venue deleted successfully.', 'success');
+        fetchData(); // Assuming fetchData function is defined elsewhere to refresh venue data
       } else {
         console.error('Failed to delete venue:', response.statusText);
         Swal.fire('Error', 'Failed to delete venue.', 'error');
@@ -59,7 +63,7 @@ function VenueList() {
       Swal.fire('Error', 'An error occurred while deleting the venue.', 'error');
     }
   };
-
+  
   const handleSearch = () => {
     const filteredData = records.filter((row) =>
       row.category_name.toLowerCase().includes(searchText.toLowerCase())
@@ -74,6 +78,8 @@ function VenueList() {
     handleSearch();
   };
 
+  
+
   const columns = [
     {
       name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>S.No.</span>,
@@ -85,6 +91,10 @@ function VenueList() {
       selector: (row) => row.name,
     },
     {
+      name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Category</span>,
+      selector: (row) => row.category_name, 
+    },
+    {
       name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Action</span>,
       width: '12%',
       cell: (row) => (
@@ -93,16 +103,19 @@ function VenueList() {
             <EditOutlined style={{ fontSize: '20px', color: '#fcfcfa', borderRadius: '5px', padding: '5px', backgroundColor: '#ff5f15' }}  />
           </Link>
           <DeleteOutlined style={{ fontSize: '20px', color: '#E7F3FF', borderRadius: '5px', padding: '5px', backgroundColor: '#3d9c06', marginLeft: '5px' }} onClick={() => handleDelete(row)} />
-          </div>
+        </div>
       ),
     },
   ];
-
+  
   return (
     <>
-    <Link to="/Venue"><button className="add-button mr-2">Add Venue</button>
-    </Link>
-    <h3 class="mb-4 title">Venues</h3>
+      <Link to="/venues/add">
+        <button className="add-button mr-2">Add Venue</button>
+      </Link>
+      <h3 className="mb-4 title">
+        Venues
+      </h3>
       <div className="cnt">
         <DataTable
           columns={columns}

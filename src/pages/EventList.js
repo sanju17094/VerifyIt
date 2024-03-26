@@ -25,7 +25,7 @@ function Categorylist() {
   const fetchData = async () => {
     try {
       // Replace the URL with your actual API endpoint
-      const apiUrl = `http://localhost:4000/api/v1/kheloindore/category/fetch?page=${currentPage}&limit=${itemsPerPage}&search=${searchQuery}`;
+      const apiUrl = `https://api-kheloindore.swapinfotech.com/api/v1/kheloindore/category/fetch?page=${currentPage}&limit=${itemsPerPage}&search=${searchQuery}`;
       const response = await fetch(apiUrl);
       const result = await response.json();
 
@@ -46,7 +46,7 @@ function Categorylist() {
   const handleEdit = async (row) => {
     console.log('Edit clicked for row:', row);
     try {
-      const response = await fetch(`http://localhost:4000/api/v1/kheloindore/category/update/${row._id}`, {
+      const response = await fetch(`https://api-kheloindore.swapinfotech.com/api/v1/kheloindore/category/update/${row._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -69,7 +69,7 @@ function Categorylist() {
 
   const handleDelete = async (row) => {
     try {
-      const apiUrl = `http://localhost:4000/api/v1/kheloindore/category/delete/${row._id}`;
+      const apiUrl = `https://api-kheloindore.swapinfotech.com/api/v1/kheloindore/category/delete/${row._id}`;
 
       const response = await fetch(apiUrl, {
         method: 'DELETE',
@@ -144,7 +144,7 @@ function Categorylist() {
 
   return (
     <>
-    <Link to="/Category"><button className="add-button mr-2">Add Category</button>
+    <Link to="/events/add"><button className="add-button mr-2">Add Events</button>
      </Link>
     <h3 class="mb-4 title">Events</h3>
       <div className="cnt">

@@ -63,7 +63,7 @@ function Category() {
           icon: "success"
         }).then(() => {
           // Redirect to Categorylist after successful submission
-          window.location.href = "/Categorylist";
+          window.location.href = "/categories";
         });
       } catch (error) {
         console.error("Error:", error.response ? error.response.data : error.message);
@@ -136,7 +136,7 @@ function Category() {
         <div className="mb-3">
           <form>
             <button className="btn1" type="save" onClick={handleSubmit}>Save</button>
-            <Link to="/Categorylist"><button className="btn2" >Cancel</button></Link>
+            <Link to="/categories"><button className="btn2" >Cancel</button></Link>
           </form>
         </div>
       </div>

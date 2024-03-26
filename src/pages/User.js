@@ -59,7 +59,7 @@ const VenueBooking = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:4000/api/v1/kheloindore/super-admin/add-user",
+        "https://api-kheloindore.swapinfotech.com/v1/kheloindore/super-admin/add-user",
         formData
       );
       console.log(response);
@@ -103,12 +103,7 @@ const VenueBooking = () => {
 
   return (
     <>
-      <h3
-        className="mb-4 title"
-        style={{ marginTop: "40px", marginBottom: "10px" }}
-      >
-        Registration
-      </h3>
+      <h3>Registration </h3>
       <Container
         style={{
           maxWidth: "1000px",

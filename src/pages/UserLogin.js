@@ -51,7 +51,7 @@ const LoginForm = ({ setOtpSent }) => {
 
   const handleSendOtp = async (values) => {
     try {
-      const response = await axios.post('http://localhost:4000/api/v1/kheloindore/user/login/mobile', {
+      const response = await axios.post('https://api-kheloindore.swapinfotech.com/api/v1/kheloindore/user/login/mobile', {
         mobile: values.mobile,
       });
       if (response.data.success) {
@@ -98,7 +98,7 @@ const OtpForm = ({ setToken, navigate }) => {
   const handleLogin = async (values) => {
     try {
       const response = await axios.post(
-        'http://localhost:4000/api/v1/kheloindore/user/login/mobile/otp',
+        'https://api-kheloindore.swapinfotech.com//api/v1/kheloindore/user/login/mobile/otp',
         { otp: values.otp },
         {
           headers: {
@@ -133,7 +133,7 @@ const OtpForm = ({ setToken, navigate }) => {
         <label htmlFor="otp">Enter OTP:</label>
         <Field type="text" id="otp" name="otp" />
         <ErrorMessage name="otp" component="div" className="error" />
-        <button type="submit">Login</button>
+        <button className='mt-3' type="submit">Login</button>
       </Form>
     </Formik>
     
