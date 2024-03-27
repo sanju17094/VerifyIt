@@ -4,7 +4,11 @@ import { Container, Row, Col, Form, Button, Dropdown } from "react-bootstrap";
 import "../../src/Venue.css";
 import Swal from "sweetalert2";
 import React, { useState, useEffect } from "react";
-import { MultiSelect } from "primereact/multiselect";
+import Select from 'react-select'
+import Multiselect from 'multiselect-react-dropdown';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFileUpload } from '@fortawesome/free-solid-svg-icons';
+
 import {
   CountrySelect,
   StateSelect,
@@ -25,21 +29,46 @@ const VenueBooking = () => {
     amenities: "",
     venuerules: "",
     timings: "",
+    activities: "",
   });
+
+  const amenitiesOptions = [
+    { name: 'Parking' },
+    { name: 'Washroom' },
+    { name: 'Drinking Water' },
+    { name: 'Flood Lights' },
+    { name: 'Artificial Turf' },
+    { name: 'Seating Lounge' },
+    { name: 'Changing Room' },
+    { name: 'Power Backup' },
+    { name: 'Open 24x7' },
+    // Add more options as needed
+  ];
+
   console.log(formData, "dfgdgfdf");
   useEffect(() => {
     fetchCategories();
     setCountryid(101);
+    fetchActivities();
     // Assuming you have a function to fetch subcategories without specifying a category ID
   }, []);
   console.log(formData, "fromdata value check");
+
+
   const [categories, setCategories] = useState([]);
   const [countryid, setCountryid] = useState(0);
   const [stateid, setstateid] = useState(0);
   const [zipCode, setZipCode] = useState("");
   const [files, setFiles] = useState([]);
   const [timings, setTimings] = useState("");
-  const [amenities, setAmenities] = useState("");
+  const [selectedAmenities, setSelectedAmenities] = useState([]);
+  const [activities, setActivities] = useState([]);
+  const [activitiesOptions, setActivitiesOptions] = useState([]);
+  const [selectedActivities, setSelectedActivities] = useState([]);
+
+
+
+
 
   const handleDrop = (e) => {
     e.preventDefault();
@@ -64,17 +93,18 @@ const VenueBooking = () => {
     });
   };
 
-  const handleAmenitiesChange = (selectedAmenities) => {
-    setFormData({
-      ...formData,
-      amenities: selectedAmenities,
-    });
+  const handleAmenitiesChange = (selectedList) => {
+    setSelectedAmenities(selectedList);
+  };
+
+  const handleCategoryChange = (selectedOption) => {
+    setFormData({ ...formData, category: selectedOption.value });
   };
 
   const fetchCategories = async () => {
     try {
       const response = await axios.get(
-        "https://api-kheloindore.swapinfotech.com/api/v1/kheloindore/category/fetch"
+        "http://localhost:4000/api/v1/kheloindore/category/fetch"
       );
       console.log(response.data.categories, "<response.data.categories");
       setCategories(response.data.categories);
@@ -83,6 +113,25 @@ const VenueBooking = () => {
       console.error("Error fetching categories:", error);
     }
   };
+
+
+  const fetchActivities = async () => {
+    try {
+      const response = await axios.get('http://localhost:4000/api/v1/kheloindore/activity/fetch');
+      setActivitiesOptions(response.data.activities);
+      console.log(activities.activityName, "<activities.activityName");
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+
+
+
+  const handleActivitiesChange = (selectedOption) => {
+    setSelectedActivities(selectedOption);
+  };
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -133,6 +182,8 @@ const VenueBooking = () => {
       Category: "Category",
     };
 
+
+
     const emptyFields = [];
     for (const field in requiredFields) {
       if (!formData[field]) {
@@ -142,7 +193,7 @@ const VenueBooking = () => {
 
     try {
       const response = await axios.post(
-        "https://api-kheloindore.swapinfotech.com/api/v1/kheloindore/venue1/addVenue",
+        "http://localhost:4000/api/v1/kheloindore/venue1/addVenue",
         formData
       );
 
@@ -224,39 +275,14 @@ const VenueBooking = () => {
                   <span className="StarSymbol">*</span>
                 </Form.Label>
                 <div className="select-wrapper">
-                  <Dropdown onSelect={handleAmenitiesChange}>
-                    <Dropdown.Toggle variant="light" id="dropdown-basic">
-                      {amenities || "Amenities"}
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                      <Dropdown.Item eventKey="Parking">Parking</Dropdown.Item>
-                      <Dropdown.Item eventKey="Washroom">
-                        Washroom
-                      </Dropdown.Item>
-                      <Dropdown.Item eventKey="Drinking Water">
-                        Drinking Water
-                      </Dropdown.Item>
-                      <Dropdown.Item eventKey="Flood Lights">
-                        Flood Lights
-                      </Dropdown.Item>
-                      <Dropdown.Item eventKey="Artificial Turf">
-                        Artificial Turf
-                      </Dropdown.Item>
-                      <Dropdown.Item eventKey="Seating Lounge">
-                        Seating Lounge
-                      </Dropdown.Item>
-                      <Dropdown.Item eventKey="Changing Room">
-                        Changing Room
-                      </Dropdown.Item>
-                      <Dropdown.Item eventKey="Power Backup">
-                        Power Backup
-                      </Dropdown.Item>
-                      <Dropdown.Item eventKey="Open 24x7">
-                        Open 24x7
-                      </Dropdown.Item>
-                      {/* Add more timing options as needed */}
-                    </Dropdown.Menu>
-                  </Dropdown>
+                  <Multiselect
+                    options={amenitiesOptions}
+                    displayValue="name"
+                    selectedValues={selectedAmenities}
+                    onSelect={handleAmenitiesChange}
+                    onRemove={handleAmenitiesChange}
+                    placeholder="Select Amenities"
+                  />
                 </div>
               </Form.Group>
 
@@ -278,20 +304,18 @@ const VenueBooking = () => {
                 <Form.Label className="heading">
                   Category <span className="StarSymbol">*</span>
                 </Form.Label>
-                <MultiSelect
+                <Select
                   name="category"
                   value={formData.category}
                   options={categories.map((category) => ({
                     label: category.category_name,
-                    value: category._id,
+                    value: category.category_name,
                   }))}
-                  onChange={(e) =>
-                    setFormData({ ...formData, category: e.value })
-                  }
-                  placeholder="Select categories"
-                  className="multiselect-input"
+                  onChange={handleCategoryChange}
+                  placeholder={`${formData.category || 'Select category'}`}
                 />
               </Form.Group>
+
             </Form>
           </Col>
           <Col md={4}>
@@ -324,6 +348,25 @@ const VenueBooking = () => {
                 onChange={handleChange}
               />
             </Form.Group>
+
+            <Form.Group controlId="formActivities">
+              <Form.Label className="heading">
+                Activities
+                <span className="StarSymbol">*</span>
+              </Form.Label>
+              <div className="select-wrapper">
+                <Multiselect
+                  options={activitiesOptions}
+                  displayValue="name"
+                  selectedValues={selectedActivities}
+                  onSelect={handleActivitiesChange}
+                  onRemove={handleActivitiesChange}
+                  placeholder="Select Activities"
+                />
+              </div>
+            </Form.Group>
+
+
           </Col>
           <Col md={4}>
             {/* Third column content can go here */}
@@ -345,41 +388,39 @@ const VenueBooking = () => {
               }}
               placeHolder="Select City"
             />
- <Form.Label className="heading">
-    Upload Photos
-    <span className="StarSymbol">*</span>
-  </Form.Label>
-<Form.Group
-  controlId="formPhotos"
-  onDrop={handleDrop}
-  onDragOver={(e) => e.preventDefault()}
-  style={{ border: '2px dashed #ccc', padding: '20px', textAlign: 'center', marginTop: '5px' }} // Example inline CSS
->
- 
-  <Form.Control
-    type="file"
-    multiple
-    name="photos"
-    onChange={handlePhotoChange}
-    style={{ display: "none" }} // Hide the default file input
-  />
-  <div
-    className="drag-drop-container"
-    onClick={() => document.getElementsByName("photos")[0].click()}
-    style={{ marginBottom: '10px' }} // Example inline CSS
-  >
-    <p>Drag & drop photos here</p>
-  </div>
-  <button style={{ background:'#ff5f15', color: 'white', border: 'none', padding: '10px', borderRadius: '5px' }}>Select from files</button>
-  <div className="uploaded-files-container">
-    {files.map((file, index) => (
-      <div key={index} className="uploaded-file">
-        <span>{file.name}</span>
-        <button onClick={() => handleRemove(index)}>Remove</button>
-      </div>
-    ))}
-  </div>
-</Form.Group>
+
+            <Form.Label className="heading">
+              Upload Photos
+              <span className="StarSymbol">*</span>
+            </Form.Label>
+            <Form.Group>
+              <Form.Control
+                type="file"
+                multiple
+                name="photos"
+                onChange={handlePhotoChange}
+                style={{ display: "none" }} // Hide the default file input
+              />
+              <div
+                className="drag-drop-container"
+                onClick={() => document.getElementsByName("photos")[0].click()}
+                style={{ marginBottom: '10px' }} // Example inline CSS
+              >
+                <h3 style={{ fontSize: '18px' }}>
+                  <FontAwesomeIcon icon={faFileUpload} style={{ marginRight: '5px' }} />
+                  Drag & Drop here
+                </h3>
+                <button style={{ background: '#ff5f15', color: 'white', border: 'none', padding: '10px', borderRadius: '5px' }}>Select from files</button>
+              </div>
+              <div className="uploaded-files-container">
+                {files.map((file, index) => (
+                  <div key={index} className="uploaded-file">
+                    <span>{file.name}</span>
+                    <button onClick={() => handleRemove(index)}>Remove</button>
+                  </div>
+                ))}
+              </div>
+            </Form.Group>
 
           </Col>
         </Row>
@@ -391,6 +432,14 @@ const VenueBooking = () => {
               className="submit-button"
             >
               Submit
+            </button>
+          </Col>
+          <Col style={{ marginTop: "50px" }}>
+            <button
+              type="cancel"
+              className="cancel-button"
+            >
+              Cancel
             </button>
           </Col>
         </Row>

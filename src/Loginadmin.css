@@ -1,0 +1,46 @@
+.login_form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    margin-top: 1%;
+  }
+  /* .container{
+    background-color: #9dff15;
+  } */
+
+  .login_form h1 {
+    margin-bottom: 20px;
+  }
+  
+  .login_form input[type="text"],
+  .login_form input[type="password"],
+  .login_form button {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  
+  .login_form button {
+    background-color: #ff5f15;
+    color: #fff;
+    cursor: pointer;
+  }
+  
+  .login_form button:hover {
+    background-color: #ff5f15;
+  }
+  
+.company_logo {
+    text-align: center;
+  } 
+   
+  .company_logo img {
+    max-width: 1%
+  }
+  

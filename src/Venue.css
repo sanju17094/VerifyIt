@@ -5,7 +5,9 @@
   border-radius: 8px;
   background-color: white;
   width: 100%;
+  font-weight: 400 !important;
 }
+
 
 .form-group {
   margin-bottom: 15px;
@@ -24,7 +26,7 @@
 }
 
 .submit-button {
-  background-color: #ff5f15;
+  background-color: rgb(255, 95, 21);
   color: #fff;
   border: none;
   padding: 10px 20px;
@@ -48,11 +50,67 @@
 }
 
 
+.drag-drop-container {
+  border: 2px dashed #ccc;
+  border-radius: 5px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+}
 
-/* .multiselect-input{
-  background-color:#811515;
-} */
-.p-multiselect-items-wrapper {
-  background-color: #fff;
-  /* font-weight: 500; */
+.uploaded-files-container {
+  margin-top: 20px;
+}
+
+.uploaded-file {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.uploaded-file span {
+  flex: 1;
+  padding: 5px;
+}
+
+.uploaded-file button {
+  background: #ff5f15;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.uploaded-file button:hover {
+  background: #e44d12;
+}
+
+/* Style the file input button */
+input[type="file"] {
+  display: none;
+}
+
+.drag-drop-container h3 {
+  margin: 0;
+}
+
+.drag-drop-container .fa-file-upload {
+  font-size: 24px;
+  margin-right: 10px;
+}
+
+/* Style the select from files button */
+.select-files-button {
+  background: #ff5f15;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.select-files-button:hover {
+  background: #e44d12;
 }

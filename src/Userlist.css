@@ -1,30 +1,89 @@
-  
-  .searchInput {
-    width: 100%;
-    border-radius: 5px;
-    border: 1px solid #ced4da;
-    padding: 10px;
-    font-size: 16px;
-    margin-left: 25px;
-    margin-top: 4%;
-    
-  }
-
-  .add-button {
-    background-color: rgb(255, 95, 21);
-    color: white; 
-    border: none;
-    padding: 12px 24px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease; 
-    font-weight: bold;
-    width: 180px; 
-    margin-left: 85%;
-   position: absolute;
-   top: 13%;
-   left: 2%;
+/* Styling for the "Add User" button */
+.add-button {
+  margin-bottom: 20px;
+  margin-right: 10px; /* Shift the button to the left */
+  padding: 8px 16px;
+  background-color: #ff5f15;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
+.title {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+}
 
-  
+.cnt {
+  margin-bottom: 20px;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.pagination-container {
+  margin-top: 20px;
+}
+
+.pagination {
+  display: flex;
+  list-style-type: none;
+  padding: 0;
+  justify-content: center;
+}
+
+.pagination li {
+  margin-right: 5px;
+}
+
+.pagination li.active button {
+  background-color: #ff5f15;
+  color: #fff;
+}
+
+.pagination li button {
+  padding: 5px 10px;
+  border: 1px solid #ff5f15;
+  border-radius: 4px;
+  background-color: transparent;
+  color: #ff5f15;
+  cursor: pointer;
+}
+
+.pagination li button:hover {
+  background-color: #ff5f15;
+  color: #fff;
+}
+
+/* Styling for the search input */
+.form-control {
+  border-radius: 4px;
+}
+
+/* Styling for the action icons */
+.anticon {
+  cursor: pointer;
+}
+
+/* Styling for the SweetAlert popup */
+.swal2-container {
+  z-index: 10000; /* Ensure it appears above other elements */
+}
+
+/* Optional: Add a border radius to table cells */
+.table tbody tr td,
+.table thead tr th {
+  border-radius: 8px;
+}
+
+/* Userlist.css or your custom CSS file */
+.custom-table {
+  background-color: white
+}
+
+.search-input {
+  width: 50%; /* Adjust the width as needed */
+}

@@ -1,59 +1,86 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import DataTable from "react-data-table-component";
-import { Button, Space } from 'antd';
-import { EditOutlined, DeleteOutlined, ArrowLeftOutlined } from '@ant-design/icons'; // Added ArrowLeftOutlined
-import Swal from 'sweetalert2';
+import React, { useState, useEffect } from 'react';
+import { Button, Table, Form, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import Form from 'react-bootstrap/Form';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import Swal from 'sweetalert2';
 import '../../src/Userlist.css';
 
 function VenueList() {
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState('');
-  const [searchQuery, setSearchQuery] = useState('');
-
-  const itemsPerPage = 10; // Adjust as needed
   const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10; // Adjust as needed
 
   useEffect(() => {
     fetchData();
-  }, [currentPage, searchQuery]);
+  }, [currentPage, searchText]);
 
   const fetchData = async () => {
     try {
-      const apiUrl = `https://api-kheloindore.swapinfotech.com/api/v1/kheloindore/venue/getVenue?page=${currentPage}&limit=${itemsPerPage}&search=${searchQuery}`;
-      const response = await axios.get(apiUrl);
-  
-      if (response.status === 200) {
-        // Update the state with venue details including category name
-        setRecords(response.data.venue.map(venue => ({
-          ...venue,
-          categoryName: venue.category, // Assuming category_name is the field in category object
-        })));
+      const apiUrl = `http://localhost:4000/api/v1/kheloindore/venue/getVenue?page=${currentPage}&limit=${itemsPerPage}&search=${searchText}`;
+      const response = await fetch(apiUrl);
+      const result = await response.json();
+
+      if (response.ok) {
+        setRecords(result.venue); // Update to setRecords(result.venue)
       } else {
-        console.error('Failed to fetch data:', response.statusText);
+        console.error('Failed to fetch data:', result.error);
       }
-  
+
       setLoading(false);
     } catch (error) {
       console.error('Error fetching data:', error);
       setLoading(false);
     }
   };
-  
-  const handleDelete = async (row) => {
+
+  const handleEdit = async (venue) => {
     try {
-      const apiUrl = `https://api-kheloindore.swapinfotech.com/api/v1/kheloindore/venue/delete/${row._id}`;
+      const apiUrl = `http://localhost:4000/api/v1/kheloindore/venue/update/${venue._id}`; // Replace with your actual API endpoint for editing
   
-      const response = await axios.delete(apiUrl);
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          // Send data to update here
+          name: 'Updated Venue Name', // Example: Updated venue name
+          category: ['Updated Category'], // Example: Updated category name
+          // Add other fields as needed
+        }),
+      });
   
-      if (response.status === 200) {
+      const result = await response.json();
+  
+      if (response.ok) {
+        Swal.fire('Updated!', 'Venue updated successfully.', 'success');
+        fetchData(); // Refresh data after updating
+      } else {
+        console.error('Failed to update venue:', result.error);
+        Swal.fire('Error', 'Failed to update venue.', 'error');
+      }
+    } catch (error) {
+      console.error('Error updating venue:', error);
+      Swal.fire('Error', 'An error occurred while updating the venue.', 'error');
+    }
+  };
+  
+  const handleDelete = async (venue) => {
+    try {
+      const apiUrl = `http://localhost:4000/api/v1/kheloindore/venue/delete/${venue._id}`;
+
+      const response = await fetch(apiUrl, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
         Swal.fire('Deleted!', 'Venue deleted successfully.', 'success');
-        fetchData(); // Assuming fetchData function is defined elsewhere to refresh venue data
+        fetchData(); // Refresh data after deletion
       } else {
         console.error('Failed to delete venue:', response.statusText);
         Swal.fire('Error', 'Failed to delete venue.', 'error');
@@ -63,90 +90,101 @@ function VenueList() {
       Swal.fire('Error', 'An error occurred while deleting the venue.', 'error');
     }
   };
-  
+
   const handleSearch = () => {
-    const filteredData = records.filter((row) =>
-      row.category_name.toLowerCase().includes(searchText.toLowerCase())
-      
-    );
-    console.log(filteredData,"<filteredData")
-    setRecords(filteredData);
+    setCurrentPage(1); // Reset to first page when searching
   };
 
   const handleSearchInputChange = (e) => {
     setSearchText(e.target.value);
-    handleSearch();
   };
 
-  
+  const handlePagination = (page) => {
+    setCurrentPage(page);
+  };
 
-  const columns = [
-    {
-      name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>S.No.</span>,
-      selector: (_, index) => index + 1 + (currentPage - 1) * itemsPerPage,
-      width: '10%'
-    },
-    {
-      name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Venue Name</span>,
-      selector: (row) => row.name,
-    },
-    {
-      name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Category</span>,
-      selector: (row) => row.category_name, 
-    },
-    {
-      name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Action</span>,
-      width: '12%',
-      cell: (row) => (
-        <div style={{ display: 'flex' }}>
-          <Link to={`/UpdateVenue/${row._id}`}  style={{ marginLeft: '1%' }}>
-            <EditOutlined style={{ fontSize: '20px', color: '#fcfcfa', borderRadius: '5px', padding: '5px', backgroundColor: '#ff5f15' }}  />
-          </Link>
-          <DeleteOutlined style={{ fontSize: '20px', color: '#E7F3FF', borderRadius: '5px', padding: '5px', backgroundColor: '#3d9c06', marginLeft: '5px' }} onClick={() => handleDelete(row)} />
-        </div>
-      ),
-    },
-  ];
-  
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentVenues = records.slice(indexOfFirstItem, indexOfLastItem);
+
   return (
     <>
-      <Link to="/venues/add">
-        <button className="add-button mr-2">Add Venue</button>
-      </Link>
-      <h3 className="mb-4 title">
-        Venues
-      </h3>
+      <h3 className="mb-4 title">Venues</h3>
       <div className="cnt">
-        <DataTable
-          columns={columns}
-          data={records}
-          pagination
-          paginationPerPage={itemsPerPage}
-          paginationRowsPerPageOptions={[5, 10, 20]}
-          paginationTotalRows={records.length}
-          progressPending={loading}
-          onChangePage={(page) => setCurrentPage(page)}
-          noHeader
-          highlightOnHover
-          subHeader
-          subHeaderComponent={(
-            <Row className="justify-content-end align-items-center">
-              <Col xs={12} sm={6}>
-                <Form.Control
-                  type="text"
-                  className="searchInput"
-                  placeholder="Search..."
-                  value={searchText}
-                  onChange={handleSearchInputChange}
-                  style={{ width: '100%' }}
-                />
-              </Col>
-              <Col xs={10} sm={2}>
-              </Col>
-            </Row>
-          )}
-          subHeaderAlign="right"
-        />
+        <Form.Group as={Row} className="mb-3">
+          <Col sm={6}>
+            <Form.Control
+              type="text"
+              placeholder="Search by Venue Name"
+              value={searchText}
+              onChange={handleSearchInputChange}
+            />
+          </Col>
+          <Col sm={6} className="d-flex justify-content-end">
+            <Link to="/venues/add">
+              <Button className="add-button mr-2">Add Venue</Button>
+            </Link>
+          </Col>
+        </Form.Group>
+        <div className="table-container">
+          <Table className='custom-table'>
+            <thead>
+              <tr>
+                <th style={{ width: '5%' }}>S.No.</th>
+                <th style={{ width: '62%' }}>Venue Name</th>
+                <th style={{ width: '23%' }}>Category</th>
+                <th style={{ width: '10%' }}>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentVenues.map((venue, index) => (
+                <tr key={venue._id}>
+                  <td>{index + 1 + indexOfFirstItem}</td>
+                  <td>{venue.name}</td>
+                  <td>{venue.category.join(', ')}</td> 
+                  <td>
+                    <div style={{ display: 'flex' }}>
+                      <Link to={`/venues/edit/${venue._id}`} style={{ marginRight: '5px' }}>
+                      <EditOutlined
+                          style={{
+                            fontSize: '20px',
+                            color: '#fcfcfa',
+                            borderRadius: '5px',
+                            padding: '5px',
+                            backgroundColor: '#ff5f15',
+                          }}
+                          onClick={() => handleEdit(venue)}
+                        />
+                      </Link>
+                      <DeleteOutlined
+                        style={{
+                          fontSize: '20px',
+                          color: '#E7F3FF',
+                          borderRadius: '5px',
+                          padding: '5px',
+                          backgroundColor: '#3d9c06',
+                          marginLeft: '5px',
+                        }}
+                        onClick={() => handleDelete(venue)}
+                      />
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </div>
+        <div className="pagination-container">
+          <ul className="pagination">
+            {Array.from({ length: Math.ceil(records.length / itemsPerPage) }).map((_, index) => (
+              <li key={index} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
+                <button className="page-link" onClick={() => handlePagination(index + 1)}>
+                  {index + 1}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </>
   );

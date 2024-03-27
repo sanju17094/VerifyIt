@@ -1,13 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Space } from 'antd';
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import DataTable from 'react-data-table-component';
-import Swal from 'sweetalert2';
+import { Button, Table, Form, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import Form from 'react-bootstrap/Form';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import { BsSearch } from 'react-icons/bs';
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import Swal from 'sweetalert2';
 import '../../src/Userlist.css';
 
 function Userlist() {
@@ -29,10 +24,8 @@ function Userlist() {
       const response = await fetch(apiUrl);
       const result = await response.json();
 
-
       if (response.ok) {
-        setData(result.data); 
-        console.log(result.data.first_name, ">>>>>>>>>>>>");
+        setData(result.data);
       } else {
         console.error('Failed to fetch data:', result.error);
       }
@@ -94,94 +87,106 @@ function Userlist() {
   };
 
   const handleSearch = () => {
-    const filteredData = data.filter((row) =>
-      row.first_name.toLowerCase().includes(searchText.toLowerCase())
-      
-    );
-    console.log(filteredData,"<filteredData")
-    setData(filteredData);
+    setSearchQuery(searchText);
+    setCurrentPage(1); // Reset to first page when searching
   };
 
   const handleSearchInputChange = (e) => {
     setSearchText(e.target.value);
-    handleSearch();
   };
 
-  const columns = [
-    {
-      name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>S.No.</span>,
-      selector: (_, index) => index + 1 + (currentPage - 1) * itemsPerPage,
-      width: '7%',
-    },
-    {
-      name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>First Name</span>,
-      selector: (row) => row.first_name,
-      width: '15%',
-    },
-    {
-      name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Last Name</span>,
-      selector: (row) => row.last_name,
-      width: '62%',
-    },
-    {
-      name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}> Status </span>,
-      selector: (row) => row.status ? 'Active' : 'Inactive',
-      width: '7%',
-    },
-    {
-      name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Action</span>,
-      width: '7%',
-      editable: true,
-      cell: (row) => (
-        <div style={{ display: 'flex' }}>
-          <Link to={`/UpdateCategor/${row._id}`} style={{ marginLeft: '1%' }}>
-            <EditOutlined style={{ fontSize: '20px', color: '#fcfcfa', borderRadius: '5px', padding: '5px', backgroundColor: '#ff5f15' }} onClick={() => handleEdit(row)} />
-          </Link>
-          <DeleteOutlined style={{ fontSize: '20px', color: '#E7F3FF', borderRadius: '5px', padding: '5px', backgroundColor: '#3d9c06', marginLeft: '5px' }} onClick={() => handleDelete(row)} />
-        </div>
-      ),
-    },
-  ];
+  const handlePagination = (page) => {
+    setCurrentPage(page);
+  };
 
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = data
+    .filter((row) => row.first_name.toLowerCase().includes(searchText.toLowerCase()))
+    .slice(indexOfFirstItem, indexOfLastItem);
 
   return (
     <>
-     
-     <Link to="/users/add"><button className="add-button ">Add User</button>
-     </Link>
-     <h3 class="mb-4 title">Users</h3>
+
+      <h3 className="mb-4 title">Users</h3>
       <div className="cnt">
-        <DataTable
-          className="dataTable"
-          columns={columns}
-          data={data}
-          pagination
-          paginationPerPage={itemsPerPage}
-          paginationRowsPerPageOptions={[5, 10, 20]}
-          paginationTotalRows={data.length}
-          progressPending={loading}
-          onChangePage={(page) => setCurrentPage(page)}
-          noHeader
-          highlightOnHover
-          subHeader
-          subHeaderComponent={(
-            <Row className="justify-content-end align-items-center">
-              <Col xs={12} sm={6}>
-                <Form.Control
-                  type="text"
-                  placeholder="Search..."
-                  value={searchText}
-                  onChange={handleSearchInputChange}
-                  className="searchInput"
-                  style={{ width: '120%' }}
-                />
-              </Col>
-              <Col xs={10} sm={2}>
-              </Col>
-            </Row>
-          )}
-          subHeaderAlign="right"
-        />
+        <Form.Group as={Row} className="mb-3">
+          <Col sm={6}>
+            <Form.Control
+              type="text"
+              placeholder="Search by First Name"
+              value={searchText}
+              onChange={handleSearchInputChange}
+              className='search-input'
+            />
+          </Col>
+          <Col sm={6} className="d-flex justify-content-end">
+            <Link to="/users/add">
+              <button className="add-button">Add User</button>
+            </Link>
+          </Col>
+        </Form.Group>
+        <div className="table-container">
+          <Table className="custom-table">
+            <thead>
+              <tr>
+                <th style={{ width: '5%' }}>S.No.</th> 
+                <th style={{ width: '30%' }}>First Name</th> 
+                <th style={{ width: '30%' }}>Last Name</th> 
+                <th style={{ width: '25%' }}>Status</th>
+                <th style={{ width: '10%' }}>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentItems.map((row, index) => (
+                <tr key={row._id}>
+                  <td>{index + 1 + indexOfFirstItem}</td>
+                  <td>{row.first_name}</td>
+                  <td>{row.last_name}</td>
+                  <td>{row.status ? 'Active' : 'Inactive'}</td>
+                  <td>
+                    <div style={{ display: 'flex' }}>
+                      <Link to={`/UpdateCategor/${row._id}`} style={{ marginLeft: '1%' }}>
+                        <EditOutlined
+                          style={{
+                            fontSize: '20px',
+                            color: '#fcfcfa',
+                            borderRadius: '5px',
+                            padding: '5px',
+                            backgroundColor: '#ff5f15',
+                          }}
+                          onClick={() => handleEdit(row)}
+                        />
+                      </Link>
+                      <DeleteOutlined
+                        style={{
+                          fontSize: '20px',
+                          color: '#E7F3FF',
+                          borderRadius: '5px',
+                          padding: '5px',
+                          backgroundColor: '#3d9c06',
+                          marginLeft: '5px',
+                        }}
+                        onClick={() => handleDelete(row)}
+                      />
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </div>
+        <div className="pagination-container">
+          <ul className="pagination">
+            {Array.from({ length: Math.ceil(data.length / itemsPerPage) }).map((_, index) => (
+              <li key={index} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
+                <button className="page-link" onClick={() => handlePagination(index + 1)}>
+                  {index + 1}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </>
   );

@@ -1,11 +1,14 @@
 import { useState } from "react"; 
-import '../../src/Loginuser.css'
+import '../../src/Loginadmin.css'
 import axios from "axios";
 import Swal from 'sweetalert2'
+import { useNavigate } from 'react-router-dom';
+import logoImage from '../../src/image.png';
 
 function Loginadmin() {
   const [mobile, setmobile] = useState('')
   const [password, setpassword] = useState('')
+  const navigate = useNavigate();
   console.log({ mobile, password })
   const handleEmail = (e) => {
 
@@ -32,7 +35,7 @@ function Loginadmin() {
         .then((response) => {
           console.warn('result', response.data);
           localStorage.setItem('token', response.data.token); // Store token in localStorage
-          alert('Success');
+          navigate('/dashboard');
         })
         .catch((error) => {
           console.log('Invalid mobile number or password');
@@ -44,11 +47,14 @@ function Loginadmin() {
   
 
   return (
+    <div>
     <div className="login_form">
-    <h1>Login</h1>
+    <img src={logoImage} alt="Logo" className="company_logo" style={{ width: '50px' }} />
+    <h2>Admin Login</h2>
       Mobile Number <input value={mobile} onChange={handleEmail} type="text" /> <br />
-      Password <input value={password} onChange={handlePassword} type="text" /> <br />
+      Password <input value={password} onChange={handlePassword} type="password" /> <br />
       <button onClick={handleApi} >Login</button>
+    </div>
     </div>
   );
 }

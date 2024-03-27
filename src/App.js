@@ -43,6 +43,7 @@ import PersonalTrainingList from "./pages/PersonalTrainingList";
 import EventList from "./pages/EventList";
 import Shoplist from "./pages/Shoplist";
 import User from "./pages/User";
+import UpdateVenue from "./pages/UpdateVenue";
 
 
 function App() {
@@ -50,7 +51,7 @@ function App() {
 
     <Router>
       <Routes>
-        <Route path="/" element={<UserLogin />} />
+        <Route path="/" element={<Loginadmin />} />
         <Route path="/" element={<MainLayout />} >
         {/* <Route path="/" element={<UserLogin />} /> */}
           <Route path="/dashboard" element={<Dashboard/>} />
@@ -77,6 +78,7 @@ function App() {
           <Route path="/venues" element={<Venuetable />} />
           <Route path="/categories" element={<Categorylist />} />
           <Route path="/categories/edit/:_id" element={<UpdateCategory />} />
+          <Route path="/venues/edit/:_id" element={<UpdateVenue />} />
           <Route path="/UpdateSubcategory/:_id" element={<UpdateSubcategory />} />
           <Route path="/UpdateAdmin/:_id" element={<UpdateAdmin />} />
           {/* <Route path="/userprofile" element={<Loginuser />} />
