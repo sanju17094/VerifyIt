@@ -87,3 +87,11 @@
 .search-input {
   width: 50%; /* Adjust the width as needed */
 }
+
+.page-item.active .page-link{
+  background-color: #ff5f15;
+}
+
+.active>.page-link{
+  border: #ff5f15;
+}

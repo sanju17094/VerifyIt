@@ -34,7 +34,7 @@ import Userlist from "./pages/Userlist";
 import Venuetable from "./pages/Venuetable";
 import Adminlist from "./pages/Adminlist";
 import Adduser from "./pages/Adduser";
-import UpdateAdmin from "./pages/UpdateAdmin";
+import UpdateUser from "./pages/UpdateUser";
 import Login from "./pages/Login";
 import UserLogin from "./pages/UserLogin";
 import Protected from "./components/Protected";
@@ -80,7 +80,7 @@ function App() {
           <Route path="/categories/edit/:_id" element={<UpdateCategory />} />
           <Route path="/venues/edit/:_id" element={<UpdateVenue />} />
           <Route path="/UpdateSubcategory/:_id" element={<UpdateSubcategory />} />
-          <Route path="/UpdateAdmin/:_id" element={<UpdateAdmin />} />
+          <Route path="/UpdateUser/:_id" element={<UpdateUser />} />
           {/* <Route path="/userprofile" element={<Loginuser />} />
           </Routes> */}
 

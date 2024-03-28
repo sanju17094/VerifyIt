@@ -75,10 +75,12 @@ function UpdateVenue() {
   };
 
   return (
+    <>
+    <h3 className="mb-4 title">Update Venues</h3>
     <div className="form">
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
-          <Form.Label htmlFor="name">Update Venue Name</Form.Label>
+          <Form.Label htmlFor="name">Venue Name</Form.Label>
           <span className="StarSymbol">*</span>
           <Form.Control
             type="text"
@@ -92,7 +94,7 @@ function UpdateVenue() {
         </div>
 
         <div className="mb-3">
-          <Form.Label htmlFor="category">Update Category</Form.Label>
+          <Form.Label htmlFor="category">Category</Form.Label>
           <span className="StarSymbol">*</span>
           <Form.Control
             type="text"
@@ -106,7 +108,7 @@ function UpdateVenue() {
         </div>
 
         <div className="mb-3">
-          <h6 style={{fontWeight:'bold',marginBottom:'10px'}}>Update Photo</h6>
+          <h6 style={{fontWeight:'bold',marginBottom:'10px'}}>Photo</h6>
           <div
             onDrop={(e) => {
               e.preventDefault();
@@ -163,6 +165,7 @@ function UpdateVenue() {
         </div>
       </form>
     </div>
+    </>
   );
 }
 

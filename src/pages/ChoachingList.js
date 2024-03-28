@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import { Table, Form, Row, Col, Button } from 'react-bootstrap'; // Import Bootstrap components
 import '../../src/Userlist.css';
+import { API_URL } from '../ApiUrl';
 
 
 function Categorylist() {
@@ -22,12 +23,15 @@ function Categorylist() {
   const fetchData = async () => {
     try {
       // Replace the URL with your actual API endpoint
-      const apiUrl = `https://api-kheloindore.swapinfotech.com/api/v1/kheloindore/category/fetch?page=${currentPage}&limit=${itemsPerPage}&search=${searchQuery}`;
+      const apiUrl = `${API_URL}/fetch-all-coaches?page=${currentPage}&limit=${itemsPerPage}&search=${searchQuery}`;
+
       const response = await fetch(apiUrl);
       const result = await response.json();
+      console.log(result)
 
       if (response.ok) {
-        setData(result.categories);
+        setData(result.coaches);
+
       } else {
         console.error('Failed to fetch data:', result.error);
       }
@@ -42,7 +46,7 @@ function Categorylist() {
   const handleEdit = async (row) => {
     console.log('Edit clicked for row:', row);
     try {
-      const response = await fetch(`https://api-kheloindore.swapinfotech.com/api/v1/kheloindore/category/update/${row._id}`, {
+      const response = await fetch(`${API_URL}/fetch-all-coaches/update/${row._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -65,7 +69,7 @@ function Categorylist() {
 
   const handleDelete = async (row) => {
     try {
-      const apiUrl = `https://api-kheloindore.swapinfotech.com/api/v1/kheloindore/category/delete/${row._id}`;
+      const apiUrl = `${API_URL}/delete-coach/${row._id}`;
 
       const response = await fetch(apiUrl, {
         method: 'DELETE',
@@ -104,7 +108,7 @@ function Categorylist() {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = data
-    .filter((row) => row.category_name.toLowerCase().includes(searchText.toLowerCase()))
+    .filter((row) => row.first_name.toLowerCase().includes(searchText.toLowerCase()))
     .slice(indexOfFirstItem, indexOfLastItem);
 
   return (
@@ -115,15 +119,15 @@ function Categorylist() {
           <Col xs={12} sm={6}>
             <Form.Control
               type="text"
-              className="searchInput"
+              className="search-input"
               placeholder="Search..."
               value={searchText}
               onChange={handleSearchInputChange}
             />
           </Col>
           <Col sm={6} className="d-flex justify-content-end">
-            <Link to="/categories/add">
-              <Button className="add-button mr-2">Add Coaching</Button>
+            <Link to="/coaches/add">
+              <button className="add-button mr-2">Add Coaching</button>
             </Link>
           </Col>
         </Form.Group>
@@ -131,21 +135,29 @@ function Categorylist() {
           <Table className='custom-table'>
             <thead>
               <tr>
-                <th style={{ width: '5%' }}>S.No.</th>
-                <th style={{ width: '62%' }}>Name</th>
-                <th style={{ width: '23%' }}>Status</th>
-                <th style={{ width: '10%' }}>Action</th>
+                <th style={{ width: '7%' }}>S.No.</th>
+                <th style={{ width: '13%' }}>First Name</th>
+                <th style={{ width: '13%' }}>Last Name</th>
+                <th style={{ width: '13%' }}>Location</th>
+                <th style={{ width: '13%' }}>Specializations</th>
+                <th style={{ width: '13%' }}>Experience</th>
+                <th style={{ width: '10%' }}>Status</th>
+                <th style={{ width: '7%' }}>Action</th>
               </tr>
             </thead>
             <tbody>
               {currentItems.map((row, index) => (
                 <tr key={row._id}>
                   <td>{index + 1 + indexOfFirstItem}</td>
-                  <td>{row.category_name}</td>
-                  <td>{row.status ? 'Active' : 'Inactive'}</td>
+                  <td>{row.first_name}</td>
+                  <td>{row.last_name}</td>
+                  <td>{Array.isArray(row.location.address) ? row.location.address.join(', ') : 'N/A'}</td>
+                  <td>{row.specializations.join(', ')}</td>
+                  <td>{row.experience}</td>
+                  <td>{row.isActive ? 'Active' : 'Inactive'}</td>
                   <td>
                     <div style={{ display: 'flex' }}>
-                      <Link to={`/categories/edit/${row._id}`} style={{ marginLeft: '1%' }}>
+                      <Link to={`/coaches/edit/${row._id}`} style={{ marginLeft: '1%' }}>
                         <EditOutlined
                           style={{
                             fontSize: '20px',

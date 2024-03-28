@@ -33,7 +33,7 @@ const { Header, Sider, Content } = Layout;
 const MainLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
   const {
-    token: { colorBgContainer },
+     token: { colorBgContainer },
   } = theme.useToken();
   const navigate = useNavigate();
   return (

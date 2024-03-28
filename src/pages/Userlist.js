@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import Swal from 'sweetalert2';
 import '../../src/Userlist.css';
+import { API_URL } from '../ApiUrl';
 
 function Userlist() {
   const [data, setData] = useState([]);
@@ -11,7 +12,7 @@ function Userlist() {
   const [searchText, setSearchText] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(10); // Adjust as needed
+  const [itemsPerPage] = useState(10); 
 
   useEffect(() => {
     fetchData();
@@ -20,7 +21,7 @@ function Userlist() {
   const fetchData = async () => {
     try {
       // Replace the URL with your actual API endpoint
-      const apiUrl = `https://api-kheloindore.swapinfotech.com/api/v1/kheloindore/user/getallUser?page=${currentPage}&limit=${itemsPerPage}&search=${searchQuery}`;
+      const apiUrl = `${API_URL}/user/getallUser?page=${currentPage}&limit=${itemsPerPage}&search=${searchQuery}`;
       const response = await fetch(apiUrl);
       const result = await response.json();
 
@@ -40,7 +41,7 @@ function Userlist() {
   const handleEdit = async (row) => {
     console.log('Edit clicked for row:', row);
     try {
-      const response = await fetch(`https://api-kheloindore.swapinfotech.com/api/v1/kheloindore/category/update/${row._id}`, {
+      const response = await fetch(`${API_URL}/super-admin/update-user/${row._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -63,7 +64,7 @@ function Userlist() {
 
   const handleDelete = async (row) => {
     try {
-      const apiUrl = `https://api-kheloindore.swapinfotech.com/api/v1/kheloindore/category/delete/${row._id}`;
+      const apiUrl = `${API_URL}/category/delete/${row._id}`;
 
       const response = await fetch(apiUrl, {
         method: 'DELETE',
@@ -74,7 +75,6 @@ function Userlist() {
 
       if (response.ok) {
         Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
-        // Update your state or refetch data to reflect the deletion
         fetchData();
       } else {
         console.error('Failed to delete category:', response.statusText);
@@ -114,27 +114,29 @@ function Userlist() {
           <Col sm={6}>
             <Form.Control
               type="text"
-              placeholder="Search by First Name"
+              placeholder="Search..."
               value={searchText}
               onChange={handleSearchInputChange}
               className='search-input'
             />
           </Col>
           <Col sm={6} className="d-flex justify-content-end">
+          <div>
             <Link to="/users/add">
               <button className="add-button">Add User</button>
             </Link>
+            </div>
           </Col>
         </Form.Group>
         <div className="table-container">
           <Table className="custom-table">
             <thead>
               <tr>
-                <th style={{ width: '5%' }}>S.No.</th> 
+                <th style={{ width: '7%' }}>S.No.</th> 
                 <th style={{ width: '30%' }}>First Name</th> 
-                <th style={{ width: '30%' }}>Last Name</th> 
-                <th style={{ width: '25%' }}>Status</th>
-                <th style={{ width: '10%' }}>Action</th>
+                <th style={{ width: '40%' }}>Last Name</th> 
+                <th style={{ width: '10%' }}>Status</th>
+                <th style={{ width: '7%' }}>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -146,7 +148,7 @@ function Userlist() {
                   <td>{row.status ? 'Active' : 'Inactive'}</td>
                   <td>
                     <div style={{ display: 'flex' }}>
-                      <Link to={`/UpdateCategor/${row._id}`} style={{ marginLeft: '1%' }}>
+                      <Link to={`/UpdateUser/${row._id}`} style={{ marginLeft: '1%' }}>
                         <EditOutlined
                           style={{
                             fontSize: '20px',

@@ -1,10 +1,21 @@
-
-
 import React, { useState, useEffect } from "react";
-import { BsArrowDownRight, BsArrowUpLeft } from "react-icons/bs";
+import { BsArrowUpRight, BsArrowUpLeft } from "react-icons/bs";
 import { Column } from "@ant-design/plots";
 import { Table } from "antd";
-import axios from "axios"; // Import axios for making API requests
+import axios from "axios"; 
+import { API_URL } from '../ApiUrl';
+
+  const data = [
+    {
+      key: '1',
+      name: 'John Doe',
+      
+    },
+    {
+      key: '2',
+      name: 'Jane Smith',
+    },
+  ];
 
 const columns = [
   {
@@ -21,7 +32,7 @@ const columns = [
   },
   {
     title: "Status",
-    dataIndex: "status", // Corrected dataIndex name
+    dataIndex: "status", 
   },
 ];
 
@@ -30,6 +41,7 @@ const Dashboard = () => {
   const [venueCount, setVenueCount] = useState(0);
   const [eventCount, setEventCount] = useState(0);
   const [currentDate, setCurrentDate] = useState("");
+  const [marchCount, setMarchCount] = useState(0); 
 
   useEffect(() => {
     // Fetch today's date
@@ -38,8 +50,7 @@ const Dashboard = () => {
     setCurrentDate(formattedDate);
 
     // Fetch counts from API
-    axios
-      .get("https://api-kheloindore.swapinfotech.com/api/v1/kheloindore/dashboard/count")
+    axios.get(`https://api-kheloindore.swapinfotech.com/api/v1/kheloindore/dashboard/count`)
       .then((response) => {
         setUserCount(response.data.userCount);
         setVenueCount(response.data.venueCount);
@@ -49,24 +60,46 @@ const Dashboard = () => {
         console.error("Error fetching counts:", error);
       });
 
+      axios.get(`${API_URL}/users-count-per-month`)
+      .then((response) => {
+        const marchData = response.data.find(item => item.type === "Mar");
+        if (marchData) {
+          setMarchCount(marchData.sales);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching March count:", error);
+      });
+
     // Update counts and current date every day
     const interval = setInterval(() => {
-      setCurrentDate(formattedDate); // Update the current date
-      axios
-        .get("https://api-kheloindore.swapinfotech.com/api/v1/kheloindore/dashboard/count")
+      const today = new Date();
+      const formattedDate = `${String(today.getDate()).padStart(2, '0')}/${String(today.getMonth() + 1).padStart(2, '0')}/${today.getFullYear()}`;
+      setCurrentDate(formattedDate);
+      axios.get(`https://api-kheloindore.swapinfotech.com/api/v1/kheloindore/dashboard/count`)
         .then((response) => {
           setUserCount(response.data.userCount);
           setVenueCount(response.data.venueCount);
           setEventCount(response.data.eventCount);
+          console.log(response);
         })
         .catch((error) => {
           console.error("Error fetching counts:", error);
         });
     }, 86400000); // Update every 24 hours
-
+    
     // Clear the interval on component unmount
     return () => clearInterval(interval);
   }, []);
+
+  const data1 = [
+    { key: '1', name: 'John Doe', product: 'Product A', status: 'Active' },
+    { key: '2', name: 'Jane Smith', product: 'Product B', status: 'Inactive' },
+    { key: '3', name: ' Doe', product: 'Product C', status: 'Active' },
+    { key: '4', name: ' Smith', product: 'Product D', status: 'Active' },
+    
+  ];
+  
 
   const data = [
     { type: "Jan", sales: 38 },
@@ -105,7 +138,7 @@ const Dashboard = () => {
           </div>
           <div className="d-flex flex-column align-items-end">
             <h6>
-              <BsArrowUpLeft /> 5%
+            <BsArrowUpRight /> 5%
             </h6>
             <p className="mb-0 desc"> {currentDate}</p>
           </div>
@@ -118,7 +151,7 @@ const Dashboard = () => {
           </div>
           <div className="d-flex flex-column align-items-end">
             <h6 className="red">
-              <BsArrowUpLeft /> 5%
+              <BsArrowUpRight /> 5%
             </h6>
             <p className="mb-0 desc"> {currentDate}</p>
           </div>
@@ -131,7 +164,7 @@ const Dashboard = () => {
           </div>
           <div className="d-flex flex-column align-items-end">
             <h6 className="green">
-              <BsArrowUpLeft /> 5%
+              <BsArrowUpRight /> 5%
             </h6>
             <p className="mb-0 desc">{currentDate}</p>
           </div>
@@ -148,7 +181,7 @@ const Dashboard = () => {
       <div className="mt-4">
         <h3 className="mb-5 title">Recent Booking</h3>
         <div>
-          <Table columns={columns} dataSource={data} />
+          <Table columns={columns} dataSource={data1} />
         </div>
       </div>
     </div>

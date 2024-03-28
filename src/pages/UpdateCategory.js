@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
@@ -6,6 +5,8 @@ import { Form } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { FiUpload, FiX } from 'react-icons/fi';
+import { API_URL } from '../ApiUrl';
+
 
 function Update() {
   const { _id } = useParams();
@@ -16,7 +17,7 @@ function Update() {
   const [filePreview, setFilePreview] = useState(null); // Define setFilePreview here
 
   // useEffect(() => {
-  //   axios.get(`https://api-kheloindore.swapinfotech.com/api/v1/kheloindore/category/fetch-ind/${_id}`)
+  //   axios.get(`${API_URL}/category/fetch-ind/${_id}`)
   //     .then(res => {
   //       setValues({ category_name: res.data.category.category_name, status: res.data.category.status });
   //       // Check if category has an image
@@ -30,7 +31,7 @@ function Update() {
 
 
   useEffect(() => {
-    axios.get(`https://api-kheloindore.swapinfotech.com/api/v1/kheloindore/category/fetch-ind/${_id}`)
+    axios.get(`${API_URL}/category/fetch-ind/${_id}`)
       .then(res => {
         setValues({ category_name: res.data.category.category_name, status: res.data.category.status });
         
@@ -62,7 +63,7 @@ function Update() {
         formData.append('photo', file);
       }
       
-      axios.put(`https://api-kheloindore.swapinfotech.com/api/v1/kheloindore/category/update/${_id}`, formData)
+      axios.put(`${API_URL}/category/update/${_id}`, formData)
         .then(res => {
           console.log(res, 'after backend');
           Swal.fire({

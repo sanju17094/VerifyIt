@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import { Table, Form, Row, Col, Button } from 'react-bootstrap'; // Import Bootstrap components
 import '../../src/Userlist.css';
+import { API_URL } from '../ApiUrl';
 
 
 function Categorylist() {
@@ -22,7 +23,7 @@ function Categorylist() {
   const fetchData = async () => {
     try {
       // Replace the URL with your actual API endpoint
-      const apiUrl = `https://api-kheloindore.swapinfotech.com/api/v1/kheloindore/category/fetch?page=${currentPage}&limit=${itemsPerPage}&search=${searchQuery}`;
+      const apiUrl = `${API_URL}/category/fetch?page=${currentPage}&limit=${itemsPerPage}&search=${searchQuery}`;
       const response = await fetch(apiUrl);
       const result = await response.json();
 
@@ -42,7 +43,7 @@ function Categorylist() {
   const handleEdit = async (row) => {
     console.log('Edit clicked for row:', row);
     try {
-      const response = await fetch(`https://api-kheloindore.swapinfotech.com/api/v1/kheloindore/category/update/${row._id}`, {
+      const response = await fetch(`${API_URL}/category/update/${row._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -65,7 +66,7 @@ function Categorylist() {
 
   const handleDelete = async (row) => {
     try {
-      const apiUrl = `https://api-kheloindore.swapinfotech.com/api/v1/kheloindore/category/delete/${row._id}`;
+      const apiUrl = `${API_URL}/category/delete/${row._id}`;
 
       const response = await fetch(apiUrl, {
         method: 'DELETE',
@@ -115,26 +116,29 @@ function Categorylist() {
           <Col xs={12} sm={6}>
             <Form.Control
               type="text"
-              className="searchInput"
+              className="search-input"
               placeholder="Search..."
               value={searchText}
               onChange={handleSearchInputChange}
+
             />
           </Col>
-          <Col sm={6} className="d-flex justify-content-end">
-            <Link to="/categories/add">
-              <Button className="add-button mr-2">Add Category</Button>
-            </Link>
+          <Col xs={12} sm={6} className="d-flex justify-content-end align-items-center">
+            <div>
+              <Link to="/categories/add">
+                <button className="add-button mr-2">Add Category</button>
+              </Link>
+            </div>
           </Col>
         </Form.Group>
         <div className="table-container">
           <Table className='custom-table'>
             <thead>
               <tr>
-                <th style={{ width: '5%' }}>S.No.</th>
+                <th style={{ width: '7%' }}>S.No.</th>
                 <th style={{ width: '62%' }}>Name</th>
-                <th style={{ width: '23%' }}>Status</th>
-                <th style={{ width: '10%' }}>Action</th>
+                <th style={{ width: '10%' }}>Status</th>
+                <th style={{ width: '7%' }}>Action</th>
               </tr>
             </thead>
             <tbody>

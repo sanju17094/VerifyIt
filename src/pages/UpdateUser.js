@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import "../../src/User.css";
+import { useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import { API_URL } from '../ApiUrl';
-import { useNavigate } from 'react-router-dom';
 
-
-const Users = () => {
+const UpdateUsers = () => {
+  const { userId } = useParams();
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
@@ -18,7 +18,20 @@ const Users = () => {
   });
 
   const [errors, setErrors] = useState({});
-  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Fetch user data based on userId
+    axios
+      .get(`${API_URL}/user/getallUser/${userId}`)
+      .then((res) => {
+        const { first_name, last_name, email, mobile, role } = res.data;
+        setFormData({ first_name, last_name, email, mobile, role });
+      })
+      .catch((error) => {
+        console.error("Error fetching user data:", error);
+      });
+  }, [userId]);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -36,55 +49,23 @@ const Users = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Validate form fields
-    const validationErrors = {};
-    if (!formData.first_name.trim()) {
-      validationErrors.first_name = "First name is required";
-    }
-    if (!formData.last_name.trim()) {
-      validationErrors.last_name = "Last name is required";
-    }
-    if (
-      !formData.mobile.trim() ||
-      formData.mobile.trim().length !== 10 ||
-      !/^\d+$/.test(formData.mobile)
-    ) {
-      validationErrors.mobile = "Mobile number must be a 10-digit number";
-    }
-    if (!formData.role.trim()) {
-      validationErrors.role = "Role is required";
-    }
-
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      return;
-    }
-
     try {
-      const response = await axios.post(
-        `${API_URL}/super-admin/add-user`,
-        formData
-      );
-      console.log(response);
+      const response = await axios.put(`${API_URL}/super-admin/update-user/${userId}`, formData);
+      console.log(response.data);
       Swal.fire({
         icon: "success",
         title: "Success!",
-        text: "Registration successful",
-
-      }).then(() => {
-        navigate('/users');
-       } )
+        text: "User updated successfully",
+      });
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error updating user:", error);
       Swal.fire({
         icon: "error",
-        title: "Validation Error",
-        text: "Number Already Exist",
+        title: "Error",
+        text: "Failed to update user",
       });
     }
   };
-
   const handleCancel = () => {
     // Clear form data
     setFormData({
@@ -100,7 +81,7 @@ const Users = () => {
 
   return (
     <>
-      <h3 className="mb-4 title">Users</h3>
+     <h3 className="mb-4 title">Update Users</h3>
       <Container
         style={{
           maxWidth: "1000px",
@@ -233,7 +214,7 @@ const Users = () => {
                   className="submit-button"
                   style={{ marginRight: "10px" }}
                 >
-                  Submit
+                  Update
                 </button>
                 {/* <button
                   type="button"
@@ -252,4 +233,4 @@ const Users = () => {
   );
 };
 
-export default Users;
+export default UpdateUsers;

@@ -1,5 +1,3 @@
-
-
 import '../../src/Category.css';
 import { Form } from "react-bootstrap";
 import Swal from "sweetalert2";
@@ -7,6 +5,7 @@ import { Link } from 'react-router-dom';
 import React, { useState } from "react";
 import axios from "axios";
 import { FiUpload, FiX } from 'react-icons/fi';
+import { API_URL } from '../ApiUrl';
 
 function Category() {
   const [input, setInput] = useState({
@@ -48,7 +47,7 @@ function Category() {
         });
 
         const response = await axios.post(
-          "http://localhost:4000/api/v1/kheloindore/category/create",
+          `${API_URL}/category/create`,
           formData,
           {
             headers: {

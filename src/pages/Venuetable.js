@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import Swal from 'sweetalert2';
 import '../../src/Userlist.css';
+import { API_URL } from '../ApiUrl';
 
 function VenueList() {
   const [records, setRecords] = useState([]);
@@ -18,7 +19,7 @@ function VenueList() {
 
   const fetchData = async () => {
     try {
-      const apiUrl = `http://localhost:4000/api/v1/kheloindore/venue/getVenue?page=${currentPage}&limit=${itemsPerPage}&search=${searchText}`;
+      const apiUrl = `${API_URL}/venue/getVenue?page=${currentPage}&limit=${itemsPerPage}&search=${searchText}`;
       const response = await fetch(apiUrl);
       const result = await response.json();
 
@@ -37,7 +38,7 @@ function VenueList() {
 
   const handleEdit = async (venue) => {
     try {
-      const apiUrl = `http://localhost:4000/api/v1/kheloindore/venue/update/${venue._id}`; // Replace with your actual API endpoint for editing
+      const apiUrl = `${API_URL}/venue/update/${venue._id}`; // Replace with your actual API endpoint for editing
   
       const response = await fetch(apiUrl, {
         method: 'POST',
@@ -69,7 +70,7 @@ function VenueList() {
   
   const handleDelete = async (venue) => {
     try {
-      const apiUrl = `http://localhost:4000/api/v1/kheloindore/venue/delete/${venue._id}`;
+      const apiUrl = `${API_URL}/venue/delete/${venue._id}`;
 
       const response = await fetch(apiUrl, {
         method: 'DELETE',
@@ -115,14 +116,15 @@ function VenueList() {
           <Col sm={6}>
             <Form.Control
               type="text"
-              placeholder="Search by Venue Name"
+              placeholder="Search..."
               value={searchText}
               onChange={handleSearchInputChange}
+              className="search-input"
             />
           </Col>
           <Col sm={6} className="d-flex justify-content-end">
             <Link to="/venues/add">
-              <Button className="add-button mr-2">Add Venue</Button>
+              <button className="add-button mr-2">Add Venue</button>
             </Link>
           </Col>
         </Form.Group>
@@ -130,10 +132,10 @@ function VenueList() {
           <Table className='custom-table'>
             <thead>
               <tr>
-                <th style={{ width: '5%' }}>S.No.</th>
+                <th style={{ width: '7%' }}>S.No.</th>
                 <th style={{ width: '62%' }}>Venue Name</th>
-                <th style={{ width: '23%' }}>Category</th>
-                <th style={{ width: '10%' }}>Action</th>
+                <th style={{ width: '33%' }}>Category</th>
+                <th style={{ width: '7%' }}>Action</th>
               </tr>
             </thead>
             <tbody>

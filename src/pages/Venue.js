@@ -8,6 +8,7 @@ import Select from 'react-select'
 import Multiselect from 'multiselect-react-dropdown';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileUpload } from '@fortawesome/free-solid-svg-icons';
+import { API_URL } from '../ApiUrl';
 
 import {
   CountrySelect,
@@ -27,8 +28,6 @@ const VenueBooking = () => {
     images: "",
     Category: "",
     amenities: "",
-    venuerules: "",
-    timings: "",
     activities: "",
   });
 
@@ -94,7 +93,8 @@ const VenueBooking = () => {
   };
 
   const handleAmenitiesChange = (selectedList) => {
-    setSelectedAmenities(selectedList);
+    setSelectedAmenities({...formData,selectedAmenities: selectedList.value});
+    console.log(selectedAmenities)
   };
 
   const handleCategoryChange = (selectedOption) => {
@@ -104,7 +104,7 @@ const VenueBooking = () => {
   const fetchCategories = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:4000/api/v1/kheloindore/category/fetch"
+        `${API_URL}/category/fetch`
       );
       console.log(response.data.categories, "<response.data.categories");
       setCategories(response.data.categories);
@@ -117,7 +117,7 @@ const VenueBooking = () => {
 
   const fetchActivities = async () => {
     try {
-      const response = await axios.get('http://localhost:4000/api/v1/kheloindore/activity/fetch');
+      const response = await axios.get('${API_URL}/activity/fetch');
       setActivitiesOptions(response.data.activities);
       console.log(activities.activityName, "<activities.activityName");
     } catch (error) {
@@ -141,26 +141,20 @@ const VenueBooking = () => {
     });
 
     // Update Category field
-    if (name === "category") {
-      setFormData({
-        ...formData,
-        Category: value,
-      });
-    }
-    // Update SubCategory field
-    else if (name === "subcategory") {
-      setFormData({
-        ...formData,
-        SubCategory: value,
-      });
-    }
-    // Update other fields
-    else {
-      setFormData({
-        ...formData,
-        [name]: value,
-      });
-    }
+    // if (name === "category") {
+    //   setFormData({
+    //     ...formData,
+    //     Category: value,
+    //   });
+    // }
+    
+    // // Update other fields
+    // else {
+    //   setFormData({
+    //     ...formData,
+    //     [name]: value,
+    //   });
+    // }
   };
   function code4(event) {
     console.log("country code....", event);
@@ -173,8 +167,6 @@ const VenueBooking = () => {
     // Check if any required fields are empty
     const requiredFields = {
       name: "Venue Name",
-      email: "Email Address",
-      phone: "Phone Number",
       address: "Address",
       state: "State",
       city: "city",
@@ -193,7 +185,7 @@ const VenueBooking = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:4000/api/v1/kheloindore/venue1/addVenue",
+        "${API_URL}/venue/addVenue",
         formData
       );
 
@@ -281,6 +273,7 @@ const VenueBooking = () => {
                     selectedValues={selectedAmenities}
                     onSelect={handleAmenitiesChange}
                     onRemove={handleAmenitiesChange}
+                    selectedAmenities={formData.amenities}
                     placeholder="Select Amenities"
                   />
                 </div>
@@ -374,15 +367,18 @@ const VenueBooking = () => {
             <h6>State</h6>
             <StateSelect
               countryid={countryid}
+              value={formData.state}
               onChange={(e) => {
                 setstateid(e.id);
               }}
               placeHolder="Select State"
+              
             />
             <h6>City</h6>
             <CitySelect
               countryid={countryid}
               stateid={stateid}
+              value={formData.city}
               onChange={(e) => {
                 console.log(e);
               }}
