@@ -6,12 +6,13 @@ import React, { useState } from "react";
 import axios from "axios";
 import { FiUpload, FiX } from 'react-icons/fi';
 import { API_URL } from '../ApiUrl';
+import { useNavigate } from 'react-router-dom';
 
 function Category() {
   const [input, setInput] = useState({
     category_name: "",
-    status: true,
     images: [],
+    status: "true",
   });
 
   const handleFileInputChange = (e) => {
@@ -27,6 +28,12 @@ function Category() {
       ...prevState,
       images: prevState.images.filter((_, i) => i !== index),
     }));
+  };
+
+  const navigate = useNavigate();
+
+  const handleCancel = () => {
+    navigate('/categories');
   };
 
   const handleSubmit = async (event) => {
@@ -61,7 +68,6 @@ function Category() {
           text: "Category added successfully!",
           icon: "success"
         }).then(() => {
-          // Redirect to Categorylist after successful submission
           window.location.href = "/categories";
         });
       } catch (error) {
@@ -132,10 +138,25 @@ function Category() {
           </div>
         </div>
 
+        <Form.Group controlId="formCheckbox">
+          <div className="checkbox-container">
+            <Form.Check
+              type="checkbox"
+              id="statusCheckbox"
+              name="status"
+              aria-label="option 1"
+              className="checkbox-input"
+              checked={input.status || false}
+              onChange={e => setInput({ ...input, status: e.target.checked })}
+            />
+          </div>
+          <Form.Label className="checkbox-label">Status</Form.Label>
+        </Form.Group>
+
         <div className="mb-3">
           <form>
             <button className="btn1" type="save" onClick={handleSubmit}>Save</button>
-            <Link to="/categories"><button className="btn2" >Cancel</button></Link>
+           <button className="btn2" type="cancel" onClick={handleCancel}>Cancel</button>
           </form>
         </div>
       </div>

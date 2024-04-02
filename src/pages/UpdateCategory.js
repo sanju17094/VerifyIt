@@ -11,7 +11,7 @@ import { API_URL } from '../ApiUrl';
 function Update() {
   const { _id } = useParams();
   const navigate = useNavigate();
-  
+
   const [values, setValues] = useState({ category_name: '', status: false });
   const [file, setFile] = useState(null);
   const [filePreview, setFilePreview] = useState(null); // Define setFilePreview here
@@ -34,7 +34,7 @@ function Update() {
     axios.get(`${API_URL}/category/fetch-ind/${_id}`)
       .then(res => {
         setValues({ category_name: res.data.category.category_name, status: res.data.category.status });
-        
+
         // Check if category has an image
         if (res.data.category.images.length > 0) {
           const imageUrl = res.data.category.images[0]; // Assuming only one image is allowed
@@ -44,7 +44,7 @@ function Update() {
       })
       .catch(err => console.log(err));
   }, [_id]);
-  
+
 
 
   const handleSubmit = (e) => {
@@ -62,7 +62,7 @@ function Update() {
       if (file) {
         formData.append('photo', file);
       }
-      
+
       axios.put(`${API_URL}/category/update/${_id}`, formData)
         .then(res => {
           console.log(res, 'after backend');
@@ -93,6 +93,10 @@ function Update() {
     }
   };
 
+  const handleCancel = () => {
+    navigate('/categories');
+  };
+
   return (
     <div className="form">
       <form onSubmit={handleSubmit}>
@@ -111,10 +115,10 @@ function Update() {
           />
         </div>
 
-       
+
 
         <div className="mb-3">
-          <h6 style={{fontWeight:'bold',marginBottom:'10px'}}>Update Photo</h6>
+          <h6 style={{ fontWeight: 'bold', marginBottom: '10px' }}>Update Photo</h6>
           <div
             onDrop={(e) => {
               e.preventDefault();
@@ -124,14 +128,14 @@ function Update() {
             onDragOver={(e) => e.preventDefault()}
             style={{ border: '2px dashed #ccc', padding: '20px', textAlign: 'center', width: '300px' }}
           >
-            <h3 style={{fontSize: '18px'}}>Drag & Drop here</h3>
+            <h3 style={{ fontSize: '18px' }}>Drag & Drop here</h3>
             <div style={{ marginBottom: '10px' }}>
               <FiUpload style={{ fontSize: '48px', marginBottom: '10px' }} />
               <input type="file" onChange={handleFileChange} style={{ display: 'none' }} />
               <button className='btn3' onClick={() => document.querySelector('input[type=file]').click()}> Or Click to Select </button>
             </div>
-            
-{/* 
+
+            {/* 
             {filePreview && (
   <div style={{ position: 'relative', display: 'inline-block' }}>
     <img src={filePreview} alt="Selected Photo" style={{ width: '100px', height: '100px', margin: '5px' }} />
@@ -149,20 +153,20 @@ function Update() {
 
 
 
-{filePreview && (
-  <div style={{ position: 'relative', display: 'inline-block' }}>
-    <img src={filePreview} alt="Selected Photo" style={{ width: '100px', height: '100px', margin: '5px' }} />
-    <button
-      onClick={() => {
-        setFile(null);
-        setFilePreview(null);
-      }}
-      style={{ position: 'absolute', top: '5px', right: '5px', background: 'none', border: 'none', cursor: 'pointer' }}
-    >
-      <FiX />
-    </button>
-  </div>
-)}
+            {filePreview && (
+              <div style={{ position: 'relative', display: 'inline-block' }}>
+                <img src={filePreview} alt="Selected Photo" style={{ width: '100px', height: '100px', margin: '5px' }} />
+                <button
+                  onClick={() => {
+                    setFile(null);
+                    setFilePreview(null);
+                  }}
+                  style={{ position: 'absolute', top: '5px', right: '5px', background: 'none', border: 'none', cursor: 'pointer' }}
+                >
+                  <FiX />
+                </button>
+              </div>
+            )}
 
 
           </div>
@@ -188,7 +192,7 @@ function Update() {
           <button className="btn1" type="submit" onClick={(e) => handleSubmit(e)}>
             Update
           </button>
-          <Link to="/categories"><button className="btn2">Cancel</button></Link>
+          <button className="btn2" type="cancel" onClick={handleCancel}>Cancel</button>
         </div>
       </form>
     </div>

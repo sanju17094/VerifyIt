@@ -26,7 +26,7 @@ import { Layout, Menu, theme } from "antd";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExampleIcon } from '@fortawesome/free-solid-svg-icons';
-import logoImage from "../../src/image.png";
+import logoImage from "../Khelo Indore Logo/Group 86.png";
 import '../../src/MainLayout.css'
 
 const { Header, Sider, Content } = Layout;
@@ -36,6 +36,12 @@ const MainLayout = () => {
      token: { colorBgContainer },
   } = theme.useToken();
   const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('token'); 
+    navigate('/'); 
+  };
+
   return (
     <Layout /* onContextMenu={(e) => e.preventDefault()} */>
       <Sider trigger={null} collapsible collapsed={collapsed}>
@@ -43,8 +49,7 @@ const MainLayout = () => {
           <h2 className="text-white fs-5 text-center py-3 mb-0">
             <span className="sm-logo">KI</span>
             <img src={logoImage} alt="Khelo Indore Logo" className="lg-logo" />
-            <span className="lg-logo">Khelo Indore</span>
-                
+            <span className="lg-logo"></span>
           </h2>
         </div>
         <Menu
@@ -154,9 +159,9 @@ const MainLayout = () => {
               // ],
             },
             {
-              key: "coaching",
+              key: "coaches",
               icon: <FaBloggerB className="fs-4" />,
-              label: "Coaching",
+              label: "Coach",
               // children: [
               //   {
               //     key: "blog",
@@ -195,6 +200,11 @@ const MainLayout = () => {
               icon: <FaShoppingBag className="fs-4" />,
               label: "Shop",
             },
+            // {
+            //   key: "",
+            //   icon: <FaShoppingBag className="fs-4" />,
+            //   label: "Shop",
+            // },
           ]}
         />
       </Sider>
@@ -226,9 +236,9 @@ const MainLayout = () => {
             </div> */}
 
             <div className="d-flex gap-3 align-items-center dropdown">
-              <div>
+              {/* <div>
                 <img src={logoImage} alt="Khelo Indore Logo" className="lg-logo" />
-              </div>
+              </div> */}
               <div
                 role="button"
                 id="dropdownMenuLink"
@@ -244,19 +254,19 @@ const MainLayout = () => {
                   <Link
                     className="dropdown-item py-1 mb-1"
                     style={{ height: "auto", lineHeight: "20px" }}
-                    to="/"
+                    to="/dashboard"
                   >
                     View Profile
                   </Link>
                 </li>
                 <li>
-                  <Link
-                    className="dropdown-item py-1 mb-1"
-                    style={{ height: "auto", lineHeight: "20px" }}
-                    to="/Loginadmin"
-                  >
-                    Login
-                  </Link>
+                <button
+                  className="dropdown-item py-1 mb-1" // Changed from Link to button
+                  style={{ height: "auto", lineHeight: "20px" }}
+                  onClick={handleLogout} 
+                >
+                  Logout
+                </button>
                 </li>
               </div>
             </div>

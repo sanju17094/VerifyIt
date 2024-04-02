@@ -24,6 +24,7 @@ function VenueList() {
       const result = await response.json();
 
       if (response.ok) {
+         console.log("ye data venue ki list ka hai...",result.venue)
         setRecords(result.venue); // Update to setRecords(result.venue)
       } else {
         console.error('Failed to fetch data:', result.error);
@@ -38,18 +39,13 @@ function VenueList() {
 
   const handleEdit = async (venue) => {
     try {
-      const apiUrl = `${API_URL}/venue/update/${venue._id}`; // Replace with your actual API endpoint for editing
-  
+      const apiUrl = `${API_URL}/venue/edit/${venue._id}`; 
       const response = await fetch(apiUrl, {
-        method: 'POST',
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          // Send data to update here
-          name: 'Updated Venue Name', // Example: Updated venue name
-          category: ['Updated Category'], // Example: Updated category name
-          // Add other fields as needed
         }),
       });
   
@@ -133,8 +129,9 @@ function VenueList() {
             <thead>
               <tr>
                 <th style={{ width: '7%' }}>S.No.</th>
-                <th style={{ width: '62%' }}>Venue Name</th>
-                <th style={{ width: '33%' }}>Category</th>
+                <th style={{ width: '52%' }}>Venue Name</th>
+                <th style={{ width: '23%' }}>Category</th>
+                <th style={{ width: '10%' }}>Status</th>
                 <th style={{ width: '7%' }}>Action</th>
               </tr>
             </thead>
@@ -143,7 +140,8 @@ function VenueList() {
                 <tr key={venue._id}>
                   <td>{index + 1 + indexOfFirstItem}</td>
                   <td>{venue.name}</td>
-                  <td>{venue.category.join(', ')}</td> 
+                  <td>{venue.categories}</td>
+                  <td>{venue.status ? 'Active' : 'Inactive'}</td>
                   <td>
                     <div style={{ display: 'flex' }}>
                       <Link to={`/venues/edit/${venue._id}`} style={{ marginRight: '5px' }}>

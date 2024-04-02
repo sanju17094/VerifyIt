@@ -1,69 +1,124 @@
-import { useState } from "react"; 
-import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
-import axios from "axios";
+import React from 'react';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import axios from 'axios';
+import { css } from '@emotion/react';
+import { ClipLoader } from 'react-spinners';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import logoImage from '../../src/image.png';
-import '../../src/Loginadmin.css'
+import '../../src/Loginadmin.css';
 import { API_URL } from '../ApiUrl';
 
-
-
 function Loginadmin() {
-  const [mobile, setMobile] = useState('');
-  const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleEmail = (e) => {
-    setMobile(e.target.value);
-  }
+  const validationSchema = Yup.object().shape({
+    mobile: Yup.string()
+      .matches(/^\d{10}$/, 'Mobile number must be exactly 10 digits')
+      .test('is-correct-number', 'Incorrect mobile number', function (value) {
+        // Check if the entered mobile number is 9999999999
+        return value === '9999999999';
+      })
+      .required('Mobile number is required'),
+    password: Yup.string()
+      .required('Password is required')
+      .matches(/^admin$/, 'Incorrect password'),
+  });
 
-  const handlePassword = (e) => {
-    setPassword(e.target.value);
-  }
 
-  const handleApi = () => {
-    if (!mobile.trim() || !password.trim()) {
-      Swal.fire({
-        title: 'Validation Error!',
-        text: 'Please enter mobile number and password',
-        icon: 'error',
-      });
-    } else {
-      axios
-        .post(`${API_URL}/user/login`, {
-          mobile: mobile,
-          password: password,
-        })
-        .then((response) => {
-          console.warn('result', response.data);
-          localStorage.setItem('token', response.data.token);
-          navigate('/dashboard');
-        })
-        .catch((error) => {
-          console.log('Invalid mobile number or password');
-          console.log(error);
+  const formik = useFormik({
+    initialValues: {
+      mobile: '',
+      password: '',
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values, { setSubmitting }) => {
+      setSubmitting(true); // Set submitting to true before making API call
+      if (values.password === 'admin') {
+        handleApi(values, setSubmitting); // Pass setSubmitting to handleApi function
+      } else {
+        Swal.fire({
+          title: 'Incorrect Password',
+          text: 'Please enter the correct password to log in',
+          icon: 'error',
         });
-    }
+        setSubmitting(false); // Reset submitting state on error
+      }
+    },
+  });
+
+  const handleApi = (formData, setSubmitting) => {
+    console.log('Mobile:', formData.mobile);
+    console.log('Password:', formData.password);
+
+    axios
+      .post(`${API_URL}/user/login`, {
+        mobile: formData.mobile,
+        password: formData.password,
+      })
+      .then((response) => {
+        console.warn('result', response);
+        localStorage.setItem('token', JSON.stringify(response.data.token));
+        console.log('Token:', response.data.token);
+        setSubmitting(false); // Reset submitting state after successful API call
+        navigate('/dashboard');
+      })
+      .catch((error) => {
+        console.log('Invalid mobile number or password');
+        console.log(error);
+        setSubmitting(false); // Reset submitting state on API call error
+      });
   };
-  
+
+
+  const override = css`
+    display: block;
+    margin: 0 auto;
+  `;
+
   return (
     <div className="con">
       <div className="row justify-content-center">
         <div className="col-md-6">
           <div className="card mt-5">
             <div className="card-body">
+            {/* <h2>Login</h2> */}
               <img src={logoImage} alt="Logo" className="logo-image" style={{ maxWidth: '80px' }} />
-              <form>
+              <form onSubmit={formik.handleSubmit}>
                 <div className="form-group">
                   <label htmlFor="mobile" style={{ fontWeight: 'bold' }}>Mobile Number</label>
-                  <input value={mobile} onChange={handleEmail} type="text" className="form-control" id="mobile" />
+                  <input
+                    id="mobile"
+                    name="mobile"
+                    type="text"
+                    maxLength={10}
+                    className="form-control"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.mobile}
+                  />
+                  {formik.touched.mobile && formik.errors.mobile ? (
+                    <div className="text-danger">{formik.errors.mobile}</div>
+                  ) : null}
                 </div>
                 <div className="form-group">
                   <label htmlFor="password" style={{ fontWeight: 'bold' }}>Password</label>
-                  <input value={password} onChange={handlePassword} type="password" className="form-control" id="password" />
+                  <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    className="form-control"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.password}
+                  />
+                  {formik.touched.password && formik.errors.password ? (
+                    <div className="text-danger">{formik.errors.password}</div>
+                  ) : null}
                 </div>
-                <button onClick={handleApi} type="button" className="btn btn-dark">Login</button>
+                <button type="submit" className="btn btn-dark">Login</button>
+                <ClipLoader color={"#000"} loading={formik.isSubmitting} css={override} size={30} />
               </form>
             </div>
           </div>

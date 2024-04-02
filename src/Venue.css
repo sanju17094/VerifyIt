@@ -7,7 +7,12 @@
   width: 100%;
   font-weight: 400 !important;
 }
-
+.stsearch-box input{
+  border: none !important;
+}
+.stsearch-box input:focus{
+  border: none !important;
+}
 
 .form-group {
   margin-bottom: 15px;

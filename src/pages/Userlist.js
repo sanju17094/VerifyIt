@@ -47,24 +47,23 @@ function Userlist() {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          category_name: data.category_name
         })
       });
 
       if (response.ok) {
-        console.log('Category name updated successfully');
+        console.log('User name updated successfully');
       } else {
         const responseData = await response.json();
-        console.error('Failed to update category name:', responseData.message || 'Unknown error');
+        console.error('Failed to update User name:', responseData.message || 'Unknown error');
       }
     } catch (error) {
-      console.error('Error updating category name:', error);
+      console.error('Error updating User name:', error);
     }
   };
 
   const handleDelete = async (row) => {
     try {
-      const apiUrl = `${API_URL}/category/delete/${row._id}`;
+      const apiUrl = `${API_URL}/user/delete/${row._id}`;
 
       const response = await fetch(apiUrl, {
         method: 'DELETE',
@@ -77,18 +76,18 @@ function Userlist() {
         Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
         fetchData();
       } else {
-        console.error('Failed to delete category:', response.statusText);
-        Swal.fire('Error', 'Failed to delete category.', 'error');
+        console.error('Failed to delete User:', response.statusText);
+        Swal.fire('Error', 'Failed to delete User.', 'error');
       }
     } catch (error) {
-      console.error('Error deleting category:', error);
-      Swal.fire('Error', 'An error occurred while deleting the category.', 'error');
+      console.error('Error deleting User:', error);
+      Swal.fire('Error', 'An error occurred while deleting the User.', 'error');
     }
   };
 
   const handleSearch = () => {
     setSearchQuery(searchText);
-    setCurrentPage(1); // Reset to first page when searching
+    setCurrentPage(1); 
   };
 
   const handleSearchInputChange = (e) => {
@@ -134,7 +133,8 @@ function Userlist() {
               <tr>
                 <th style={{ width: '7%' }}>S.No.</th> 
                 <th style={{ width: '30%' }}>First Name</th> 
-                <th style={{ width: '40%' }}>Last Name</th> 
+                <th style={{ width: '30%' }}>Last Name</th>
+                <th style={{ width: '20%' }}>Role</th> 
                 <th style={{ width: '10%' }}>Status</th>
                 <th style={{ width: '7%' }}>Action</th>
               </tr>
@@ -145,6 +145,7 @@ function Userlist() {
                   <td>{index + 1 + indexOfFirstItem}</td>
                   <td>{row.first_name}</td>
                   <td>{row.last_name}</td>
+                  <td>{row.role}</td>
                   <td>{row.status ? 'Active' : 'Inactive'}</td>
                   <td>
                     <div style={{ display: 'flex' }}>

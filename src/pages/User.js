@@ -74,7 +74,7 @@ const Users = () => {
 
       }).then(() => {
         navigate('/users');
-       } )
+      })
     } catch (error) {
       console.error("Error:", error);
       Swal.fire({
@@ -231,18 +231,16 @@ const Users = () => {
                 <button
                   type="submit"
                   className="submit-button"
-                  style={{ marginRight: "10px" }}
                 >
                   Submit
                 </button>
-                {/* <button
+                <button
                   type="button"
                   className="cancel-button"
                   onClick={handleCancel}
-                  style={{ backgroundColor: "#303030", color: "#fff" }}
                 >
                   Cancel
-                </button> */}
+                </button>
               </div>
             </Col>
           </Row>

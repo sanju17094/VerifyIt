@@ -35,7 +35,7 @@ function Loginuser() {
   const { isSuccess, message } = authState.auth;
 
   if (isSuccess) {
-    navigate("admin");
+    // navigate("admin");
   }
 
   const handleMobileChange = (e) => {
@@ -54,7 +54,8 @@ function Loginuser() {
       mobile:mobile,
       password: password
     }).then((result) => {
-      console.log(result.data)
+      console.log(result,"token check");
+      localStorage.setItem('')
       alert('success')
     })
       .catch(error => {

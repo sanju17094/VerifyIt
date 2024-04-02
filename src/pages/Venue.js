@@ -9,6 +9,7 @@ import Multiselect from 'multiselect-react-dropdown';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileUpload } from '@fortawesome/free-solid-svg-icons';
 import { API_URL } from '../ApiUrl';
+import { useNavigate } from 'react-router-dom';
 
 import {
   CountrySelect,
@@ -25,13 +26,10 @@ const VenueBooking = () => {
     state: "",
     zipCode: "",
     city: "",
-    images: "",
-    Category: "",
-    amenities: "",
-    activities: "",
   });
 
   const amenitiesOptions = [
+    { name: 'Select' },
     { name: 'Parking' },
     { name: 'Washroom' },
     { name: 'Drinking Water' },
@@ -48,8 +46,7 @@ const VenueBooking = () => {
   useEffect(() => {
     fetchCategories();
     setCountryid(101);
-    fetchActivities();
-    // Assuming you have a function to fetch subcategories without specifying a category ID
+    // fetchActivities();
   }, []);
   console.log(formData, "fromdata value check");
 
@@ -64,10 +61,7 @@ const VenueBooking = () => {
   const [activities, setActivities] = useState([]);
   const [activitiesOptions, setActivitiesOptions] = useState([]);
   const [selectedActivities, setSelectedActivities] = useState([]);
-
-
-
-
+  const navigate = useNavigate();
 
   const handleDrop = (e) => {
     e.preventDefault();
@@ -77,8 +71,13 @@ const VenueBooking = () => {
 
   const handlePhotoChange = (e) => {
     const newFiles = [...e.target.files];
+    // Append new files to the existing files state
     setFiles([...files, ...newFiles]);
+  
+    // Update the formData state with the new files array
+    setFormData({...formData, files: [...files, ...newFiles]});
   };
+  
 
   const handleRemove = (index) => {
     const updatedFiles = files.filter((file, i) => i !== index);
@@ -93,12 +92,17 @@ const VenueBooking = () => {
   };
 
   const handleAmenitiesChange = (selectedList) => {
-    setSelectedAmenities({...formData,selectedAmenities: selectedList.value});
-    console.log(selectedAmenities)
+    setFormData({ ...formData, selectedAmenities: selectedList });
+    // console.log(selectedList,"selected list")
   };
 
   const handleCategoryChange = (selectedOption) => {
     setFormData({ ...formData, category: selectedOption.value });
+  };
+
+
+  const handleCancel = () => {
+    navigate('/venues');
   };
 
   const fetchCategories = async () => {
@@ -106,7 +110,7 @@ const VenueBooking = () => {
       const response = await axios.get(
         `${API_URL}/category/fetch`
       );
-      console.log(response.data.categories, "<response.data.categories");
+      console.log(response.data, "<response.data.categories");
       setCategories(response.data.categories);
       console.log(categories.category_name, "<category.category_name");
     } catch (error) {
@@ -115,22 +119,22 @@ const VenueBooking = () => {
   };
 
 
-  const fetchActivities = async () => {
-    try {
-      const response = await axios.get('${API_URL}/activity/fetch');
-      setActivitiesOptions(response.data.activities);
-      console.log(activities.activityName, "<activities.activityName");
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
+  // const fetchActivities = async () => {
+  //   try {
+  //     const response = await axios.get('${API_URL}/activity/fetch');
+  //     setActivitiesOptions(response.data.activities);
+  //     console.log(activities.activityName, "<activities.activityName");
+  //   } catch (error) {
+  //     console.error('Error fetching data:', error);
+  //   }
+  // };
 
 
 
 
-  const handleActivitiesChange = (selectedOption) => {
-    setSelectedActivities(selectedOption);
-  };
+  // const handleActivitiesChange = (selectedOption) => {
+  //   setSelectedActivities(selectedOption);
+  // };
 
 
   const handleChange = (e) => {
@@ -140,55 +144,54 @@ const VenueBooking = () => {
       [name]: value,
     });
 
-    // Update Category field
-    // if (name === "category") {
-    //   setFormData({
-    //     ...formData,
-    //     Category: value,
-    //   });
-    // }
-    
+    //Update Category field
+    if (name === "category") {
+      setFormData({
+        ...formData,
+        Category: value,
+      });
+    }
+
     // // Update other fields
-    // else {
-    //   setFormData({
-    //     ...formData,
-    //     [name]: value,
-    //   });
-    // }
+    else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
   };
   function code4(event) {
     console.log("country code....", event);
-    //setCountryid(e.id);
+    // setCountryid(e.id);
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Check if any required fields are empty
-    const requiredFields = {
-      name: "Venue Name",
-      address: "Address",
-      state: "State",
-      city: "city",
-      zipCode: "Zipcode",
-      Category: "Category",
-    };
+    // const requiredFields = {
+    //   name: "Venue Name",
+    //   address: "Address",
+    //   state: "State",
+    //   city: "city",
+    //   zipCode: "Zipcode",
+    //   Category: "Category",
+    // };
 
 
 
-    const emptyFields = [];
-    for (const field in requiredFields) {
-      if (!formData[field]) {
-        emptyFields.push(requiredFields[field]);
-      }
-    }
+    // const emptyFields = [];
+    // for (const field in requiredFields) {
+    //   if (!formData[field]) {
+    //     emptyFields.push(requiredFields[field]);
+    //   }
+    // }
 
     try {
       const response = await axios.post(
-        "${API_URL}/venue/addVenue",
+        `${API_URL}/venue/addVenue`,
         formData
       );
-
       console.log(response, "<,,,,,,,,,,responce");
       console.log(formData, "<formData");
       Swal.fire({
@@ -342,7 +345,7 @@ const VenueBooking = () => {
               />
             </Form.Group>
 
-            <Form.Group controlId="formActivities">
+            {/* <Form.Group controlId="formActivities">
               <Form.Label className="heading">
                 Activities
                 <span className="StarSymbol">*</span>
@@ -357,7 +360,7 @@ const VenueBooking = () => {
                   placeholder="Select Activities"
                 />
               </div>
-            </Form.Group>
+            </Form.Group> */}
 
 
           </Col>
@@ -368,19 +371,20 @@ const VenueBooking = () => {
             <StateSelect
               countryid={countryid}
               value={formData.state}
-              onChange={(e) => {
+              onChange={(e) => { setFormData({...formData,state:e.id})
                 setstateid(e.id);
               }}
               placeHolder="Select State"
-              
+
             />
             <h6>City</h6>
             <CitySelect
               countryid={countryid}
               stateid={stateid}
               value={formData.city}
-              onChange={(e) => {
-                console.log(e);
+              onChange={(e) => {  
+                setFormData({...formData,city:e.id})
+                // console.log(e);
               }}
               placeHolder="Select City"
             />
@@ -434,6 +438,7 @@ const VenueBooking = () => {
             <button
               type="cancel"
               className="cancel-button"
+              onClick={handleCancel}
             >
               Cancel
             </button>

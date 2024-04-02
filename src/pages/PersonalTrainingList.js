@@ -22,7 +22,7 @@ function PersonalTraininglist() {
   const fetchData = async () => {
     try {
       // Replace the URL with your actual API endpoint
-      const apiUrl = `${API_URL}/category/fetch?page=${currentPage}&limit=${itemsPerPage}&search=${searchQuery}`;
+      const apiUrl = `${API_URL}/PersonalTraining/fetch?page=${currentPage}&limit=${itemsPerPage}&search=${searchQuery}`;
       const response = await fetch(apiUrl);
       const result = await response.json();
 
@@ -42,30 +42,30 @@ function PersonalTraininglist() {
   const handleEdit = async (row) => {
     console.log('Edit clicked for row:', row);
     try {
-      const response = await fetch(`${API_URL}/category/update/${row._id}`, {
+      const response = await fetch(`${API_URL}/Personal Training/update/${row._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          category_name: data.category_name
+          PersonalTraining_name: data.PersonalTraining_name
         })
       });
 
       if (response.ok) {
-        console.log('Category name updated successfully');
+        console.log('Personal Training name updated successfully');
       } else {
         const responseData = await response.json();
-        console.error('Failed to update category name:', responseData.message || 'Unknown error');
+        console.error('Failed to update Personal Training name:', responseData.message || 'Unknown error');
       }
     } catch (error) {
-      console.error('Error updating category name:', error);
+      console.error('Error updating Personal Training name:', error);
     }
   };
 
   const handleDelete = async (row) => {
     try {
-      const apiUrl = `${API_URL}/category/delete/${row._id}`;
+      const apiUrl = `${API_URL}/Personal Training/delete/${row._id}`;
 
       const response = await fetch(apiUrl, {
         method: 'DELETE',
@@ -79,12 +79,12 @@ function PersonalTraininglist() {
         // Update your state or refetch data to reflect the deletion
         fetchData();
       } else {
-        console.error('Failed to delete category:', response.statusText);
-        Swal.fire('Error', 'Failed to delete category.', 'error');
+        console.error('Failed to delete Personal Training:', response.statusText);
+        Swal.fire('Error', 'Failed to delete Personal Training.', 'error');
       }
     } catch (error) {
-      console.error('Error deleting category:', error);
-      Swal.fire('Error', 'An error occurred while deleting the category.', 'error');
+      console.error('Error deleting Personal Training:', error);
+      Swal.fire('Error', 'An error occurred while deleting the Personal Training.', 'error');
     }
   };
 
@@ -104,7 +104,7 @@ function PersonalTraininglist() {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = data
-    .filter((row) => row.category_name.toLowerCase().includes(searchText.toLowerCase()))
+    .filter((row) => row.PersonalTraining_name.toLowerCase().includes(searchText.toLowerCase()))
     .slice(indexOfFirstItem, indexOfLastItem);
 
   return (
@@ -141,7 +141,7 @@ function PersonalTraininglist() {
               {currentItems.map((row, index) => (
                 <tr key={row._id}>
                   <td>{index + 1 + indexOfFirstItem}</td>
-                  <td>{row.category_name}</td>
+                  <td>{row.PersonalTraining_name}</td>
                   <td>{row.status ? 'Active' : 'Inactive'}</td>
                   <td>
                     <div style={{ display: 'flex' }}>

@@ -64,13 +64,13 @@ mb-4 {
 
 .cancel-button{
   background-color: black;
-  color: #fff;
+  /* color: #fff;
   border: none;
   padding: 10px 20px;
   cursor: pointer;
   border-radius: 5px;
   transition: background-color 0.3s ease-in-out;
-  font-weight: bold;
+  font-weight: bold; */
 }
 
 /* Define styles for the MultiSelect component */

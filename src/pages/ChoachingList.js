@@ -24,7 +24,6 @@ function Categorylist() {
     try {
       // Replace the URL with your actual API endpoint
       const apiUrl = `${API_URL}/fetch-all-coaches?page=${currentPage}&limit=${itemsPerPage}&search=${searchQuery}`;
-
       const response = await fetch(apiUrl);
       const result = await response.json();
       console.log(result)
@@ -46,13 +45,12 @@ function Categorylist() {
   const handleEdit = async (row) => {
     console.log('Edit clicked for row:', row);
     try {
-      const response = await fetch(`${API_URL}/fetch-all-coaches/update/${row._id}`, {
+      const response = await fetch(`${API_URL}/update-coach/${row._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          category_name: data.category_name
         })
       });
 
@@ -113,7 +111,7 @@ function Categorylist() {
 
   return (
     <>
-      <h3 className="mb-4 title">Coaching</h3>
+      <h3 className="mb-4 title">Coach</h3>
       <div className="cnt">
         <Form.Group as={Row} className="mb-3">
           <Col xs={12} sm={6}>
@@ -127,7 +125,7 @@ function Categorylist() {
           </Col>
           <Col sm={6} className="d-flex justify-content-end">
             <Link to="/coaches/add">
-              <button className="add-button mr-2">Add Coaching</button>
+              <button className="add-button mr-2">Add Coach</button>
             </Link>
           </Col>
         </Form.Group>
@@ -140,7 +138,7 @@ function Categorylist() {
                 <th style={{ width: '13%' }}>Last Name</th>
                 <th style={{ width: '13%' }}>Location</th>
                 <th style={{ width: '13%' }}>Specializations</th>
-                <th style={{ width: '13%' }}>Experience</th>
+                <th style={{ width: '13%' }}>Experience(yr)</th>
                 <th style={{ width: '10%' }}>Status</th>
                 <th style={{ width: '7%' }}>Action</th>
               </tr>
@@ -151,10 +149,10 @@ function Categorylist() {
                   <td>{index + 1 + indexOfFirstItem}</td>
                   <td>{row.first_name}</td>
                   <td>{row.last_name}</td>
-                  <td>{Array.isArray(row.location.address) ? row.location.address.join(', ') : 'N/A'}</td>
+                  <td>{`${row.location.address}, ${row.location.city}, ${row.location.state}`}</td>
                   <td>{row.specializations.join(', ')}</td>
                   <td>{row.experience}</td>
-                  <td>{row.isActive ? 'Active' : 'Inactive'}</td>
+                  <td>{row.status ? 'Active' : 'Inactive'}</td>
                   <td>
                     <div style={{ display: 'flex' }}>
                       <Link to={`/coaches/edit/${row._id}`} style={{ marginLeft: '1%' }}>

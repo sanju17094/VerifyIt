@@ -3,12 +3,14 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import "../../src/User.css";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import { API_URL } from '../ApiUrl';
 
 const UpdateUsers = () => {
-  const { userId } = useParams();
+  const { _id } = useParams();
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
@@ -17,20 +19,22 @@ const UpdateUsers = () => {
     role: "",
   });
 
+
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
     // Fetch user data based on userId
     axios
-      .get(`${API_URL}/user/getallUser/${userId}`)
+      .get(`${API_URL}/user/fetch-user-by-id/${_id}`)
       .then((res) => {
+        console.log(res.data, "Data")
         const { first_name, last_name, email, mobile, role } = res.data;
-        setFormData({ first_name, last_name, email, mobile, role });
+        setFormData({ first_name: res.data.data.first_name, last_name: res.data.data.last_name, email: res.data.data.email, mobile: res.data.data.mobile, role: res.data.data.role });
       })
       .catch((error) => {
         console.error("Error fetching user data:", error);
       });
-  }, [userId]);
+  }, [_id]);
 
 
   const handleChange = (e) => {
@@ -47,16 +51,31 @@ const UpdateUsers = () => {
     });
   };
 
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validate each field
+    const { first_name, last_name, email, mobile, role } = formData;
+    if (!first_name || !last_name) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Please Update the field",
+      });
+      return;
+    }
     try {
-      const response = await axios.put(`${API_URL}/super-admin/update-user/${userId}`, formData);
+      const response = await axios.put(`${API_URL}/super-admin/update-user/${_id}`, formData);
       console.log(response.data);
       Swal.fire({
         icon: "success",
         title: "Success!",
         text: "User updated successfully",
       });
+      navigate('/users');
+
     } catch (error) {
       console.error("Error updating user:", error);
       Swal.fire({
@@ -66,6 +85,11 @@ const UpdateUsers = () => {
       });
     }
   };
+
+
+
+
+
   const handleCancel = () => {
     // Clear form data
     setFormData({
@@ -81,7 +105,7 @@ const UpdateUsers = () => {
 
   return (
     <>
-     <h3 className="mb-4 title">Update Users</h3>
+      <h3 className="mb-4 title">Update Users</h3>
       <Container
         style={{
           maxWidth: "1000px",
@@ -184,7 +208,7 @@ const UpdateUsers = () => {
                     value={formData.role}
                     onChange={handleChange}
                     isInvalid={!!errors.role}
-                    style={{ height: "auto" }} // Adjust the height of the select element
+                    style={{ height: "auto" }} 
                   >
                     <option value="">Select Role</option>
                     <option value="User">User</option>
@@ -200,6 +224,21 @@ const UpdateUsers = () => {
                   {/* Downward arrow */}
                 </div>
               </Form.Group>
+
+              {/* <Form.Group controlId="formCheckbox">
+                <div className="checkbox-container">
+                  <Form.Check
+                    type="checkbox"
+                    id="statusCheckbox"
+                    name="status"
+                    aria-label="option 1"
+                    className="checkbox-input"
+                    checked={formData.status || false}
+                    onChange={e => setformData({ ...formData, status: e.target.checked })}
+                  />
+                </div>
+                <Form.Label className="checkbox-label">Status</Form.Label>
+              </Form.Group> */}
             </Col>
           </Row>
 

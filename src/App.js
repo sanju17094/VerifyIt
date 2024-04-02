@@ -44,6 +44,9 @@ import EventList from "./pages/EventList";
 import Shoplist from "./pages/Shoplist";
 import User from "./pages/User";
 import UpdateVenue from "./pages/UpdateVenue";
+import CoachForm from "./pages/Coaches";
+import UpdateCoach from "./pages/UpdateCoach"
+import CheckValidate from "./CheckValidate";
 
 
 function App() {
@@ -52,6 +55,8 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Loginadmin />} />
+        <Route path="*" element={<Loginadmin />} />
+        <Route path="/" element={<CheckValidate/>}>
         <Route path="/" element={<MainLayout />} >
         {/* <Route path="/" element={<UserLogin />} /> */}
           <Route path="/dashboard" element={<Dashboard/>} />
@@ -62,8 +67,7 @@ function App() {
           <Route path="/users" element={<Userlist/>} />
           {/* <Route path="/adminlist" element={<Adminlist/>} /> */}
           <Route path="/adduser" element={<Adduser/>} />
-          <Route path="/coaching/add" element={<ChoachingList/>} />
-          <Route path="/coaching" element={<ChoachingList/>} />
+          <Route path="/coaches" element={<ChoachingList/>} />
           <Route path="//personal-traning/add" element={<PersonalTrainingList/>} />
           <Route path="/personal-training" element={<PersonalTrainingList/>} />
           <Route path="/events/add" element={<EventList/>} />
@@ -81,6 +85,8 @@ function App() {
           <Route path="/venues/edit/:_id" element={<UpdateVenue />} />
           <Route path="/UpdateSubcategory/:_id" element={<UpdateSubcategory />} />
           <Route path="/UpdateUser/:_id" element={<UpdateUser />} />
+          <Route path="/coaches/edit/:_id" element={<UpdateCoach />} />
+          <Route path="/coaches/add" element={<CoachForm />} />
           {/* <Route path="/userprofile" element={<Loginuser />} />
           </Routes> */}
 
@@ -108,7 +114,7 @@ function App() {
           <Route path="/" element={<AddCoupon />} />
           <Route path="coupon/:id" element={<AddCoupon />} />
           <Route path="enquiries/:id" element={<ViewEnq />} />
-        </Route>
+        </Route></Route>
       </Routes>
     </Router>
   );
