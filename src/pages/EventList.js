@@ -43,8 +43,8 @@ console.log("result.....->>>",result)
   const handleEdit = async (row) => {
     console.log('Edit clicked for row:', row);
     try {
-      const response = await fetch(`${API_URL}/event/update/${row._id}`, {
-        method: "PUT",
+      const response = await fetch(`${API_URL}/event/get/${row._id}`, {
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
