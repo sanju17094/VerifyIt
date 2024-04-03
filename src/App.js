@@ -47,74 +47,84 @@ import UpdateVenue from "./pages/UpdateVenue";
 import CoachForm from "./pages/Coaches";
 import UpdateCoach from "./pages/UpdateCoach"
 import CheckValidate from "./CheckValidate";
-
-
+import AddEvent from './pages/addEvent'
+import UpdateEvent from "./pages/UpdateEvent";
 function App() {
   return (
-
     <Router>
       <Routes>
         <Route path="/" element={<Loginadmin />} />
         <Route path="*" element={<Loginadmin />} />
-        <Route path="/" element={<CheckValidate/>}>
-        <Route path="/" element={<MainLayout />} >
-        {/* <Route path="/" element={<UserLogin />} /> */}
-          <Route path="/dashboard" element={<Dashboard/>} />
-         
-          
-          {/* <Route path="/userprofile" element={ }>
-          </Route> */}
-          <Route path="/users" element={<Userlist/>} />
-          {/* <Route path="/adminlist" element={<Adminlist/>} /> */}
-          <Route path="/adduser" element={<Adduser/>} />
-          <Route path="/coaches" element={<ChoachingList/>} />
-          <Route path="//personal-traning/add" element={<PersonalTrainingList/>} />
-          <Route path="/personal-training" element={<PersonalTrainingList/>} />
-          <Route path="/events/add" element={<EventList/>} />
-          <Route path="/events" element={<EventList/>} />
-          <Route path="/shop/add" element={<Shoplist/>} />
-          <Route path="/shop" element={<Shoplist/>} />
-          <Route path="/users/add" element={<User/>} />
-          <Route path="/categories/add" element={<Category />} />
-          <Route path="/Subcategory" element={<SubCategory />} />
-          <Route path="/subcategorylist" element={<SubCategoryList /> } />
-          <Route path="/venues/add" element={<Venue />} />
-          <Route path="/venues" element={<Venuetable />} />
-          <Route path="/categories" element={<Categorylist />} />
-          <Route path="/categories/edit/:_id" element={<UpdateCategory />} />
-          <Route path="/venues/edit/:_id" element={<UpdateVenue />} />
-          <Route path="/UpdateSubcategory/:_id" element={<UpdateSubcategory />} />
-          <Route path="/UpdateUser/:_id" element={<UpdateUser />} />
-          <Route path="/coaches/edit/:_id" element={<UpdateCoach />} />
-          <Route path="/coaches/add" element={<CoachForm />} />
-          {/* <Route path="/userprofile" element={<Loginuser />} />
-          </Routes> */}
+        <Route path="/" element={<CheckValidate />}>
+          <Route path="/" element={<MainLayout />}>
+            {/* <Route path="/" element={<UserLogin />} /> */}
+            <Route path="/dashboard" element={<Dashboard />} />
 
-          <Route path="/" element={<Enquiries />} />
-          <Route path="/" element={<Bloglist />} />
-          <Route path="/" element={<Blogcatlist />} />
-          <Route path="/" element={<Orders />} />
-          <Route path="/" element={<Customers />} />
-          <Route path="/" element={<Colorlist />} />
-          
-          <Route path="/" element={<Brandlist />} />
-          <Route path="/" element={<Productlist />} />
-          <Route path="/" element={<Couponlist />} />
-          <Route path="/" element={<Addblog />} />
-          <Route path="blog/:id" element={<Addblog />} />
-          <Route path="blog-category" element={<Addblogcat />} />
-          <Route path="blog-category/:id" element={<Addblogcat />} />
-          <Route path="order/:id" element={<ViewOrder />} />
-          <Route path="color" element={<Addcolor />} />
-          <Route path="color/:id" element={<Addcolor />} />
-          <Route path="category/:id" element={<Addcat />} />
-          <Route path="brand" element={<Addbrand />} />
-          <Route path="brand/:id" element={<Addbrand />} />
-          <Route path="/" element={<Addproduct />} />
-          <Route path="/" element={<AddCoupon />} />
-          <Route path="coupon/:id" element={<AddCoupon />} />
-          <Route path="enquiries/:id" element={<ViewEnq />} />
-        </Route></Route>
+            {/* <Route path="/userprofile" element={ }>
+          </Route> */}
+            <Route path="/users" element={<Userlist />} />
+            {/* <Route path="/adminlist" element={<Adminlist/>} /> */}
+            <Route path="/adduser" element={<Adduser />} />
+            <Route path="/coaches" element={<ChoachingList />} />
+            <Route
+              path="//personal-traning/add"
+              element={<PersonalTrainingList />}
+            />
+            <Route
+              path="/personal-training"
+              element={<PersonalTrainingList />}
+            />
+
+            <Route path="/events" element={<EventList />} />
+            <Route path="/event/add" element={<AddEvent />} />
+            <Route path="/shop/add" element={<Shoplist />} />
+            <Route path="/shop" element={<Shoplist />} />
+            <Route path="/users/add" element={<User />} />
+            <Route path="/categories/add" element={<Category />} />
+            <Route path="/Subcategory" element={<SubCategory />} />
+            <Route path="/subcategorylist" element={<SubCategoryList />} />
+            <Route path="/venues/add" element={<Venue />} />
+            <Route path="/venues" element={<Venuetable />} />
+            <Route path="/categories" element={<Categorylist />} />
+            <Route path="/categories/edit/:_id" element={<UpdateCategory />} />
+            <Route path="/venues/edit/:_id" element={<UpdateVenue />} />
+            <Route
+              path="/UpdateSubcategory/:_id"
+              element={<UpdateSubcategory />}
+            />
+            <Route path="/UpdateUser/:_id" element={<UpdateUser />} />
+            <Route path="/coaches/edit/:_id" element={<UpdateCoach />} />
+            <Route path="/coaches/add" element={<CoachForm />} />
+         
+
+            <Route path="/event/edit/:_id" element={<UpdateEvent />} />
+
+            <Route path="/" element={<Enquiries />} />
+            <Route path="/" element={<Bloglist />} />
+            <Route path="/" element={<Blogcatlist />} />
+            <Route path="/" element={<Orders />} />
+            <Route path="/" element={<Customers />} />
+            <Route path="/" element={<Colorlist />} />
+
+            <Route path="/" element={<Brandlist />} />
+            <Route path="/" element={<Productlist />} />
+            <Route path="/" element={<Couponlist />} />
+            <Route path="/" element={<Addblog />} />
+            <Route path="blog/:id" element={<Addblog />} />
+            <Route path="blog-category" element={<Addblogcat />} />
+            <Route path="blog-category/:id" element={<Addblogcat />} />
+            <Route path="order/:id" element={<ViewOrder />} />
+            <Route path="color" element={<Addcolor />} />
+            <Route path="color/:id" element={<Addcolor />} />
+            <Route path="category/:id" element={<Addcat />} />
+            <Route path="brand" element={<Addbrand />} />
+            <Route path="brand/:id" element={<Addbrand />} />
+            <Route path="/" element={<Addproduct />} />
+            <Route path="/" element={<AddCoupon />} />
+            <Route path="coupon/:id" element={<AddCoupon />} />
+            <Route path="enquiries/:id" element={<ViewEnq />} />
+          </Route>
+        </Route>
       </Routes>
     </Router>
   );

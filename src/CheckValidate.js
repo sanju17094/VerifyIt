@@ -7,10 +7,10 @@ const CheckValidate = () => {
 
 
   useEffect(() => {
-    const getToken = localStorage.getItem('token');
-    if (!getToken) {
-      navigate('/');
-    } // Run checkit whenever navigate changes
+    // const getToken = localStorage.getItem('token');
+    // if (!getToken) {
+    //   navigate('/');
+    // } // Run checkit whenever navigate changes
   }, [navigate]);
 
   return (

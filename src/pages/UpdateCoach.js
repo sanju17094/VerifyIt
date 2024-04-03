@@ -15,13 +15,6 @@ const UpdateCoach = () => {
     first_name: "",
     last_name: "",
     email: "",
-    // mobile: "",
-    // location: {
-    //   address: "",
-    //   city: "",
-    //   state: "",
-    //   zipCode: "",
-    // },
     experience: "",
     availability: "",
     specializations: "",
@@ -39,18 +32,11 @@ const UpdateCoach = () => {
           first_name: coach.coach.first_name,
           last_name: coach.coach.last_name,
           email: coach.coach.email,
-          // mobile: coach.coach.mobile,
-          // location: {
-          //   address: coach.coach.location.address,
-          //   city: coach.coach.location.city,
-          //   state: coach.coach.location.state,
-          //   zipCode: coach.coach.location.zipCode,
-          // },
           experience: coach.coach.experience,
           availability: coach.coach.availability,
           specializations: coach.coach.specializations.join(', '),
           bio: coach.coach.bio,
-          venue_rules: coach.coach.venue_rules,
+          // venue_rules: coach.coach.venue_rules,
         });
       } catch (error) {
         console.error("Error fetching coach data:", error);
@@ -58,7 +44,7 @@ const UpdateCoach = () => {
     };
 
     fetchcoach();
-  }, [_id]);
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -69,27 +55,6 @@ const UpdateCoach = () => {
     console.log("Form Data Updated:", formData);
   };
 
-  // const handleStateChange = (state) => {
-  //   setFormData({
-  //     ...formData,
-  //     location: {
-  //       ...formData.location,
-  //       state: state,
-  //     },
-  //   });
-  //   console.log("State Updated:", state);
-  // };
-
-  // const handleCityChange = (city) => {
-  //   setFormData({
-  //     ...formData,
-  //     location: {
-  //       ...formData.location,
-  //       city: city,
-  //     },
-  //   });
-  //   console.log("City Updated:", city);
-  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -161,64 +126,10 @@ const UpdateCoach = () => {
           </Col>
         </Row>
         <Row>
-          {/* <Col sm={4}>
-            <Form.Group controlId="formMobile">
-              <Form.Label>Mobile</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter mobile number"
-                name="mobile"
-                value={formData.mobile}
-                onChange={handleChange}
-              />
-            </Form.Group>
-          </Col> */}
-          {/* <Col sm={4}>
-            <Form.Group controlId="formAddress">
-              <Form.Label>Address</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter address"
-                name="location.address"
-                value={formData.location.address}
-                onChange={handleChange}
-              />
-            </Form.Group>
-          </Col> */}
-          {/* <Col sm={4}>
-            <Form.Group controlId="formState">
-              <Form.Label>State</Form.Label>
-              <StateSelect
-                value={formData.location.state}
-                onChange={handleStateChange}
-              />
-            </Form.Group>
-          </Col> */}
+          
         </Row>
         <Row>
-          {/* <Col sm={4}>
-            <Form.Group controlId="formCity">
-              <Form.Label>City</Form.Label>
-              <CitySelect
-                country="United States"
-                state={formData.location.state}
-                value={formData.location.city}
-                onChange={handleCityChange}
-              />
-            </Form.Group>
-          </Col> */}
-          {/* <Col sm={4}>
-            <Form.Group controlId="formZipCode">
-              <Form.Label>Zip Code</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter zip code"
-                name="location.zipCode"
-                value={formData.location.zipCode}
-                onChange={handleChange}
-              />
-            </Form.Group>
-          </Col> */}
+        
           <Col sm={4}>
           <Form.Group controlId="formSpecializations">
               <Form.Label>Specializations</Form.Label>

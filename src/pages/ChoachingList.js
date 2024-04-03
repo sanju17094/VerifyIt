@@ -26,10 +26,10 @@ function Categorylist() {
       const apiUrl = `${API_URL}/fetch-all-coaches?page=${currentPage}&limit=${itemsPerPage}&search=${searchQuery}`;
       const response = await fetch(apiUrl);
       const result = await response.json();
-      console.log(result)
+      console.log(result.data,"result ka data hai")
 
       if (response.ok) {
-        setData(result.coaches);
+        setData(result.data);
 
       } else {
         console.error('Failed to fetch data:', result.error);

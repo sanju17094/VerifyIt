@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import Axios from "axios";
 import { API_URL } from '../ApiUrl';
-import '../Coaches.css'
+import '../Coaches.css';
 
 const Coaches = () => {
   const [formData, setFormData] = useState({
@@ -13,10 +13,12 @@ const Coaches = () => {
     last_name: "",
     email: "",
     mobile: "",
-    address: "",
-    city: "",
-    state: "",
-    zipCode: "",
+    location: {
+      address: "",
+      city: "",
+      state: "",
+      zipCode: "",
+    },
     experience: "",
     availability: "",
     specializations: [],
@@ -28,49 +30,42 @@ const Coaches = () => {
     setCountryid(101);
   }, []);
 
-
   const navigate = useNavigate();
   const [countryid, setCountryid] = useState(0);
   const [stateid, setstateid] = useState(0);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+
+    // If the field is within the location object, handle it separately
+    if (name.startsWith("location.")) {
+      const locationField = name.split(".")[1]; // Extract the field name from the input name
+      setFormData({
+        ...formData,
+        location: {
+          ...formData.location,
+          [locationField]: value, // Update the specific field within the location object
+        },
+      });
+    } else {
+      // If it's a regular field, update the state as before
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
+
     console.log("Form Data Updated:", formData);
   };
 
-  const handleStateChange = (state) => {
-    setFormData({
-      ...formData,
-      state: state,
-    });
-    console.log("State Updated:", state);
-  };
-
-  const handleCityChange = (city) => {
-    setFormData({
-      ...formData,
-        city: city.name,
-    });
-    console.log("City Updated:", city);
-  };
-
-
   const handleCancel = () => {
-    navigate('/coaches');
+    navigate("/coaches");
   };
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await Axios.post(
-        `${API_URL}/create-coach`,
-        formData
-      );
+      const response = await Axios.post(`${API_URL}/create-coach`, formData);
       console.log("API Response:", response.data);
       Swal.fire({
         icon: "success",
@@ -151,8 +146,8 @@ const Coaches = () => {
                 <Form.Control
                   type="text"
                   placeholder="Enter address"
-                  name="address"
-                  value={formData.address}
+                  name="location.address"
+                  value={formData.location.address}
                   onChange={handleChange}
                 />
               </Form.Group>
@@ -163,9 +158,12 @@ const Coaches = () => {
               <h6>State</h6>
               <StateSelect
                 countryid={countryid}
-                value={formData.state}
+                value={formData.location.state}
                 onChange={(e) => {
-                  setFormData({ ...formData, state: e.id });
+                  setFormData({
+                    ...formData,
+                    location: { ...formData.location, state: e.id },
+                  });
                   setstateid(e.id);
                 }}
                 placeHolder="Select State"
@@ -174,10 +172,12 @@ const Coaches = () => {
               <CitySelect
                 countryid={countryid}
                 stateid={stateid}
-                value={formData.city}
+                value={formData.location.city}
                 onChange={(e) => {
-                  setFormData({ ...formData, city: e.id });
-                  console.log(e);
+                  setFormData({
+                    ...formData,
+                    location: { ...formData.location, city: e.id },
+                  });
                 }}
                 placeHolder="Select City"
               />
@@ -190,7 +190,7 @@ const Coaches = () => {
                   type="text"
                   placeholder="Enter zip code"
                   name="location.zipCode"
-                  value={formData.zipCode}
+                  value={formData.location.zipCode}
                   onChange={handleChange}
                 />
               </Form.Group>
@@ -262,8 +262,8 @@ const Coaches = () => {
             Submit
           </button>
 
-          <button type="cancel" className="CancelButton" onClick={handleCancel}>
-          Cancel
+          <button type="button" className="CancelButton" onClick={handleCancel}>
+            Cancel
           </button>
         </Form>
       </Container>

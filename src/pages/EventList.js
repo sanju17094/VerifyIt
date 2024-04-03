@@ -8,7 +8,7 @@ import '../../src/Userlist.css';
 import { API_URL } from '../ApiUrl';
 
 
-function Categorylist() {
+function EventList() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState('');
@@ -23,12 +23,12 @@ function Categorylist() {
   const fetchData = async () => {
     try {
       // Replace the URL with your actual API endpoint
-      const apiUrl = `${API_URL}/category/fetch?page=${currentPage}&limit=${itemsPerPage}&search=${searchQuery}`;
+      const apiUrl = `${API_URL}/event/fetchAll?page=${currentPage}&limit=${itemsPerPage}&search=${searchQuery}`;
       const response = await fetch(apiUrl);
       const result = await response.json();
-
+console.log("result.....->>>",result)
       if (response.ok) {
-        setData(result.categories);
+        setData(result.data);
       } else {
         console.error('Failed to fetch data:', result.error);
       }
@@ -43,14 +43,19 @@ function Categorylist() {
   const handleEdit = async (row) => {
     console.log('Edit clicked for row:', row);
     try {
-      const response = await fetch(`${API_URL}/category/update/${row._id}`, {
-        method: 'PUT',
+      const response = await fetch(`${API_URL}/event/update/${row._id}`, {
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          category_name: data.category_name
-        })
+          event_name: data.event_name,
+          description: data.description,
+          start_date: data.start_date,
+          end_date: data.end_date,
+          location: data.location,
+          status: data.status
+        }),
       });
 
       if (response.ok) {
@@ -66,7 +71,7 @@ function Categorylist() {
 
   const handleDelete = async (row) => {
     try {
-      const apiUrl = `${API_URL}/category/delete/${row._id}`;
+      const apiUrl = `${API_URL}/event/delete/${row._id}`;
 
       const response = await fetch(apiUrl, {
         method: 'DELETE',
@@ -105,8 +110,15 @@ function Categorylist() {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = data
-    .filter((row) => row.category_name.toLowerCase().includes(searchText.toLowerCase()))
+    .filter((row) => row.event_name.toLowerCase().includes(searchText.toLowerCase()))
     .slice(indexOfFirstItem, indexOfLastItem);
+    const formatDate = (dateString) => {
+      const date = new Date(dateString);
+      const day = date.getDate().toString().padStart(2, "0");
+      const month = (date.getMonth() + 1).toString().padStart(2, "0");
+      const year = date.getFullYear();
+      return `${day}/${month}/${year}`;
+    };
 
   return (
     <>
@@ -123,49 +135,58 @@ function Categorylist() {
             />
           </Col>
           <Col sm={6} className="d-flex justify-content-end">
-            <Link to="/categories/add">
+            <Link to="/event/add">
               <button className="add-button mr-2">Add Events</button>
             </Link>
           </Col>
         </Form.Group>
         <div className="table-container">
-          <Table className='custom-table'>
+          <Table className="custom-table">
             <thead>
               <tr>
-                <th style={{ width: '7%' }}>S.No.</th>
-                <th style={{ width: '62%' }}>Name</th>
-                <th style={{ width: '10%' }}>Status</th>
-                <th style={{ width: '7%' }}>Action</th>
+                <th style={{ width: "7%" }}>S.No.</th>
+                <th style={{ width: "32%" }}>Name</th>
+                <th style={{ width: "10%" }}>StartAt</th>
+                <th style={{ width: "10%" }}>EndAt</th>
+                <th style={{ width: "10%" }}>Location</th>
+                <th style={{ width: "10%" }}>Status</th>
+                <th style={{ width: "7%" }}>Action</th>
               </tr>
             </thead>
             <tbody>
               {currentItems.map((row, index) => (
                 <tr key={row._id}>
                   <td>{index + 1 + indexOfFirstItem}</td>
-                  <td>{row.category_name}</td>
-                  <td>{row.status ? 'Active' : 'Inactive'}</td>
+                  <td>{row.event_name}</td>
+                  <td>{formatDate(row.start_date)}</td>
+                  <td>{formatDate(row.end_date)}</td>
+                  <td>{row.location}</td>
+                  <td>{row.status ? "Active" : "Inactive"}</td>
                   <td>
-                    <div style={{ display: 'flex' }}>
-                      <Link to={`/categories/edit/${row._id}`} style={{ marginLeft: '1%' }}>
+                    <div style={{ display: "flex" }}>
+                      <Link
+                        to={`/event/edit/${row._id}`}
+                        style={{ marginLeft: "1%" }}
+                      >
                         <EditOutlined
                           style={{
-                            fontSize: '20px',
-                            color: '#fcfcfa',
-                            borderRadius: '5px',
-                            padding: '5px',
-                            backgroundColor: '#ff5f15',
+                            fontSize: "20px",
+                            color: "#fcfcfa",
+                            borderRadius: "5px",
+                            padding: "5px",
+                            backgroundColor: "#ff5f15",
                           }}
                           onClick={() => handleEdit(row)}
                         />
                       </Link>
                       <DeleteOutlined
                         style={{
-                          fontSize: '20px',
-                          color: '#E7F3FF',
-                          borderRadius: '5px',
-                          padding: '5px',
-                          backgroundColor: '#3d9c06',
-                          marginLeft: '5px',
+                          fontSize: "20px",
+                          color: "#E7F3FF",
+                          borderRadius: "5px",
+                          padding: "5px",
+                          backgroundColor: "#3d9c06",
+                          marginLeft: "5px",
                         }}
                         onClick={() => handleDelete(row)}
                       />
@@ -178,13 +199,23 @@ function Categorylist() {
         </div>
         <div className="pagination-container">
           <ul className="pagination">
-            {Array.from({ length: Math.ceil(data.length / itemsPerPage) }).map((_, index) => (
-              <li key={index} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
-                <button className="page-link" onClick={() => handlePagination(index + 1)}>
-                  {index + 1}
-                </button>
-              </li>
-            ))}
+            {Array.from({ length: Math.ceil(data.length / itemsPerPage) }).map(
+              (_, index) => (
+                <li
+                  key={index}
+                  className={`page-item ${
+                    currentPage === index + 1 ? "active" : ""
+                  }`}
+                >
+                  <button
+                    className="page-link"
+                    onClick={() => handlePagination(index + 1)}
+                  >
+                    {index + 1}
+                  </button>
+                </li>
+              )
+            )}
           </ul>
         </div>
       </div>
@@ -192,4 +223,4 @@ function Categorylist() {
   );
 }
 
-export default Categorylist;
+export default EventList;
