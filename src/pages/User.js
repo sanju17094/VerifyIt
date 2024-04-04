@@ -15,6 +15,7 @@ const Users = () => {
     email: "",
     mobile: "",
     role: "",
+    status: true,
   });
 
   const [errors, setErrors] = useState({});
@@ -70,7 +71,7 @@ const Users = () => {
       Swal.fire({
         icon: "success",
         title: "Success!",
-        text: "Registration successful",
+        text: "User added successfully",
 
       }).then(() => {
         navigate('/users');
@@ -220,7 +221,23 @@ const Users = () => {
                 </div>
               </Form.Group>
             </Col>
-          </Row>
+
+          <Form.Group controlId="formCheckbox">
+          <div className="checkbox-container">
+            <Form.Check
+              type="checkbox"
+              id="statusCheckbox"
+              name="status"
+              aria-label="option 1"
+              className="checkbox-input"
+              checked={formData.status || false}
+              onChange={e => setFormData({ ...formData, status: e.target.checked })}
+            />
+          </div>
+          <Form.Label className="checkbox-label">Status</Form.Label>
+        </Form.Group>
+        
+        </Row>
 
           {/* Buttons */}
           <Row style={{ marginTop: "20px", marginLeft: "0px" }}>

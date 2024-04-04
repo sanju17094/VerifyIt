@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { BsArrowUpRight, BsArrowUpLeft } from "react-icons/bs";
+import { FaArrowLeft } from "react-icons/fa";
 import { Column } from "@ant-design/plots";
 import { Table } from "antd";
 import axios from "axios"; 
+import { useNavigate } from "react-router-dom"; 
 import { API_URL } from '../ApiUrl';
+
+
 
   const data = [
     {
@@ -41,7 +45,8 @@ const Dashboard = () => {
   const [venueCount, setVenueCount] = useState(0);
   const [eventCount, setEventCount] = useState(0);
   const [currentDate, setCurrentDate] = useState("");
-  const [marchCount, setMarchCount] = useState(0); 
+  const [marchCount, setMarchCount] = useState(0);
+  const navigate = useNavigate();  
 
   useEffect(() => {
     // Fetch today's date
@@ -50,7 +55,7 @@ const Dashboard = () => {
     setCurrentDate(formattedDate);
 
     // Fetch counts from API
-    axios.get(`https://api-kheloindore.swapinfotech.com/api/v1/kheloindore/dashboard/count`)
+    axios.get(`${API_URL}/dashboard/count`)
       .then((response) => {
         setUserCount(response.data.userCount);
         setVenueCount(response.data.venueCount);
@@ -76,7 +81,7 @@ const Dashboard = () => {
       const today = new Date();
       const formattedDate = `${String(today.getDate()).padStart(2, '0')}/${String(today.getMonth() + 1).padStart(2, '0')}/${today.getFullYear()}`;
       setCurrentDate(formattedDate);
-      axios.get(`https://api-kheloindore.swapinfotech.com/api/v1/kheloindore/dashboard/count`)
+      axios.get(`${API_URL}/dashboard/count`)
         .then((response) => {
           setUserCount(response.data.userCount);
           setVenueCount(response.data.venueCount);
@@ -128,8 +133,13 @@ const Dashboard = () => {
 
   return (
     <div>
+    {/* <div className="d-flex justify-content-between align-items-center gap-3 mb-3">
+        <div onClick={() => navigate(-2)}>
+        <FaArrowLeft size={30} />
+        </div>
+        </div> */}
       <h3 className="mb-4 title">Dashboard</h3>
-      <div className="d-flex justify-content-between align-items-center gap-3">
+      <div className="d-flex justify-content-between align-items-center gap-3 ">
         {/* Total User */}
         <div className="d-flex justify-content-between align-items-end flex-grow-1 bg-white p-3 roudned-3">
           <div>

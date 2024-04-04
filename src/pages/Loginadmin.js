@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
@@ -12,6 +12,13 @@ import { API_URL } from '../ApiUrl';
 
 function Loginadmin() {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      navigate('/dashboard');
+    }
+  }, []);
 
   const validationSchema = Yup.object().shape({
     mobile: Yup.string()

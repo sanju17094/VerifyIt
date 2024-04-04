@@ -42,7 +42,7 @@
   margin-right: 1%;
 }
 
-.cancel-button{
+.cancel{
   background-color: black;
   color: #fff;
   border: none;
@@ -118,4 +118,9 @@ input[type="file"] {
 
 .select-files-button:hover {
   background: #e44d12;
+}
+
+
+.chip {
+  background: #e44d12 !important;
 }

@@ -4,11 +4,10 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import { useParams } from "react-router-dom"; 
 import { API_URL } from '../ApiUrl';
+import '../../src/Venue.css';
 import {
-  CountrySelect,
   StateSelect,
   CitySelect,
-  ZipCodeSelect,
 } from "react-country-state-city";
 import "react-country-state-city/dist/react-country-state-city.css";
 
@@ -22,21 +21,30 @@ const UpdateVenue = () => {
     city: "",
   });
 
+  
+
   useEffect(() => {
     fetchVenue();
   }, []);
 
   const fetchVenue = async () => {
+    console.log(_id,"our all id")
     try {
-      const response = await axios.get(`${API_URL}/venue/individual/${_id}`);
-      const venue = response.data;
-      setFormData({
-        name: venue.name,
-        address: venue.address,
-        state: venue.state,
-        zipCode: venue.zipCode,
-        city: venue.city,
-      });
+     await axios.get(`${API_URL}/venue/individual/${_id}`)
+      .then((res)=>{
+        setFormData({
+          name: res.data.venue.name,
+          address: res.data.venue.address,
+          state: res.data.venue.state,
+          zipCode:res.data.venue.zipcode,
+          city:  res.data.venue.city,
+        })
+        
+        console.log(res.data.venue,"our all venue response")
+      }
+      )
+  
+     
     } catch (error) {
       console.error("Error fetching venue data:", error);
     }
@@ -101,28 +109,28 @@ const UpdateVenue = () => {
                 />
               </Form.Group>
               <Form.Group controlId="formState">
+              {console.log(formData,"all formData")}
                 <Form.Label>State</Form.Label>
                 <StateSelect
+                  countryid={101}
                   value={formData.state}
-                  onChange={(selectedState) =>
-                    setFormData({ ...formData, state: selectedState })
+                  onChange={(e) =>
+                    setFormData({ ...formData, state: e.id })
                   }
                 />
               </Form.Group>
               <Form.Group controlId="formCity">
                 <Form.Label>City</Form.Label>
                 <CitySelect
-                  country="India" 
-                  state={formData.state}
+                  countryid={101}
+                  stateid={formData.state}
                   value={formData.city}
-                  onChange={(selectedCity) =>
-                    setFormData({ ...formData, city: selectedCity })
-                  }
+                  onChange={(e) => setFormData({ ...formData, city: e.id})}
                 />
               </Form.Group>
               <Form.Group controlId="formZipCode">
                 <Form.Label>Zip Code</Form.Label>
-                <ZipCodeSelect
+                {/* <ZipCodeSelect
                   country="India" 
                   state={formData.state}
                   city={formData.city}
@@ -130,15 +138,22 @@ const UpdateVenue = () => {
                   onChange={(selectedZip) =>
                     setFormData({ ...formData, zipCode: selectedZip })
                   }
-                />
+                /> */}
+                <Form.Control
+                type="text"
+                placeholder="Enter Zipcode"
+                name="zipCode"
+                value={formData.zipCode}
+                onChange={handleChange}
+              />
               </Form.Group>
-              <Button type="submit" variant="primary">
-                Update Venue
-              </Button>
+              <button type="submit" className="submit-button" style={{ marginTop: "20px" }}>
+                Update
+              </button>
             </Form>
           </Col>
         </Row>
-      </Container>
+      </Container> 
     </>
   );
 };

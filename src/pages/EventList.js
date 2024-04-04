@@ -59,13 +59,13 @@ console.log("result.....->>>",result)
       });
 
       if (response.ok) {
-        console.log('Category name updated successfully');
+        console.log('event name updated successfully');
       } else {
         const responseData = await response.json();
-        console.error('Failed to update category name:', responseData.message || 'Unknown error');
+        console.error('Failed to update event name:', responseData.message || 'Unknown error');
       }
     } catch (error) {
-      console.error('Error updating category name:', error);
+      console.error('Error updating event name:', error);
     }
   };
 
@@ -81,16 +81,16 @@ console.log("result.....->>>",result)
       });
 
       if (response.ok) {
-        Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+        Swal.fire('Deactivated!', 'Your Profile has been Deactivated.', 'success');
         // Update your state or refetch data to reflect the deletion
         fetchData();
       } else {
-        console.error('Failed to delete category:', response.statusText);
-        Swal.fire('Error', 'Failed to delete category.', 'error');
+        console.error('Failed to delete event:', response.statusText);
+        Swal.fire('Error', 'Failed to delete event.', 'error');
       }
     } catch (error) {
-      console.error('Error deleting category:', error);
-      Swal.fire('Error', 'An error occurred while deleting the category.', 'error');
+      console.error('Error deleting event:', error);
+      Swal.fire('Error', 'An error occurred while deleting the event.', 'error');
     }
   };
 
@@ -146,8 +146,8 @@ console.log("result.....->>>",result)
               <tr>
                 <th style={{ width: "7%" }}>S.No.</th>
                 <th style={{ width: "32%" }}>Name</th>
-                <th style={{ width: "10%" }}>StartAt</th>
-                <th style={{ width: "10%" }}>EndAt</th>
+                <th style={{ width: "10%" }}>Start At</th>
+                <th style={{ width: "10%" }}>End At</th>
                 <th style={{ width: "10%" }}>Location</th>
                 <th style={{ width: "10%" }}>Status</th>
                 <th style={{ width: "7%" }}>Action</th>

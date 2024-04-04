@@ -12,6 +12,7 @@ const AddEvent = () => {
     start_date: "",
     end_date: "",
     location: "",
+    status: true,
   });
 
   const [errors, setErrors] = useState({});
@@ -79,6 +80,7 @@ const AddEvent = () => {
       start_date: "",
       end_date: "",
       location: "",
+      status:""
     });
     // Clear errors
     setErrors({});
@@ -86,7 +88,7 @@ const AddEvent = () => {
 
   return (
     <>
-      <h3 className="mb-4 title">Add Event</h3>
+      <h3 className="mb-4 title">Event</h3>
       <Container>
         <Form onSubmit={handleSubmit}>
           <Row>
@@ -109,6 +111,8 @@ const AddEvent = () => {
               </Form.Group>
             </Col>
             <Col md={6}>
+
+
               <Form.Group controlId="formDescription">
                 <Form.Label>Description</Form.Label>
                 <Form.Control
@@ -173,6 +177,23 @@ const AddEvent = () => {
                 />
               </Form.Group>
             </Col>
+
+            <Form.Group controlId="formCheckbox">
+              <div className="checkbox-container">
+                <Form.Check
+                  type="checkbox"
+                  id="statusCheckbox"
+                  name="status"
+                  aria-label="option 1"
+                  className="checkbox-input"
+                  checked={formData.status || false}
+                  onChange={(e) =>
+                    setFormData({ ...formData, status: e.target.checked })
+                  }
+                />
+              </div>
+              <Form.Label className="checkbox-label">Status</Form.Label>
+            </Form.Group>
           </Row>
 
           {/* Buttons */}
@@ -193,6 +214,8 @@ const AddEvent = () => {
                 </button>
               </div>
             </Col>
+
+
           </Row>
         </Form>
       </Container>

@@ -8,7 +8,7 @@ import '../../src/Userlist.css';
 import { API_URL } from '../ApiUrl';
 
 
-function Categorylist() {
+function Coachlist() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState('');
@@ -77,7 +77,7 @@ function Categorylist() {
       });
 
       if (response.ok) {
-        Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+        Swal.fire('Deactivated!', 'Your Profile has been Inactivated.', 'success');
         // Update your state or refetch data to reflect the deletion
         fetchData();
       } else {
@@ -162,7 +162,7 @@ function Categorylist() {
                             color: '#fcfcfa',
                             borderRadius: '5px',
                             padding: '5px',
-                            backgroundColor: '#ff5f15',
+                            backgroundColor: '#3d9c06', 
                           }}
                           onClick={() => handleEdit(row)}
                         />
@@ -173,7 +173,7 @@ function Categorylist() {
                           color: '#E7F3FF',
                           borderRadius: '5px',
                           padding: '5px',
-                          backgroundColor: '#3d9c06',
+                          backgroundColor: '#ff5f15',
                           marginLeft: '5px',
                         }}
                         onClick={() => handleDelete(row)}
@@ -201,4 +201,4 @@ function Categorylist() {
   );
 }
 
-export default Categorylist;
+export default Coachlist;

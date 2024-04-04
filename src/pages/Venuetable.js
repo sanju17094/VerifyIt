@@ -52,7 +52,7 @@ function VenueList() {
       const result = await response.json();
   
       if (response.ok) {
-        Swal.fire('Updated!', 'Venue updated successfully.', 'success');
+      //  Swal.fire('Updated!', 'Venue updated successfully.', 'success');
         fetchData(); // Refresh data after updating
       } else {
         console.error('Failed to update venue:', result.error);
@@ -76,7 +76,7 @@ function VenueList() {
       });
 
       if (response.ok) {
-        Swal.fire('Deleted!', 'Venue deleted successfully.', 'success');
+        Swal.fire('Deactivated!', 'Venue has been Inactivate.', 'success');
         fetchData(); // Refresh data after deletion
       } else {
         console.error('Failed to delete venue:', response.statusText);
@@ -151,7 +151,7 @@ function VenueList() {
                             color: '#fcfcfa',
                             borderRadius: '5px',
                             padding: '5px',
-                            backgroundColor: '#ff5f15',
+                            backgroundColor: '#3d9c06',
                           }}
                           onClick={() => handleEdit(venue)}
                         />
@@ -162,7 +162,7 @@ function VenueList() {
                           color: '#E7F3FF',
                           borderRadius: '5px',
                           padding: '5px',
-                          backgroundColor: '#3d9c06',
+                          backgroundColor: '#ff5f15', 
                           marginLeft: '5px',
                         }}
                         onClick={() => handleDelete(venue)}

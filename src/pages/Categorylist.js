@@ -76,7 +76,7 @@ function Categorylist() {
       });
 
       if (response.ok) {
-        Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+        Swal.fire('Deactivated!', 'Category has been Inactivated.', 'success');
         // Update your state or refetch data to reflect the deletion
         fetchData();
       } else {
@@ -136,7 +136,7 @@ function Categorylist() {
             <thead>
               <tr>
                 <th style={{ width: '7%' }}>S.No.</th>
-                <th style={{ width: '62%' }}>Name</th>
+                <th style={{ width: '62%' }}>Category Name</th>
                 <th style={{ width: '10%' }}>Status</th>
                 <th style={{ width: '7%' }}>Action</th>
               </tr>
@@ -156,7 +156,7 @@ function Categorylist() {
                             color: '#fcfcfa',
                             borderRadius: '5px',
                             padding: '5px',
-                            backgroundColor: '#ff5f15',
+                            backgroundColor: '#3d9c06',
                           }}
                           onClick={() => handleEdit(row)}
                         />
@@ -167,7 +167,7 @@ function Categorylist() {
                           color: '#E7F3FF',
                           borderRadius: '5px',
                           padding: '5px',
-                          backgroundColor: '#3d9c06',
+                          backgroundColor: '#ff5f15',
                           marginLeft: '5px',
                         }}
                         onClick={() => handleDelete(row)}

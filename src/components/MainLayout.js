@@ -25,7 +25,7 @@ import { BiCategoryAlt } from "react-icons/bi";
 import { Layout, Menu, theme } from "antd";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExampleIcon } from '@fortawesome/free-solid-svg-icons';
+import { faExampleIcon, faUser } from '@fortawesome/free-solid-svg-icons';
 import logoImage from "../Khelo Indore Logo/Group 86.png";
 import '../../src/MainLayout.css'
 
@@ -33,13 +33,13 @@ const { Header, Sider, Content } = Layout;
 const MainLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
   const {
-     token: { colorBgContainer },
+    token: { colorBgContainer },
   } = theme.useToken();
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem('token'); 
-    navigate('/'); 
+    localStorage.removeItem('token');
+    navigate('/');
   };
 
   return (
@@ -114,31 +114,31 @@ const MainLayout = () => {
               //     icon: <AiOutlineShoppingCart className="fs-4" />,
               //     label: "Add Category",
               //   },
-                // {
-                //   key: "Subcategory",
-                //   icon: <AiOutlineShoppingCart className="fs-4" />,
-                //   label: "Add Subcategory",
-                // },
-                // {
-                //   key: "category",
-                //   icon: <BiCategoryAlt className="fs-4" />,
-                //   label: "Category",
-                // },
-                // {
-                //   key: "categorylist",
-                //   icon: <BiCategoryAlt className="fs-4" />,
-                //   label: "Category List",
-                // },
-                // {
-                //   key: "subcategorylist",
-                //   icon: <BiCategoryAlt className="fs-4" />,
-                //   label: "Subcategory List",
-                // },
-                // {
-                //   key: "list-color",
-                //   icon: <AiOutlineBgColors className="fs-4" />,
-                //   label: "Color List",
-                // },
+              // {
+              //   key: "Subcategory",
+              //   icon: <AiOutlineShoppingCart className="fs-4" />,
+              //   label: "Add Subcategory",
+              // },
+              // {
+              //   key: "category",
+              //   icon: <BiCategoryAlt className="fs-4" />,
+              //   label: "Category",
+              // },
+              // {
+              //   key: "categorylist",
+              //   icon: <BiCategoryAlt className="fs-4" />,
+              //   label: "Category List",
+              // },
+              // {
+              //   key: "subcategorylist",
+              //   icon: <BiCategoryAlt className="fs-4" />,
+              //   label: "Subcategory List",
+              // },
+              // {
+              //   key: "list-color",
+              //   icon: <AiOutlineBgColors className="fs-4" />,
+              //   label: "Color List",
+              // },
               //],
             },
             {
@@ -195,11 +195,12 @@ const MainLayout = () => {
               icon: <FaCalendarAlt className="fs-4" />,
               label: "Events",
             },
-            {
-              key: "shop",
-              icon: <FaShoppingBag className="fs-4" />,
-              label: "Shop",
-            },
+            // {
+            //   key: "shop",
+            //   icon: <FaShoppingBag className="fs-4" />,
+            //   label: "Shop",
+            // },
+            
             // {
             //   key: "",
             //   icon: <FaShoppingBag className="fs-4" />,
@@ -246,8 +247,21 @@ const MainLayout = () => {
                 aria-expanded="false"
               >
 
-                <h5 className="mb-0"><FontAwesomeIcon icon="fa-solid fa-user" />Admin</h5>
-                <p className="mb-0">admin12345@gmail.com</p>
+                <h5 className="mb-0">
+                  <FontAwesomeIcon
+                    icon={faUser}
+                    style={{
+                      marginRight: '5px',
+                      color: 'rgb(255, 95, 21)',
+                      borderRadius: '50%',
+                      backgroundColor: '#fff',
+                      padding: '5px',
+                      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+                      width: '20px',
+                      height: '20px',
+                    }}
+                  />
+                </h5>
               </div>
               <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
                 <li>
@@ -256,17 +270,17 @@ const MainLayout = () => {
                     style={{ height: "auto", lineHeight: "20px" }}
                     to="/dashboard"
                   >
-                    View Profile
+                    Home
                   </Link>
                 </li>
                 <li>
-                <button
-                  className="dropdown-item py-1 mb-1" // Changed from Link to button
-                  style={{ height: "auto", lineHeight: "20px" }}
-                  onClick={handleLogout} 
-                >
-                  Logout
-                </button>
+                  <button
+                    className="dropdown-item py-1 mb-1" // Changed from Link to button
+                    style={{ height: "auto", lineHeight: "20px" }}
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </button>
                 </li>
               </div>
             </div>

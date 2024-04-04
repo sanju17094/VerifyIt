@@ -5,6 +5,7 @@ import { Container, Row, Col, Form } from "react-bootstrap";
 import '../../src/Adduser.css';
 import Swal from "sweetalert2";
 import {Link} from "react-router-dom"
+import { API_URL } from '../ApiUrl';
 
 const AdminCreate = () => {
   const [formData, setFormData] = useState({
@@ -63,7 +64,7 @@ const AdminCreate = () => {
 
    
     try {
-      const response = await axios.post("http://localhost:4000/api/v1/kheloindore/admin/create", formData);
+      const response = await axios.post("${API_URL}/admin/create", formData);
       console.log(response.data);
       alert("Admin added successfully");
       window.location.href = "/Adminlist";

@@ -20,6 +20,7 @@ const UpdateCoach = () => {
     specializations: "",
     bio: "",
     venue_rules: "",
+    status: "",
   });
 
   useEffect(() => {
@@ -36,6 +37,7 @@ const UpdateCoach = () => {
           availability: coach.coach.availability,
           specializations: coach.coach.specializations.join(', '),
           bio: coach.coach.bio,
+          status: coach.coach.status,
           // venue_rules: coach.coach.venue_rules,
         });
       } catch (error) {
@@ -66,7 +68,7 @@ const UpdateCoach = () => {
       console.log("API Response:", response.data);
       Swal.fire({
         icon: "success",
-        title: "Form Submitted!",
+        title: "Updated!",
         text: "Your form data has been updated successfully.",
       }).then((result) => {
         navigate("/coaches");
@@ -183,6 +185,22 @@ const UpdateCoach = () => {
               />
             </Form.Group>
           </Col>
+
+          <Form.Group controlId="formCheckbox">
+          <div className="checkbox-container">
+            <Form.Check
+              type="checkbox"
+              id="statusCheckbox"
+              name="status"
+              aria-label="option 1"
+              className="checkbox-input"
+              checked={formData.status || false}
+              onChange={e => setFormData({ ...formData, status: e.target.checked })}
+            />
+          </div>
+          <Form.Label className="checkbox-label">Status</Form.Label>
+        </Form.Group>
+
         </Row>
         <button type="submit" className="SubmitButton">
           Update

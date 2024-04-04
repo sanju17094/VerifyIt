@@ -12,20 +12,19 @@ import { API_URL } from '../ApiUrl';
 import { useNavigate } from 'react-router-dom';
 
 import {
-  CountrySelect,
   StateSelect,
   CitySelect,
-  ZipCodeSelect,
 } from "react-country-state-city";
 import "react-country-state-city/dist/react-country-state-city.css";
 
-const VenueBooking = () => {
+const AddVenue= () => {
   const [formData, setFormData] = useState({
     name: "",
     address: "",
     state: "",
     zipCode: "",
     city: "",
+    status: true,
   });
 
   const amenitiesOptions = [
@@ -39,14 +38,12 @@ const VenueBooking = () => {
     { name: 'Changing Room' },
     { name: 'Power Backup' },
     { name: 'Open 24x7' },
-    // Add more options as needed
   ];
 
   console.log(formData, "dfgdgfdf");
   useEffect(() => {
     fetchCategories();
     setCountryid(101);
-    // fetchActivities();
   }, []);
   console.log(formData, "fromdata value check");
 
@@ -58,9 +55,6 @@ const VenueBooking = () => {
   const [files, setFiles] = useState([]);
   const [timings, setTimings] = useState("");
   const [selectedAmenities, setSelectedAmenities] = useState([]);
-  const [activities, setActivities] = useState([]);
-  const [activitiesOptions, setActivitiesOptions] = useState([]);
-  const [selectedActivities, setSelectedActivities] = useState([]);
   const navigate = useNavigate();
 
   const handleDrop = (e) => {
@@ -71,10 +65,7 @@ const VenueBooking = () => {
 
   const handlePhotoChange = (e) => {
     const newFiles = [...e.target.files];
-    // Append new files to the existing files state
     setFiles([...files, ...newFiles]);
-  
-    // Update the formData state with the new files array
     setFormData({...formData, files: [...files, ...newFiles]});
   };
   
@@ -102,7 +93,7 @@ const VenueBooking = () => {
 
 
   const handleCancel = () => {
-    navigate('/venues');
+   // navigate('/venues');
   };
 
   const fetchCategories = async () => {
@@ -117,24 +108,6 @@ const VenueBooking = () => {
       console.error("Error fetching categories:", error);
     }
   };
-
-
-  // const fetchActivities = async () => {
-  //   try {
-  //     const response = await axios.get('${API_URL}/activity/fetch');
-  //     setActivitiesOptions(response.data.activities);
-  //     console.log(activities.activityName, "<activities.activityName");
-  //   } catch (error) {
-  //     console.error('Error fetching data:', error);
-  //   }
-  // };
-
-
-
-
-  // const handleActivitiesChange = (selectedOption) => {
-  //   setSelectedActivities(selectedOption);
-  // };
 
 
   const handleChange = (e) => {
@@ -167,26 +140,6 @@ const VenueBooking = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Check if any required fields are empty
-    // const requiredFields = {
-    //   name: "Venue Name",
-    //   address: "Address",
-    //   state: "State",
-    //   city: "city",
-    //   zipCode: "Zipcode",
-    //   Category: "Category",
-    // };
-
-
-
-    // const emptyFields = [];
-    // for (const field in requiredFields) {
-    //   if (!formData[field]) {
-    //     emptyFields.push(requiredFields[field]);
-    //   }
-    // }
-
     try {
       const response = await axios.post(
         `${API_URL}/venue/addVenue`,
@@ -230,40 +183,6 @@ const VenueBooking = () => {
                 />
               </Form.Group>
 
-              {/* <Form.Group controlId="formName">
-                <Form.Label className="heading">
-                  Venue Rules
-                  <span className="StarSymbol">*</span>
-                </Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Enter Venue Rules"
-                  name="venuerules"
-                  value={formData.venuerules}
-                  onChange={handleChange}
-                />
-              </Form.Group> */}
-
-              {/* <Form.Group controlId="formTimings">
-                <Form.Label className="heading">
-                  Timings
-                  <span className="StarSymbol">*</span>
-                </Form.Label>
-                <div className="select-wrapper">
-                  <Dropdown onSelect={handleTimingsChange}>
-                    <Dropdown.Toggle variant="light" id="dropdown-basic">
-                      {timings || 'Timings'}
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                      <Dropdown.Item eventKey="Before 6 AM">Before 6 AM</Dropdown.Item>
-                      <Dropdown.Item eventKey="6 AM - 12 PM">6 AM - 12 PM</Dropdown.Item>
-                      <Dropdown.Item eventKey="12 PM - 6 PM">12 PM - 6 PM</Dropdown.Item>
-                      <Dropdown.Item eventKey="After 6 PM">After 6 PM</Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </div>
-              </Form.Group> */}
-
               <Form.Group controlId="formTimings">
                 <Form.Label className="heading">
                   Amenities
@@ -281,20 +200,6 @@ const VenueBooking = () => {
                   />
                 </div>
               </Form.Group>
-
-              {/* <Form.Group controlId="formName">
-                <Form.Label className="heading">
-                  Venue Rules
-                  <span className="StarSymbol">*</span>
-                </Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Enter Venue Rules"
-                  name="venuerules"
-                  value={formData.venuerules}
-                  onChange={handleChange}
-                />
-              </Form.Group> */}
 
               <Form.Group controlId="formCategory">
                 <Form.Label className="heading">
@@ -319,7 +224,7 @@ const VenueBooking = () => {
 
             <Form.Group controlId="formAddress">
               <Form.Label className="heading">
-                Location
+                Address
                 <span className="StarSymbol">*</span>
               </Form.Label>
               <Form.Control
@@ -344,24 +249,6 @@ const VenueBooking = () => {
                 onChange={handleChange}
               />
             </Form.Group>
-
-            {/* <Form.Group controlId="formActivities">
-              <Form.Label className="heading">
-                Activities
-                <span className="StarSymbol">*</span>
-              </Form.Label>
-              <div className="select-wrapper">
-                <Multiselect
-                  options={activitiesOptions}
-                  displayValue="name"
-                  selectedValues={selectedActivities}
-                  onSelect={handleActivitiesChange}
-                  onRemove={handleActivitiesChange}
-                  placeholder="Select Activities"
-                />
-              </div>
-            </Form.Group> */}
-
 
           </Col>
           <Col md={4}>
@@ -421,11 +308,24 @@ const VenueBooking = () => {
                 ))}
               </div>
             </Form.Group>
-
           </Col>
+          <Form.Group controlId="formCheckbox">
+              <div className="checkbox-container">
+                <Form.Check
+                  type="checkbox"
+                  id="statusCheckbox"
+                  name="status"
+                  aria-label="option 1"
+                  className="checkbox-input"
+                  checked={formData.status || false}
+                  onChange={e => setFormData({ ...formData, status: e.target.checked })}
+                />
+              </div>
+              <Form.Label className="checkbox-label">Status</Form.Label>
+            </Form.Group>
         </Row>
         <Row>
-          <Col style={{ marginTop: "50px" }}>
+          <Col style={{ marginTop: "20px" }}>
             <button
               type="submit"
               onClick={handleSubmit}
@@ -434,10 +334,10 @@ const VenueBooking = () => {
               Submit
             </button>
           </Col>
-          <Col style={{ marginTop: "50px" }}>
+          <Col style={{ marginTop: "20px" }}>
             <button
               type="cancel"
-              className="cancel-button"
+              className="cancel"
               onClick={handleCancel}
             >
               Cancel
@@ -449,4 +349,4 @@ const VenueBooking = () => {
   );
 };
 
-export default VenueBooking;
+export default  AddVenue;

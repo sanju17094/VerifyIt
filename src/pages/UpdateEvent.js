@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
-import "../../src/User.css";
 import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import { API_URL } from "../ApiUrl";
@@ -17,12 +16,13 @@ const UpdateEvent = () => {
     email: "",
     mobile: "",
     role: "",
+    status: "",
   });
 
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    // Fetch user data based on userId
+    // Fetch event data based on eventId
     axios
       .get(`${API_URL}/event/get/${_id}`)
       .then((res) => {
@@ -34,18 +34,24 @@ const UpdateEvent = () => {
           end_date,
           location,
           status,
-        } = res.data;
+        } = res.data.data;
+        const formattedStartDate = new Date(start_date)
+        .toISOString()
+        .split("T")[0];
+      const formattedEndDate = new Date(end_date)
+        .toISOString()
+        .split("T")[0];
         setFormData({
-          event_name: res.data.event_name,
-          description: res.data.description,
-          start_date: res.data.start_date,
-          end_date: res.data.end_date,
-          location: res.data.location,
-          status: res.data.status,
+          event_name: event_name,
+          description: description,
+          start_date: formattedStartDate,
+          end_date: formattedEndDate,
+          location: location,
+          status: status,
         });
       })
       .catch((error) => {
-        console.error("Error fetching user data:", error);
+        console.error("Error fetching event data:", error);
       });
   }, [_id]);
 
@@ -66,34 +72,26 @@ const UpdateEvent = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate each field
-    const { first_name, last_name, email, mobile, role } = formData;
-    if (!first_name || !last_name) {
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "Please Update the field",
-      });
-      return;
-    }
+
+   
     try {
       const response = await axios.put(
-        `${API_URL}/super-admin/update-user/${_id}`,
+        `${API_URL}/event/update/${_id}`,
         formData
       );
       console.log(response.data);
       Swal.fire({
         icon: "success",
         title: "Success!",
-        text: "User updated successfully",
+        text: "Event updated successfully",
       });
-      navigate("/users");
+      navigate("/events");
     } catch (error) {
-      console.error("Error updating user:", error);
+      console.error("Error updating event:", error);
       Swal.fire({
         icon: "error",
         title: "Error",
-        text: "Failed to update user",
+        text: "Failed to update event",
       });
     }
   };
@@ -199,8 +197,27 @@ const UpdateEvent = () => {
                   onChange={handleChange}
                 />
               </Form.Group>
+
+              
             </Col>
-          </Row>
+</Row>
+            <Form.Group controlId="formCheckbox">
+            <div className="checkbox-container">
+              <Form.Check
+                type="checkbox"
+                id="statusCheckbox"
+                name="status"
+                aria-label="option 1"
+                className="checkbox-input"
+                checked={formData.status || false}
+                onChange={(e) =>
+                  setFormData({ ...formData, status: e.target.checked })
+                }
+              />
+            </div>
+            <Form.Label className="checkbox-label">Status</Form.Label>
+          </Form.Group>
+          
 
           {/* Buttons */}
           <Row style={{ marginTop: "20px", marginLeft: "0px" }}>

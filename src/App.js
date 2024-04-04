@@ -39,7 +39,6 @@ import Login from "./pages/Login";
 import UserLogin from "./pages/UserLogin";
 import Protected from "./components/Protected";
 import ChoachingList from "./pages/ChoachingList";
-import PersonalTrainingList from "./pages/PersonalTrainingList";
 import EventList from "./pages/EventList";
 import Shoplist from "./pages/Shoplist";
 import User from "./pages/User";
@@ -47,8 +46,13 @@ import UpdateVenue from "./pages/UpdateVenue";
 import CoachForm from "./pages/Coaches";
 import UpdateCoach from "./pages/UpdateCoach"
 import CheckValidate from "./CheckValidate";
-import AddEvent from './pages/addEvent'
 import UpdateEvent from "./pages/UpdateEvent";
+import UpdatePT from "./pages/UpdatePT";
+import AddPT from "./pages/AddPT"
+import PersonalTrainingList from "./pages/PersonalTrainingList";
+import AddEvent from "./pages/AddEvent";
+
+
 function App() {
   return (
     <Router>
@@ -67,9 +71,14 @@ function App() {
             <Route path="/adduser" element={<Adduser />} />
             <Route path="/coaches" element={<ChoachingList />} />
             <Route
-              path="//personal-traning/add"
-              element={<PersonalTrainingList />}
-            />
+              path="/personal-traning/add"
+              element={<AddPT />} />
+
+            <Route path="/personal-training/edit/:_id" element={<UpdatePT />} />
+
+            <Route path="/event/edit/:_id" element={<UpdateEvent />} />
+
+
             <Route
               path="/personal-training"
               element={<PersonalTrainingList />}
@@ -95,7 +104,7 @@ function App() {
             <Route path="/UpdateUser/:_id" element={<UpdateUser />} />
             <Route path="/coaches/edit/:_id" element={<UpdateCoach />} />
             <Route path="/coaches/add" element={<CoachForm />} />
-         
+
 
             <Route path="/event/edit/:_id" element={<UpdateEvent />} />
 

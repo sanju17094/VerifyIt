@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import Axios from "axios";
 import { API_URL } from '../ApiUrl';
-import '../Coaches.css';
+import '../Coaches.css'
 
 const Coaches = () => {
   const [formData, setFormData] = useState({
@@ -13,22 +13,21 @@ const Coaches = () => {
     last_name: "",
     email: "",
     mobile: "",
-    location: {
-      address: "",
-      city: "",
-      state: "",
-      zipCode: "",
-    },
+    address: "",
+    city: "",
+    state: "",
+    zipCode: "",
     experience: "",
     availability: "",
     specializations: [],
     bio: "",
-    venue_rules: "",
+    status: true,
   });
 
   useEffect(() => {
     setCountryid(101);
   }, []);
+
 
   const navigate = useNavigate();
   const [countryid, setCountryid] = useState(0);
@@ -36,36 +35,42 @@ const Coaches = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
-    // If the field is within the location object, handle it separately
-    if (name.startsWith("location.")) {
-      const locationField = name.split(".")[1]; // Extract the field name from the input name
-      setFormData({
-        ...formData,
-        location: {
-          ...formData.location,
-          [locationField]: value, // Update the specific field within the location object
-        },
-      });
-    } else {
-      // If it's a regular field, update the state as before
-      setFormData({
-        ...formData,
-        [name]: value,
-      });
-    }
-
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
     console.log("Form Data Updated:", formData);
   };
 
-  const handleCancel = () => {
-    navigate("/coaches");
+  const handleStateChange = (state) => {
+    setFormData({
+      ...formData,
+      state: state,
+    });
+    console.log("State Updated:", state);
   };
+
+  const handleCityChange = (city) => {
+    setFormData({
+      ...formData,
+      city: city.name,
+    });
+    console.log("City Updated:", city);
+  };
+
+
+  const handleCancel = () => {
+    navigate('/coaches');
+  };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await Axios.post(`${API_URL}/create-coach`, formData);
+      const response = await Axios.post(
+        `${API_URL}/create-coach`,
+        formData
+      );
       console.log("API Response:", response.data);
       Swal.fire({
         icon: "success",
@@ -124,8 +129,9 @@ const Coaches = () => {
                   value={formData.email}
                   onChange={handleChange}
                 />
-              </Form.Group>
+              </Form.Group><br></br>
             </Col>
+
           </Row>
           <Row>
             <Col sm={4}>
@@ -140,75 +146,6 @@ const Coaches = () => {
                 />
               </Form.Group>
             </Col>
-            <Col sm={4}>
-              <Form.Group controlId="formAddress">
-                <Form.Label>Address</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Enter address"
-                  name="location.address"
-                  value={formData.location.address}
-                  onChange={handleChange}
-                />
-              </Form.Group>
-            </Col>
-          </Row>
-          <Row>
-            <Col sm={4}>
-              <h6>State</h6>
-              <StateSelect
-                countryid={countryid}
-                value={formData.location.state}
-                onChange={(e) => {
-                  setFormData({
-                    ...formData,
-                    location: { ...formData.location, state: e.id },
-                  });
-                  setstateid(e.id);
-                }}
-                placeHolder="Select State"
-              />
-              <h6>City</h6>
-              <CitySelect
-                countryid={countryid}
-                stateid={stateid}
-                value={formData.location.city}
-                onChange={(e) => {
-                  setFormData({
-                    ...formData,
-                    location: { ...formData.location, city: e.id },
-                  });
-                }}
-                placeHolder="Select City"
-              />
-            </Col>
-
-            <Col sm={4}>
-              <Form.Group controlId="formZipCode">
-                <Form.Label>Zip Code</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Enter zip code"
-                  name="location.zipCode"
-                  value={formData.location.zipCode}
-                  onChange={handleChange}
-                />
-              </Form.Group>
-            </Col>
-            <Col sm={4}>
-              <Form.Group controlId="formExperience">
-                <Form.Label>Experience (in years)</Form.Label>
-                <Form.Control
-                  type="number"
-                  placeholder="Enter experience"
-                  name="experience"
-                  value={formData.experience}
-                  onChange={handleChange}
-                />
-              </Form.Group>
-            </Col>
-          </Row>
-          <Row>
             <Col sm={4}>
               <Form.Group controlId="formAvailability">
                 <Form.Label>Availability</Form.Label>
@@ -231,8 +168,79 @@ const Coaches = () => {
                   value={formData.specializations}
                   onChange={handleChange}
                 />
+              </Form.Group><br></br>
+            </Col>
+          </Row>
+          <Row>
+            <Col sm={4}>
+
+              <h6>State</h6>
+              <StateSelect
+                countryid={countryid}
+                value={formData.state}
+                onChange={(e) => {
+                  setFormData({ ...formData, state: e.id });
+                  setstateid(e.id);
+                }}
+                placeHolder="Select State"
+              />
+
+            </Col>
+            <Col sm={4}>
+              <h6>City</h6>
+              <CitySelect
+                countryid={countryid}
+                stateid={stateid}
+                value={formData.city}
+                onChange={(e) => {
+                  setFormData({ ...formData, city: e.id });
+                  console.log(e);
+                }}
+                placeHolder="Select City"
+              />
+            </Col>
+
+            <Col sm={4}>
+              <Form.Group controlId="formZipCode">
+                <Form.Label>Zip Code</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter zip code"
+                  name="location.zipCode"
+                  value={formData.zipCode}
+                  onChange={handleChange}
+                />
+              </Form.Group><br></br>
+            </Col>
+
+            <Col sm={4}>
+            <Form.Group controlId="formAddress">
+                <Form.Label>Address</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter address"
+                  name="address"
+                  value={formData.address}
+                  onChange={handleChange}
+                />
               </Form.Group>
             </Col>
+            <Col sm={4}>
+
+            <Form.Group controlId="formExperience">
+                <Form.Label>Experience (in years)</Form.Label>
+                <Form.Control
+                  type="number"
+                  placeholder="Enter experience"
+                  name="experience"
+                  value={formData.experience}
+                  onChange={handleChange}
+                />
+              </Form.Group><br></br>
+             
+            </Col>
+          </Row>
+          <Row>
             <Col sm={4}>
               <Form.Group controlId="formBio">
                 <Form.Label>Bio</Form.Label>
@@ -246,23 +254,27 @@ const Coaches = () => {
                 />
               </Form.Group>
             </Col>
+
+            <Form.Group controlId="formCheckbox">
+              <div className="checkbox-container">
+                <Form.Check
+                  type="checkbox"
+                  id="statusCheckbox"
+                  name="status"
+                  aria-label="option 1"
+                  className="checkbox-input"
+                  checked={formData.status || false}
+                  onChange={e => setFormData({ ...formData, status: e.target.checked })}
+                />
+              </div>
+              <Form.Label className="checkbox-label">Status</Form.Label>
+            </Form.Group>
           </Row>
-          <Form.Group controlId="formVenueRules">
-            <Form.Label>Venue Rules</Form.Label>
-            <Form.Control
-              as="textarea"
-              rows={3}
-              placeholder="Enter venue rules"
-              name="venue_rules"
-              value={formData.venue_rules}
-              onChange={handleChange}
-            />
-          </Form.Group>
           <button type="submit" className="SubmitButton">
             Submit
           </button>
 
-          <button type="button" className="CancelButton" onClick={handleCancel}>
+          <button type="cancel" className="CancelButton" onClick={handleCancel}>
             Cancel
           </button>
         </Form>

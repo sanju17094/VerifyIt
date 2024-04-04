@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import Swal from 'sweetalert2';
-import 'bootstrap/dist/css/bootstrap.min.css'; 
-import { Table, Form, Row, Col, Button } from 'react-bootstrap'; 
-import '../../src/Userlist.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
+// import '@fortawesome/fontawesome-free/css/all.min.css';
+import { Table, Form, Row, Col, Button } from 'react-bootstrap';
+//import '../../Userlist.css';
 import { API_URL } from '../ApiUrl';
 
 function PersonalTraininglist() {
@@ -21,76 +22,75 @@ function PersonalTraininglist() {
 
   const fetchData = async () => {
     try {
-      // Replace the URL with your actual API endpoint
-      const apiUrl = `${API_URL}/PersonalTraining/fetch?page=${currentPage}&limit=${itemsPerPage}&search=${searchQuery}`;
+      const apiUrl = `${API_URL}/PersonalTraining/fetchAll`;
       const response = await fetch(apiUrl);
       const result = await response.json();
 
       if (response.ok) {
-        setData(result.categories);
+        setData(result.data);
       } else {
         console.error('Failed to fetch data:', result.error);
       }
 
       setLoading(false);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      //console.error('Error fetching data:', error);
       setLoading(false);
     }
   };
 
   const handleEdit = async (row) => {
-    console.log('Edit clicked for row:', row);
     try {
-      const response = await fetch(`${API_URL}/Personal Training/update/${row._id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          PersonalTraining_name: data.PersonalTraining_name
-        })
-      });
-
+      const response = await fetch(`${API_URL}/PersonalTraining/fetch/${row._id}`);
       if (response.ok) {
-        console.log('Personal Training name updated successfully');
+        const data = await response.json();
+        // Assuming the response data contains the necessary fields for editing
+        // Update state or navigate to the edit page with the fetched data
+        console.log('Fetched data for editing:', data);
       } else {
-        const responseData = await response.json();
-        console.error('Failed to update Personal Training name:', responseData.message || 'Unknown error');
+        console.error('Failed to fetch data for editing:', response.statusText);
       }
     } catch (error) {
-      console.error('Error updating Personal Training name:', error);
+      console.error('Error fetching data for editing:', error);
     }
   };
 
-  const handleDelete = async (row) => {
+  const handleDeactivate = async (row) => {
     try {
-      const apiUrl = `${API_URL}/Personal Training/delete/${row._id}`;
-
+      // Construct the API endpoint URL for deactivating the personal training item
+      const apiUrl = `${API_URL}/PersonalTraining/deactive/${row._id}`;
+      
+      // Send a POST request to the endpoint
       const response = await fetch(apiUrl, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
         },
+        // You may optionally include a request body if required by your backend
+        // body: JSON.stringify({ /* any data to be sent to the server */ }),
       });
-
+  
       if (response.ok) {
-        Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
-        // Update your state or refetch data to reflect the deletion
+        // If the response is successful, display a success message
+        Swal.fire('Deactivated!', 'Personal Training has been deactivated.', 'success');
+        // Fetch updated data after deactivation
         fetchData();
       } else {
-        console.error('Failed to delete Personal Training:', response.statusText);
-        Swal.fire('Error', 'Failed to delete Personal Training.', 'error');
+        // If there's an error response, log the error message
+        console.error('Failed to deactivate Personal Training:', response.statusText);
+        // Display an error message to the user
+        Swal.fire('Error', 'Failed to deactivate Personal Training.', 'error');
       }
     } catch (error) {
-      console.error('Error deleting Personal Training:', error);
-      Swal.fire('Error', 'An error occurred while deleting the Personal Training.', 'error');
+      // If an exception occurs during the request, log the error and display an error message
+      console.error('Error deactivating Personal Training:', error);
+      Swal.fire('Error', 'An error occurred while deactivating the Personal Training.', 'error');
     }
   };
 
   const handleSearch = () => {
     setSearchQuery(searchText);
-    setCurrentPage(1); // Reset to first page when searching
+    setCurrentPage(1);
   };
 
   const handleSearchInputChange = (e) => {
@@ -104,7 +104,7 @@ function PersonalTraininglist() {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = data
-    .filter((row) => row.PersonalTraining_name.toLowerCase().includes(searchText.toLowerCase()))
+    .filter((row) => row.trainer_name.toLowerCase().includes(searchText.toLowerCase()))
     .slice(indexOfFirstItem, indexOfLastItem);
 
   return (
@@ -122,7 +122,7 @@ function PersonalTraininglist() {
             />
           </Col>
           <Col sm={6} className="d-flex justify-content-end">
-            <Link to="/categories/add">
+            <Link to="/personal-traning/add">
               <button className="add-button mr-2">Add PT</button>
             </Link>
           </Col>
@@ -132,20 +132,26 @@ function PersonalTraininglist() {
             <thead>
               <tr>
                 <th style={{ width: '7%' }}>S.No.</th>
-                <th style={{ width: '62%' }}>Name</th>
-                <th style={{ width: '10%' }}>Status</th>
-                <th style={{ width: '7%' }}>Action</th>
+                <th style={{ width: '25%' }}>Trainer Name</th>
+                <th style={{ width: '15%' }}>Duration</th>
+                <th style={{ width: '15%' }}>Focus Area</th>
+                <th style={{ width: '10%' }}>Price</th>
+                <th style={{ width: '8%' }}>Status</th>
+                <th style={{ width: '5%' }}>Action</th>
               </tr>
             </thead>
             <tbody>
               {currentItems.map((row, index) => (
                 <tr key={row._id}>
                   <td>{index + 1 + indexOfFirstItem}</td>
-                  <td>{row.PersonalTraining_name}</td>
+                  <td>{row.trainer_name}</td>
+                  <td>{row.duration}</td>
+                  <td>{row.focus_area.join(', ')}</td>
+                  <td>{row.price}</td>
                   <td>{row.status ? 'Active' : 'Inactive'}</td>
                   <td>
                     <div style={{ display: 'flex' }}>
-                      <Link to={`/categories/edit/${row._id}`} style={{ marginLeft: '1%' }}>
+                      <Link to={`/personal-training/edit/${row._id}`} style={{ marginLeft: '1%' }}>
                         <EditOutlined
                           style={{
                             fontSize: '20px',
@@ -157,6 +163,7 @@ function PersonalTraininglist() {
                           onClick={() => handleEdit(row)}
                         />
                       </Link>
+                      {/* Change onClick event to call handleDeactivate */}
                       <DeleteOutlined
                         style={{
                           fontSize: '20px',
@@ -166,7 +173,7 @@ function PersonalTraininglist() {
                           backgroundColor: '#3d9c06',
                           marginLeft: '5px',
                         }}
-                        onClick={() => handleDelete(row)}
+                        onClick={() => handleDeactivate(row)}
                       />
                     </div>
                   </td>

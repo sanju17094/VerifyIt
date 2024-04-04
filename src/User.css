@@ -56,6 +56,14 @@ mb-4 {
 }
 .cancel-button{
   background-color: #303030;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease-in-out;
+  font-weight: bold;
+  margin-left: 1%;
 }
 
 .submit-button:hover {

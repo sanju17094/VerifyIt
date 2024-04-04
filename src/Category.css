@@ -45,12 +45,13 @@ h7{
 
 .btn2 {
   background-color: #303030;
-  color: #fff;
+  color: #ffffff;
 }
 
 .btn1:hover, .btn2:hover {
   opacity: 0.8;
 }
+
 
 
 /* Category.css */
@@ -95,3 +96,18 @@ h7{
   width: 100px;
 } */
 
+div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm {
+  background-color: rgb(255, 95, 21);
+}
+div:where(.swal2-icon).swal2-error {
+  border-color: red;
+}
+div:where(.swal2-icon).swal2-error [class^=swal2-x-mark-line] {
+  display: block;
+  position: absolute;
+  top: 2.3125em;
+  width: 2.9375em;
+  height: .3125em;
+  border-radius: .125em;
+  background-color: red;
+}

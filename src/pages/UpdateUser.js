@@ -17,6 +17,7 @@ const UpdateUsers = () => {
     email: "",
     mobile: "",
     role: "",
+    status: "",
   });
 
 
@@ -29,7 +30,7 @@ const UpdateUsers = () => {
       .then((res) => {
         console.log(res.data, "Data")
         const { first_name, last_name, email, mobile, role } = res.data;
-        setFormData({ first_name: res.data.data.first_name, last_name: res.data.data.last_name, email: res.data.data.email, mobile: res.data.data.mobile, role: res.data.data.role });
+        setFormData({ first_name: res.data.data.first_name, last_name: res.data.data.last_name, email: res.data.data.email, mobile: res.data.data.mobile, role: res.data.data.role , status: res.data.data.status});
       })
       .catch((error) => {
         console.error("Error fetching user data:", error);
@@ -71,7 +72,7 @@ const UpdateUsers = () => {
       console.log(response.data);
       Swal.fire({
         icon: "success",
-        title: "Success!",
+        title: "Updated!",
         text: "User updated successfully",
       });
       navigate('/users');
@@ -91,6 +92,8 @@ const UpdateUsers = () => {
 
 
   const handleCancel = () => {
+
+    navigate('/users');
     // Clear form data
     setFormData({
       first_name: "",
@@ -225,7 +228,7 @@ const UpdateUsers = () => {
                 </div>
               </Form.Group>
 
-              {/* <Form.Group controlId="formCheckbox">
+              <Form.Group controlId="formCheckbox">
                 <div className="checkbox-container">
                   <Form.Check
                     type="checkbox"
@@ -234,11 +237,12 @@ const UpdateUsers = () => {
                     aria-label="option 1"
                     className="checkbox-input"
                     checked={formData.status || false}
-                    onChange={e => setformData({ ...formData, status: e.target.checked })}
+                    onChange={e => setFormData({ ...formData, status: e.target.checked })}
                   />
                 </div>
                 <Form.Label className="checkbox-label">Status</Form.Label>
-              </Form.Group> */}
+              </Form.Group>
+
             </Col>
           </Row>
 
@@ -255,17 +259,18 @@ const UpdateUsers = () => {
                 >
                   Update
                 </button>
-                {/* <button
+                <button
                   type="button"
                   className="cancel-button"
                   onClick={handleCancel}
                   style={{ backgroundColor: "#303030", color: "#fff" }}
                 >
                   Cancel
-                </button> */}
+                </button>
               </div>
             </Col>
-          </Row>
+
+        </Row>
         </Form>
       </Container>
     </>
