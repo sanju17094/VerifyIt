@@ -179,7 +179,7 @@ function Userlist() {
                 </React.Fragment>
               ))}
             </tbody>
-          </Table>
+          </Table> 
           {currentItems.length === 0 && (
             <p style={{ textAlign: 'center', marginTop: '20px' }}>No data available</p>
           )}
