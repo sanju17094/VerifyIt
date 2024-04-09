@@ -124,7 +124,7 @@ const UpdatePT = () => {
 
   return (
     <>
-      <h3>Update Personal Trainer</h3>
+      <h3 className="mb-4 title">Update Personal Trainer</h3>
       <Container
         style={{
           maxWidth: "1500px",
@@ -172,7 +172,7 @@ const UpdatePT = () => {
                   <Form.Control.Feedback type="invalid">
                     {errors.duration}
                   </Form.Control.Feedback>
-                </Form.Group>
+                </Form.Group><br></br>
               </Col>
             </Row>
             <Row>
@@ -210,7 +210,7 @@ const UpdatePT = () => {
                   <Form.Control.Feedback type="invalid">
                     {errors.price}
                   </Form.Control.Feedback>
-                </Form.Group>
+                </Form.Group><br></br>
               </Col>
             </Row>
             <Row>

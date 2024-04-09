@@ -11,7 +11,7 @@ function VenueList() {
   const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10; // Adjust as needed
+  const itemsPerPage = 10; 
 
   useEffect(() => {
     fetchData();
@@ -140,7 +140,7 @@ function VenueList() {
                 <tr key={venue._id}>
                   <td>{index + 1 + indexOfFirstItem}</td>
                   <td>{venue.name}</td>
-                  <td>{venue.categories}</td>
+                  <td>{venue.category}</td>
                   <td>{venue.status ? 'Active' : 'Inactive'}</td>
                   <td>
                     <div style={{ display: 'flex' }}>

@@ -80,7 +80,7 @@ const AddEvent = () => {
       start_date: "",
       end_date: "",
       location: "",
-      status:""
+      status: ""
     });
     // Clear errors
     setErrors({});
@@ -111,19 +111,16 @@ const AddEvent = () => {
               </Form.Group>
             </Col>
             <Col md={6}>
-
-
-              <Form.Group controlId="formDescription">
-                <Form.Label>Description</Form.Label>
+              <Form.Group controlId="formLocation">
+                <Form.Label>Location</Form.Label>
                 <Form.Control
-                  as="textarea"
-                  rows={3}
-                  placeholder="Enter Description"
-                  name="description"
-                  value={formData.description}
+                  type="text"
+                  placeholder="Enter Location"
+                  name="location"
+                  value={formData.location}
                   onChange={handleChange}
                 />
-              </Form.Group>
+              </Form.Group><br></br>
             </Col>
           </Row>
 
@@ -160,19 +157,20 @@ const AddEvent = () => {
                 <Form.Control.Feedback type="invalid">
                   {errors.end_date}
                 </Form.Control.Feedback>
-              </Form.Group>
+              </Form.Group><br></br>
             </Col>
           </Row>
 
           <Row>
             <Col md={6}>
-              <Form.Group controlId="formLocation">
-                <Form.Label>Location</Form.Label>
+              <Form.Group controlId="formDescription">
+                <Form.Label>Description</Form.Label>
                 <Form.Control
-                  type="text"
-                  placeholder="Enter Location"
-                  name="location"
-                  value={formData.location}
+                  as="textarea"
+                  rows={3}
+                  placeholder="Enter Description"
+                  name="description"
+                  value={formData.description}
                   onChange={handleChange}
                 />
               </Form.Group>

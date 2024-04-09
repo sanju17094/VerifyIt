@@ -113,7 +113,7 @@ const User = () => {
 
   return (
     <>
-      <h3>Personal Trainer</h3>
+      <h3 className="mb-4 title">Personal Trainer</h3>
       <Container style={{ maxWidth: '1500px', boxShadow: '6px 0px 10px -4px rgba(0,0,0,0.75)', marginBottom: '20px', marginTop: '50px' }}>
         <Form onSubmit={handleSubmit}>
           <Row>
@@ -149,7 +149,7 @@ const User = () => {
                   isInvalid={!!errors.duration}
                 />
                 <Form.Control.Feedback type="invalid">{errors.duration}</Form.Control.Feedback>
-              </Form.Group>
+              </Form.Group><br></br>
             </Col>
           </Row>
 
@@ -186,7 +186,7 @@ const User = () => {
                   isInvalid={!!errors.price}
                 />
                 <Form.Control.Feedback type="invalid">{errors.price}</Form.Control.Feedback>
-              </Form.Group>
+              </Form.Group><br></br>
             </Col>
           </Row>
 

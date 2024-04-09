@@ -99,7 +99,6 @@ function Category() {
             style={{marginTop:'10px'}}
           />
         </div>
-
         <div className="mb-3">
         <h6 style={{fontWeight:'bold',marginBottom:'10px'}}>Upload Photo</h6>
           <div
@@ -121,7 +120,6 @@ function Category() {
               <button className='btn3' onClick={() => document.querySelector('input[type=file]').click()}> Or Click to Select </button>
             </div>
             <div>
-
               {input.images.map((photo, index) => (
                 <div key={index} style={{ position: 'relative', display: 'inline-block' }}>
                   <img src={URL.createObjectURL(photo)} alt={`Photo ${index}`} style={{ width: '100px', height: '100px', margin: '5px' }} />
@@ -129,12 +127,11 @@ function Category() {
                     onClick={() => handleRemovePhoto(index)}
                     style={{ position: 'absolute', top: '5px', right: '5px', background: 'none', border: 'none', cursor: 'pointer' }}
                   >
-                    <FiX />
+                  <FiX />
                   </button>
                 </div>
               ))}
             </div>
-           
           </div>
         </div>
 

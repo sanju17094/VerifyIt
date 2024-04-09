@@ -12,7 +12,7 @@ import { RiLoginCircleLine } from 'react-icons/ri';
 import { FaChalkboard } from 'react-icons/fa';
 import { FaShoppingBag } from 'react-icons/fa';
 import { RiUserSearchLine } from 'react-icons/ri';
-import { FaCalendarAlt } from 'react-icons/fa';
+import { FaCalendarAlt , FaQuestionCircle} from 'react-icons/fa';
 import { RiAdminLine } from 'react-icons/ri';
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -29,7 +29,9 @@ import { faExampleIcon, faUser } from '@fortawesome/free-solid-svg-icons';
 import logoImage from "../Khelo Indore Logo/Group 86.png";
 import '../../src/MainLayout.css'
 
-const { Header, Sider, Content } = Layout;
+const { Header, Sider, Content, Footer } = Layout;
+
+
 const MainLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
   const {
@@ -195,11 +197,11 @@ const MainLayout = () => {
               icon: <FaCalendarAlt className="fs-4" />,
               label: "Events",
             },
-            // {
-            //   key: "shop",
-            //   icon: <FaShoppingBag className="fs-4" />,
-            //   label: "Shop",
-            // },
+            {
+              key: "enquiries",
+              icon:  <FaQuestionCircle className="fs-4" />,
+              label: "Enquiries",
+            }
             
             // {
             //   key: "",
@@ -307,6 +309,12 @@ const MainLayout = () => {
           />
           <Outlet />
         </Content>
+
+        {/* <Footer className="footer">
+          
+          &copy; 2024 Khelo Indore. All rights reserved.
+        </Footer> */}
+
       </Layout>
     </Layout>
   );

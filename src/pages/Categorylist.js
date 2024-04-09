@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import { Table, Form, Row, Col, Button } from 'react-bootstrap'; // Import Bootstrap components
 import '../../src/Userlist.css';
 import { API_URL } from '../ApiUrl';
+import { ColorRing } from 'react-loader-spinner';
 
 
 function Categorylist() {
@@ -132,52 +133,69 @@ function Categorylist() {
           </Col>
         </Form.Group>
         <div className="table-container">
-          <Table className='custom-table'>
-            <thead>
-              <tr>
-                <th style={{ width: '7%' }}>S.No.</th>
-                <th style={{ width: '62%' }}>Category Name</th>
-                <th style={{ width: '10%' }}>Status</th>
-                <th style={{ width: '7%' }}>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentItems.map((row, index) => (
-                <tr key={row._id}>
-                  <td>{index + 1 + indexOfFirstItem}</td>
-                  <td>{row.category_name}</td>
-                  <td>{row.status ? 'Active' : 'Inactive'}</td>
-                  <td>
-                    <div style={{ display: 'flex' }}>
-                      <Link to={`/categories/edit/${row._id}`} style={{ marginLeft: '1%' }}>
-                        <EditOutlined
+          {loading ? (
+            <div className="text-center">
+              <ColorRing
+                visible={true}
+                height="50"
+                width="50"
+                ariaLabel="color-ring-loading"
+                wrapperStyle={{}}
+                wrapperClass="color-ring-wrapper"
+                colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
+              />
+              <p>Loading...</p>
+            </div>
+          ) : (
+            <Table className='custom-table'>
+              <thead>
+                <tr>
+                  <th style={{ width: '7%' }}>S.No.</th>
+                  <th style={{ width: '62%' }}>Category Name</th>
+                  <th style={{ width: '10%' }}>Status</th>
+                  <th style={{ width: '7%' }}>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {currentItems.map((row, index) => (
+                  <tr key={row._id}>
+                    <td>{index + 1 + indexOfFirstItem}</td>
+                    <td>{row.category_name}</td>
+                    <td style={{ color: row.status ? "#4fd104" : "#ff0000", fontWeight: "bold" }}>
+                    {row.status ? "Active" : "Inactive"}
+                    </td>
+                    <td>
+                      <div style={{ display: 'flex' }}>
+                        <Link to={`/categories/edit/${row._id}`} style={{ marginLeft: '1%' }}>
+                          <EditOutlined
+                            style={{
+                              fontSize: '20px',
+                              color: '#fcfcfa',
+                              borderRadius: '5px',
+                              padding: '5px',
+                              backgroundColor: '#3d9c06',
+                            }}
+                            onClick={() => handleEdit(row)}
+                          />
+                        </Link>
+                        <DeleteOutlined
                           style={{
                             fontSize: '20px',
-                            color: '#fcfcfa',
+                            color: '#E7F3FF',
                             borderRadius: '5px',
                             padding: '5px',
-                            backgroundColor: '#3d9c06',
+                            backgroundColor: '#ff5f15',
+                            marginLeft: '5px',
                           }}
-                          onClick={() => handleEdit(row)}
+                          onClick={() => handleDelete(row)}
                         />
-                      </Link>
-                      <DeleteOutlined
-                        style={{
-                          fontSize: '20px',
-                          color: '#E7F3FF',
-                          borderRadius: '5px',
-                          padding: '5px',
-                          backgroundColor: '#ff5f15',
-                          marginLeft: '5px',
-                        }}
-                        onClick={() => handleDelete(row)}
-                      />
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          )}
         </div>
         <div className="pagination-container">
           <ul className="pagination">

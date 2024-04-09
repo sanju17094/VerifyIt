@@ -36,11 +36,11 @@ const UpdateEvent = () => {
           status,
         } = res.data.data;
         const formattedStartDate = new Date(start_date)
-        .toISOString()
-        .split("T")[0];
-      const formattedEndDate = new Date(end_date)
-        .toISOString()
-        .split("T")[0];
+          .toISOString()
+          .split("T")[0];
+        const formattedEndDate = new Date(end_date)
+          .toISOString()
+          .split("T")[0];
         setFormData({
           event_name: event_name,
           description: description,
@@ -73,7 +73,7 @@ const UpdateEvent = () => {
     e.preventDefault();
 
 
-   
+
     try {
       const response = await axios.put(
         `${API_URL}/event/update/${_id}`,
@@ -118,7 +118,7 @@ const UpdateEvent = () => {
             <Col md={6}>
               <Form.Group controlId="formEventName">
                 <Form.Label>
-                   Event Title<span className="text-danger">*</span>
+                  Event Title<span className="text-danger">*</span>
                 </Form.Label>
                 <Form.Control
                   type="text"
@@ -134,17 +134,16 @@ const UpdateEvent = () => {
               </Form.Group>
             </Col>
             <Col md={6}>
-              <Form.Group controlId="formDescription">
-                <Form.Label>Description</Form.Label>
+              <Form.Group controlId="formLocation">
+                <Form.Label>Location</Form.Label>
                 <Form.Control
-                  as="textarea"
-                  rows={3}
-                  placeholder="Enter Description"
-                  name="description"
-                  value={formData.description}
+                  type="text"
+                  placeholder="Enter Location"
+                  name="location"
+                  value={formData.location}
                   onChange={handleChange}
                 />
-              </Form.Group>
+              </Form.Group><br></br>
             </Col>
           </Row>
 
@@ -181,27 +180,27 @@ const UpdateEvent = () => {
                 <Form.Control.Feedback type="invalid">
                   {errors.end_date}
                 </Form.Control.Feedback>
-              </Form.Group>
+              </Form.Group><br></br>
             </Col>
           </Row>
 
           <Row>
             <Col md={6}>
-              <Form.Group controlId="formLocation">
-                <Form.Label>Location</Form.Label>
+              <Form.Group controlId="formDescription">
+                <Form.Label>Description</Form.Label>
                 <Form.Control
-                  type="text"
-                  placeholder="Enter Location"
-                  name="location"
-                  value={formData.location}
+                  as="textarea"
+                  rows={3}
+                  placeholder="Enter Description"
+                  name="description"
+                  value={formData.description}
                   onChange={handleChange}
                 />
               </Form.Group>
 
-              
             </Col>
-</Row>
-            <Form.Group controlId="formCheckbox">
+          </Row>
+          <Form.Group controlId="formCheckbox">
             <div className="checkbox-container">
               <Form.Check
                 type="checkbox"
@@ -217,7 +216,7 @@ const UpdateEvent = () => {
             </div>
             <Form.Label className="checkbox-label">Status</Form.Label>
           </Form.Group>
-          
+
 
           {/* Buttons */}
           <Row style={{ marginTop: "20px", marginLeft: "0px" }}>

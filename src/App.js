@@ -2,7 +2,6 @@ import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import MainLayout from "./components/MainLayout";
-import Enquiries from "./pages/Enquiries";
 import Bloglist from "./pages/Bloglist";
 import Blogcatlist from "./pages/Blogcatlist";
 import Orders from "./pages/Orders";
@@ -51,6 +50,8 @@ import UpdatePT from "./pages/UpdatePT";
 import AddPT from "./pages/AddPT"
 import PersonalTrainingList from "./pages/PersonalTrainingList";
 import AddEvent from "./pages/AddEvent";
+import EnquiryList from "./pages/EnquiryList";
+import EnquiryDetails from "./pages/EnquiryDetail"
 
 
 function App() {
@@ -70,6 +71,11 @@ function App() {
             {/* <Route path="/adminlist" element={<Adminlist/>} /> */}
             <Route path="/adduser" element={<Adduser />} />
             <Route path="/coaches" element={<ChoachingList />} />
+            <Route path="/enquiries" element={<EnquiryList />} />
+            <Route path="/enquiry/details/:_id" element={<EnquiryDetails />} />
+
+            
+
             <Route
               path="/personal-traning/add"
               element={<AddPT />} />
@@ -107,8 +113,6 @@ function App() {
 
 
             <Route path="/event/edit/:_id" element={<UpdateEvent />} />
-
-            <Route path="/" element={<Enquiries />} />
             <Route path="/" element={<Bloglist />} />
             <Route path="/" element={<Blogcatlist />} />
             <Route path="/" element={<Orders />} />

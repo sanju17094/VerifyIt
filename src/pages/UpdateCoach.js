@@ -58,6 +58,11 @@ const UpdateCoach = () => {
   };
 
 
+  const handleCancel = () => {
+    navigate('/coaches');
+  };
+  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -205,6 +210,10 @@ const UpdateCoach = () => {
         <button type="submit" className="SubmitButton">
           Update
         </button>
+
+        <button type="cancel" className="CancelButton" onClick={handleCancel}>
+            Cancel
+          </button>
       </Form>
     </Container>
     </>

@@ -98,10 +98,12 @@ function Update() {
   };
 
   return (
+    <>
+     <h3 className="mb-4 title">Update Category</h3>
     <div className="form">
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
-          <Form.Label htmlFor="text">Update Category</Form.Label>
+          <Form.Label htmlFor="text">Category Name</Form.Label>
           <span className="StarSymbol">*</span>
           <Form.Control
             type="text"
@@ -134,24 +136,6 @@ function Update() {
               <input type="file" onChange={handleFileChange} style={{ display: 'none' }} />
               <button className='btn3' onClick={() => document.querySelector('input[type=file]').click()}> Or Click to Select </button>
             </div>
-
-            {/* 
-            {filePreview && (
-  <div style={{ position: 'relative', display: 'inline-block' }}>
-    <img src={filePreview} alt="Selected Photo" style={{ width: '100px', height: '100px', margin: '5px' }} />
-    <button
-      onClick={() => {
-        setFile(null);
-        setFilePreview(null);
-      }}
-      style={{ position: 'absolute', top: '5px', right: '5px', background: 'none', border: 'none', cursor: 'pointer' }}
-    >
-      <FiX />
-    </button>
-  </div>
-)} */}
-
-
 
             {filePreview && (
               <div style={{ position: 'relative', display: 'inline-block' }}>
@@ -196,6 +180,7 @@ function Update() {
         </div>
       </form>
     </div>
+    </>
   );
 }
 

@@ -3,6 +3,7 @@ import { Button, Table, Form, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import Swal from 'sweetalert2';
+import { ColorRing } from 'react-loader-spinner';
 import '../../src/Userlist.css';
 import { API_URL } from '../ApiUrl';
 
@@ -125,63 +126,77 @@ function Userlist() {
           </Col>
         </Form.Group>
         <div className="table-container">
-          <Table className="custom-table">
-            <thead>
-              <tr>
-                <th style={{ width: '7%' }}>S.No.</th>
-                <th style={{ width: '30%' }}>First Name</th>
-                <th style={{ width: '30%' }}>Last Name</th>
-                <th style={{ width: '20%' }}>Role</th>
-                <th style={{ width: '10%' }}>Status</th>
-                <th style={{ width: '7%' }}>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentItems.map((row, index) => (
-                <React.Fragment key={row._id}>
-                  <tr>
-                    <td>{index + 1 + indexOfFirstItem}</td>
-                    <td>{row.first_name}</td>
-                    <td>{row.last_name}</td>
-                    <td>{row.role}</td>
-                    <td>{row.status ? 'Active' : 'Inactive'}</td>
-                    <td>
-                      <div style={{ display: 'flex' }}>
-                        <Link to={`/UpdateUser/${row._id}`} style={{ marginLeft: '1%' }}>
-                          <EditOutlined
+          {loading ? (
+            <div className="text-center">
+              <ColorRing
+                visible={true}
+                height="50"
+                width="50"
+                ariaLabel="color-ring-loading"
+                wrapperStyle={{}}
+                wrapperClass="color-ring-wrapper"
+                colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
+              />
+              <p>Loading...</p>
+            </div>
+          ) : (
+            <Table className="custom-table">
+              <thead>
+                <tr>
+                  <th style={{ width: '7%' }}>S.No.</th>
+                  <th style={{ width: '30%' }}>First Name</th>
+                  <th style={{ width: '30%' }}>Last Name</th>
+                  <th style={{ width: '20%' }}>Role</th>
+                  <th style={{ width: '10%' }}>Status</th>
+                  <th style={{ width: '7%' }}>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {currentItems.map((row, index) => (
+                  <React.Fragment key={row._id}>
+                    <tr>
+                      <td>{index + 1 + indexOfFirstItem}</td>
+                      <td>{row.first_name}</td>
+                      <td>{row.last_name}</td>
+                      <td>{row.role}</td>
+                      <td style={{ color: row.status ? "#4fd104" : "#ff0000", fontWeight: "bold" }}>
+                      {row.status ? "Active" : "Inactive"}
+                      </td>
+                      <td>
+                        <div style={{ display: 'flex' }}>
+                          <Link to={`/UpdateUser/${row._id}`} style={{ marginLeft: '1%' }}>
+                            <EditOutlined
+                              style={{
+                                fontSize: '20px',
+                                color: '#fcfcfa',
+                                borderRadius: '5px',
+                                padding: '5px',
+                                backgroundColor: '#3d9c06',
+                              }}
+                              onClick={() => handleEdit(row)}
+                            />
+                          </Link>
+                          <DeleteOutlined
                             style={{
                               fontSize: '20px',
-                              color: '#fcfcfa',
+                              color: '#E7F3FF',
                               borderRadius: '5px',
                               padding: '5px',
-                              backgroundColor: '#3d9c06',
+                              backgroundColor: '#ff5f15',
+                              marginLeft: '5px',
                             }}
-                            onClick={() => handleEdit(row)}
+                            onClick={() => handleDelete(row)}
                           />
-                        </Link>
-                        <DeleteOutlined
-                          style={{
-                            fontSize: '20px',
-                            color: '#E7F3FF',
-                            borderRadius: '5px',
-                            padding: '5px',
-                            backgroundColor: '#ff5f15',
-                            marginLeft: '5px',
-                          }}
-                          onClick={() => handleDelete(row)}
-                        />
-                      </div>
-                    </td>
-                  </tr>
-                  {/* <tr>
+                        </div>
+                      </td>
+                    </tr>
+                    {/* <tr>
                     <td colSpan="6">Additional row after each entry</td>
                   </tr> */}
-                </React.Fragment>
-              ))}
-            </tbody>
-          </Table> 
-          {currentItems.length === 0 && (
-            <p style={{ textAlign: 'center', marginTop: '20px' }}>No data available</p>
+                  </React.Fragment>
+                ))}
+              </tbody>
+            </Table>
           )}
         </div>
         <div className="pagination-container">

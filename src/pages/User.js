@@ -8,6 +8,7 @@ import { API_URL } from '../ApiUrl';
 import { useNavigate } from 'react-router-dom';
 
 
+
 const Users = () => {
   const [formData, setFormData] = useState({
     first_name: "",
@@ -86,7 +87,7 @@ const Users = () => {
     }
   };
 
-  const handleCancel = () => {
+  const handleCancel1 = () => {
     // Clear form data
     setFormData({
       first_name: "",
@@ -98,6 +99,11 @@ const Users = () => {
     // Clear errors
     setErrors({});
   };
+
+  const handleCancel = () => {
+    navigate('/users');
+  };
+
 
   return (
     <>
@@ -208,7 +214,7 @@ const Users = () => {
                   >
                     <option value="">Select Role</option>
                     <option value="User">User</option>
-                    <option value="Coach">Coach</option>
+                    {/* <option value="Coach">Coach</option> */}
                     <option value="Venue Admin">Venue Admin</option>
                     {/* <option value="Super Admin">Super Admin</option> */}
                     {/* <option value="vendor">Vendor</option> */}
