@@ -38,14 +38,24 @@ function VenueList() {
   };
 
   const handleEdit = async (venue) => {
+    console.log('Edit clicked for row:', venue);
     try {
       const apiUrl = `${API_URL}/venue/edit/${venue._id}`; 
       const response = await fetch(apiUrl, {
-        method: 'PUT',
+        method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          activities: records.activities,
+          address: records.address,
+          amenities: records.amenities,
+          category: records.category,
+          city: records.city,
+          name: records.name,
+          state: records.state,
+          zipcode: records.zipcode,
+          status: records.status, 
         }),
       });
   
@@ -141,7 +151,9 @@ function VenueList() {
                   <td>{index + 1 + indexOfFirstItem}</td>
                   <td>{venue.name}</td>
                   <td>{venue.category}</td>
-                  <td>{venue.status ? 'Active' : 'Inactive'}</td>
+                  <td style={{ color: venue.status ? "#4fd104" : "#ff0000", fontWeight: "bold" }}>
+                  {venue.status ? "Active" : "Inactive"}
+                  </td>
                   <td>
                     <div style={{ display: 'flex' }}>
                       <Link to={`/venues/edit/${venue._id}`} style={{ marginRight: '5px' }}>

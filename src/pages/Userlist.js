@@ -26,6 +26,7 @@ function Userlist() {
       const result = await response.json();
 
       if (response.ok) {
+        console.log(result.data, ">>>>>>>>>>>>>>>>>>>>>>>DATA")
         setData(result.data);
       } else {
         console.error('Failed to fetch data:', result.error);

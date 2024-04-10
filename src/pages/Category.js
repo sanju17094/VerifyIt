@@ -2,18 +2,44 @@ import '../../src/Category.css';
 import { Form } from "react-bootstrap";
 import Swal from "sweetalert2";
 import { Link } from 'react-router-dom';
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FiUpload, FiX } from 'react-icons/fi';
 import { API_URL } from '../ApiUrl';
 import { useNavigate } from 'react-router-dom';
+import Select from 'react-select'
 
 function Category() {
   const [input, setInput] = useState({
     category_name: "",
     images: [],
-    status: "true",
+    status: true,
+    parent_category_name: "Select Parent Category",
   });
+
+  const [parentCategories, setParentCategories] = useState([]);
+
+  useEffect(() => {
+    fetchParentCategories();
+  }, []);
+
+
+  const handleParentCategoryChange = (selectedOption) => {
+    console.log(selectedOption.value,"teh value...")
+    setInput({ ...input, parent_category_name: selectedOption.label });
+  };
+
+
+  const fetchParentCategories = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/parent-category/fetch`);
+      setParentCategories(response.data.data);
+      console.log(response.data, ">>>>>>>>>>>>>>>>>>>>>>>>>>>DATA AA RAHA H");
+    } catch (error) {
+      console.error("Error fetching parent categories:", error);
+    }
+  };
+
 
   const handleFileInputChange = (e) => {
     const files = Array.from(e.target.files);
@@ -47,6 +73,7 @@ function Category() {
     } else {
       try {
         const formData = new FormData();
+        formData.append('parent_category_name', input.parent_category_name);
         formData.append('category_name', input.category_name);
         formData.append('status', input.status);
         input.images.forEach((image) => {
@@ -83,10 +110,25 @@ function Category() {
 
   return (
     <>
-      <h3 className=''> Category</h3>
+      <h3 className="mb-4 title">Category</h3>
       <div className="form">
+        <Form.Group controlId="formParentCategory"  style={{ width: '67.5%' }}>
+          <Form.Label className="heading">
+            Parent Category <span className="StarSymbol">*</span>
+          </Form.Label>
+          <Select
+            name="parent_category_name"
+            value={input.parent_category_name}
+            options={parentCategories.map(category => ({
+              label: category.name,
+              value: category.name
+            }))}
+            onChange={handleParentCategoryChange}
+            placeholder={input.parent_category_name}
+          />
+        </Form.Group><br></br>
         <div className="mb-3">
-          <h7 style={{marginTop:'10px'}}>Category Name</h7>
+          <h7 style={{ marginTop: '10px' }}>Category</h7>
           <span className="StarSymbol">*</span>
           <Form.Control
             type="text"
@@ -95,12 +137,12 @@ function Category() {
             aria-describedby="passwordHelpBlock"
             className="form-control-sm"
             value={input.category_name}
-            onChange={(e) => setInput({...input, category_name: e.target.value})}
-            style={{marginTop:'10px'}}
+            onChange={(e) => setInput({ ...input, category_name: e.target.value })}
+            style={{ marginTop: '10px' }}
           />
         </div>
         <div className="mb-3">
-        <h6 style={{fontWeight:'bold',marginBottom:'10px'}}>Upload Photo</h6>
+          <h6 style={{ fontWeight: 'bold', marginBottom: '10px' }}>Upload Photo</h6>
           <div
             onDrop={(e) => {
               e.preventDefault();
@@ -113,7 +155,7 @@ function Category() {
             onDragOver={(e) => e.preventDefault()}
             style={{ border: '2px dashed #ccc', padding: '20px', textAlign: 'center', width: '300px' }}
           >
-           <h3 style={{fontSize: '18px'}}>Drag & Drop here</h3>
+            <h3 style={{ fontSize: '18px' }}>Drag & Drop here</h3>
             <div style={{ marginBottom: '10px' }}>
               <FiUpload style={{ fontSize: '48px', marginBottom: '10px' }} />
               <input type="file" multiple onChange={handleFileInputChange} style={{ display: 'none' }} />
@@ -127,7 +169,7 @@ function Category() {
                     onClick={() => handleRemovePhoto(index)}
                     style={{ position: 'absolute', top: '5px', right: '5px', background: 'none', border: 'none', cursor: 'pointer' }}
                   >
-                  <FiX />
+                    <FiX />
                   </button>
                 </div>
               ))}
@@ -153,7 +195,7 @@ function Category() {
         <div className="mb-3">
           <form>
             <button className="btn1" type="save" onClick={handleSubmit}>Save</button>
-           <button className="btn2" type="cancel" onClick={handleCancel}>Cancel</button>
+            <button className="btn2" type="cancel" onClick={handleCancel}>Cancel</button>
           </form>
         </div>
       </div>

@@ -16,7 +16,7 @@ const Coaches = () => {
     address: "",
     city: "",
     state: "",
-    zipCode: "",
+    zipcode: "",
     experience: "",
     availability: "",
     specializations: [],
@@ -206,8 +206,8 @@ const Coaches = () => {
                 <Form.Control
                   type="text"
                   placeholder="Enter zip code"
-                  name="location.zipCode"
-                  value={formData.zipCode}
+                  name="zipcode"
+                  value={formData.zipcode}
                   onChange={handleChange}
                 />
               </Form.Group><br></br>

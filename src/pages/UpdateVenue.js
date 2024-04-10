@@ -22,8 +22,9 @@ const UpdateVenue = () => {
     zipcode: "",
     city: "",
     images: [],
-    amenities: [],
+    amenities: [{}, {}],
     category: "",
+    activities: [],
     status: false,
   });
 
@@ -36,7 +37,7 @@ const UpdateVenue = () => {
   useEffect(() => {
     fetchCategories();
     fetchActivities();
-    fetchVenue();
+    // fetchVenue();
   }, []);
 
   const handleFileInputChange = (e) => {
@@ -87,7 +88,8 @@ const UpdateVenue = () => {
   const fetchVenue = async () => {
     try {
       const response = await axios.get(`${API_URL}/venue/individual/${_id}`);
-      const { venue } = response.data;
+      const venue = response.data.data;
+      console.log(response.data, ">>>>>DATA")
       setFormData({
         name: venue.name,
         address: venue.address,
@@ -95,6 +97,8 @@ const UpdateVenue = () => {
         zipcode: venue.zipcode,
         city: venue.city,
         amenities: venue.amenities,
+        category: venue.category,
+        activities: venue.activities,
       });
     } catch (error) {
       console.error("Error fetching venue data:", error);

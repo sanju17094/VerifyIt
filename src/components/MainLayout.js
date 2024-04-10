@@ -12,7 +12,7 @@ import { RiLoginCircleLine } from 'react-icons/ri';
 import { FaChalkboard } from 'react-icons/fa';
 import { FaShoppingBag } from 'react-icons/fa';
 import { RiUserSearchLine } from 'react-icons/ri';
-import { FaCalendarAlt , FaQuestionCircle} from 'react-icons/fa';
+import { FaCalendarAlt, FaQuestionCircle } from 'react-icons/fa';
 import { RiAdminLine } from 'react-icons/ri';
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -20,6 +20,7 @@ import { Link } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 import { ImBlog } from "react-icons/im";
 import { IoIosNotifications, IoIosPerson } from 'react-icons/io';
+import { LogoutOutlined } from '@ant-design/icons';
 import { FaClipboardList, FaBloggerB } from "react-icons/fa";
 import { BiCategoryAlt } from "react-icons/bi";
 import { Layout, Menu, theme } from "antd";
@@ -199,10 +200,10 @@ const MainLayout = () => {
             },
             {
               key: "enquiries",
-              icon:  <FaQuestionCircle className="fs-4" />,
+              icon: <FaQuestionCircle className="fs-4" />,
               label: "Enquiries",
             }
-            
+
             // {
             //   key: "",
             //   icon: <FaShoppingBag className="fs-4" />,
@@ -267,21 +268,21 @@ const MainLayout = () => {
               </div>
               <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
                 <li>
-                  <Link
+                  {/* <Link
                     className="dropdown-item py-1 mb-1"
                     style={{ height: "auto", lineHeight: "20px" }}
-                    to="/dashboard"
+                    to=""
                   >
-                    Home
-                  </Link>
+                    Edit
+                  </Link> */}
                 </li>
                 <li>
                   <button
-                    className="dropdown-item py-1 mb-1" // Changed from Link to button
+                    className="dropdown-item py-1 mb-1"
                     style={{ height: "auto", lineHeight: "20px" }}
                     onClick={handleLogout}
                   >
-                    Logout
+                    <LogoutOutlined style={{ marginRight: '8px' }} /> Logout
                   </button>
                 </li>
               </div>

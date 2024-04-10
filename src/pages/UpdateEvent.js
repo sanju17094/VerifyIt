@@ -71,9 +71,6 @@ const UpdateEvent = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-
-
     try {
       const response = await axios.put(
         `${API_URL}/event/update/${_id}`,

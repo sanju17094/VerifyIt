@@ -43,53 +43,8 @@ function Enquirylist() {
         }
     };
 
-    const handleEdit = async (row) => {
-        console.log('Edit clicked for row:', row);
-        try {
-            const response = await fetch(`${API_URL}/update-coach/${row._id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                })
-            });
-
-            if (response.ok) {
-                console.log('Category name updated successfully');
-            } else {
-                const responseData = await response.json();
-                console.error('Failed to update category name:', responseData.message || 'Unknown error');
-            }
-        } catch (error) {
-            console.error('Error updating category name:', error);
-        }
-    };
-
-    const handleDelete = async (row) => {
-        try {
-            const apiUrl = `${API_URL}/delete-coach/${row._id}`;
-
-            const response = await fetch(apiUrl, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-
-            if (response.ok) {
-                Swal.fire('Deactivated!', 'Your Profile has been Inactivated.', 'success');
-                // Update your state or refetch data to reflect the deletion
-                fetchData();
-            } else {
-                console.error('Failed to delete category:', response.statusText);
-                Swal.fire('Error', 'Failed to delete category.', 'error');
-            }
-        } catch (error) {
-            console.error('Error deleting category:', error);
-            Swal.fire('Error', 'An error occurred while deleting the category.', 'error');
-        }
-    };
+    
+    
 
     const handleSearch = () => {
         setSearchQuery(searchText);

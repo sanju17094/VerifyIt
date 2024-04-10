@@ -68,7 +68,7 @@ function Loginadmin() {
         console.warn('result', response);
         localStorage.setItem('token', JSON.stringify(response.data.token));
         console.log('Token:', response.data.token);
-        setSubmitting(false); // Reset submitting state after successful API call
+        // setSubmitting(false); Reset submitting state after successful API call
         navigate('/dashboard');
       })
       .catch((error) => {

@@ -159,18 +159,18 @@ const AddVenue = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log("frontend se data..->",formData)
+      console.log("frontend se data..->", formData)
       await axios.post(
         `${API_URL}/venue/addVenue`,
         formData,
         {
           headers: {
-            'Content-Type': 'multipart/form-data'
-          }
+            "Content-Type": "application/json"
+          },
         }
       ).then((response) => {
         console.log(response.data, "ore response ")
-        if (response.data.success) {
+        if (response) {
           Swal.fire({
             icon: "success",
             title: "Success!",
@@ -227,10 +227,9 @@ const AddVenue = () => {
                   <Multiselect
                     options={amenitiesOptions}
                     displayValue="name"
-                    selectedValues={amenities}
+                    selectedValues={formData.amenities}
                     onSelect={handleAmenitiesChange}
                     onRemove={handleAmenitiesChange}
-                    selectedAmenities={formData.amenities}
                     placeholder="Select Amenities"
                   />
                 </div>
@@ -251,7 +250,6 @@ const AddVenue = () => {
                   placeholder={`${formData.category || 'Select category'}`}
                 />
               </Form.Group>
-
             </Form>
           </Col>
           <Col md={4}>
@@ -338,7 +336,7 @@ const AddVenue = () => {
                   }));
                 }}
                 onDragOver={(e) => e.preventDefault()}
-                style={{ border: '2px dashed #ccc', padding: '20px', textAlign: 'center', width: '368px' }}
+                style={{ border: '2px dashed #ccc', padding: '20px', textAlign: 'center' }}
               >
                 <h3 style={{ fontSize: '18px' }}>Drag & Drop here</h3>
                 <div style={{ marginBottom: '10px' }}>

@@ -45,12 +45,14 @@ function Categorylist() {
     console.log('Edit clicked for row:', row);
     try {
       const response = await fetch(`${API_URL}/category/update/${row._id}`, {
-        method: 'PUT',
+        method: 'GET',
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          category_name: data.category_name
+          category_name: data.category_name,
+          parent_category_name: data.parent_category_name,
+          status: data.status
         })
       });
 
@@ -151,16 +153,23 @@ function Categorylist() {
               <thead>
                 <tr>
                   <th style={{ width: '7%' }}>S.No.</th>
-                  <th style={{ width: '62%' }}>Category Name</th>
+                  <th style={{ width: '32%' }}>Category</th>
+                  <th style={{ width: '32%' }}>Parent Category</th>
                   <th style={{ width: '10%' }}>Status</th>
                   <th style={{ width: '7%' }}>Action</th>
                 </tr>
               </thead>
+              {<>
+{console.log("currentItems",currentItems)}
+              </>
+                
+              }
               <tbody>
                 {currentItems.map((row, index) => (
                   <tr key={row._id}>
                     <td>{index + 1 + indexOfFirstItem}</td>
                     <td>{row.category_name}</td>
+                    <td>{row.parent_category_name}</td>
                     <td style={{ color: row.status ? "#4fd104" : "#ff0000", fontWeight: "bold" }}>
                     {row.status ? "Active" : "Inactive"}
                     </td>

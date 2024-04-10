@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BsArrowUpRight, BsArrowUpLeft } from "react-icons/bs";
+import { BsArrowUpRight} from "react-icons/bs";
 // import { FaArrowLeft } from "react-icons/fa";
 import { Column } from "@ant-design/plots";
 import { Table, DatePicker } from "antd";
@@ -9,54 +9,50 @@ import { API_URL } from '../ApiUrl';
 const { RangePicker } = DatePicker;
 
 
-
-const data = [
-  {
-    key: '1',
-    name: 'John Doe',
-
-  },
-  {
-    key: '2',
-    name: 'Jane Smith',
-  },
-];
-
 const columns = [
   {
-    title: 'SNo',
-    dataIndex: 'key',
+    title: "S.No",
+    dataIndex: "key",
+    render: (_, __, index) => index + 1,
   },
   {
-    title: 'Name',
-    dataIndex: 'name',
+    title: "First Name",
+    dataIndex: "first_name",
   },
   {
-    title: 'Venue Name',
-    dataIndex: 'product',
+    title: "Last Name",
+    dataIndex: "last_name",
+  },
+  {
+    title: "Mobile",
+    dataIndex: "mobile",
+  },
+  {
+    title: "Role",
+    dataIndex: "role",
   },
   {
     title: 'Date',
-    dataIndex: 'date',
+    dataIndex: 'createdAt',
+    render: date => {
+      const formattedDate = new Date(date);
+      const day = formattedDate.getDate();
+      const month = formattedDate.getMonth() + 1;
+      const year = formattedDate.getFullYear();
+      return `${day}-${month}-${year}`;
+    }
   },
   {
-    title: 'Time',
-    dataIndex: 'time',
-  },
-  {
-    title: 'Mobile Number',
-    dataIndex: 'mobile',
-  },
-  {
-    title: 'Booking',
-    dataIndex: 'booking',
-  },
+    title: "Booking",
+    dataIndex: "status",
+    render: (status) => (status ? "Accepted" : "Pending"),
+  }
 ];
 
 
 const visitor = [
   {
-    title: 'SNo',
+    title: 'S.No',
     dataIndex: 'key',
   },
   {
@@ -70,7 +66,13 @@ const visitor = [
   {
     title: 'Date',
     dataIndex: 'createdAt',
-    render: date => new Date(date).toLocaleDateString(),
+    render: date => {
+      const formattedDate = new Date(date);
+      const day = formattedDate.getDate();
+      const month = formattedDate.getMonth() + 1;
+      const year = formattedDate.getFullYear();
+      return `${day}-${month}-${year}`;
+    }
   },
   {
     title: 'Email',
@@ -91,6 +93,7 @@ const Dashboard = () => {
   const [currentDate, setCurrentDate] = useState("");
   const [marchCount, setMarchCount] = useState(0);
   const [visitorData, setVisitorData] = useState([]);
+  const [bookingData, setBookingData] = useState([]);
   const [selectedDateRange, setSelectedDateRange] = useState(null);
   const navigate = useNavigate();
 
@@ -130,10 +133,23 @@ const Dashboard = () => {
           ...item,
           key: index + 1
       }));
+      console.log(formattedVisitorData, ">>>>>>>>>>>>>>>>>>>VISITOR DATA")
       setVisitorData(formattedVisitorData);
     })
       .catch(error => {
         console.error('Error fetching visitor data:', error);
+      });
+
+
+      // Booking.....
+      axios
+      .get(`${API_URL}/user/getallUser`)
+      .then((response) => {
+        console.log(response.data.data, ">>>>>>>>>>>>>>>>>>BOOKING DATA");
+        setBookingData(response.data.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching booking data:", error);
       });
 
 
@@ -163,47 +179,6 @@ const Dashboard = () => {
     setSelectedDateRange(dates);
     console.log(dates, "<<<<<<<<<<<<<<<< Date");
   };
-
-  const data1 = [
-    {
-      key: '1',
-      name: 'John Doe',
-      product: 'Khandwa Naka Turf',
-      date: '2024-04-08',
-      time: '10:00 AM to 10:00 PM',
-      mobile: '1234567890',
-      booking: 'Accepted',
-    },
-    {
-      key: '2',
-      name: 'Jane Smith',
-      product: 'Rajendra Nagar Turf',
-      date: '2024-04-09',
-      time: '11:00 AM to 07:00 PM',
-      mobile: '9876543210',
-      booking: 'Pending',
-    },
-    {
-      key: '3',
-      name: 'Doe',
-      product: 'Basketball Court Indore',
-      date: '2024-04-10',
-      time: '08:00 AM to 09:00 PM',
-      mobile: '4561237890',
-      booking: 'Accepted',
-    },
-    {
-      key: '4',
-      name: 'Smith',
-      product: 'Khandwa Naka Turf',
-      date: '2024-04-11',
-      time: '01:00 PM to 09:00 PM',
-      mobile: '7894561230',
-      booking: 'Accepted',
-    },
-  ];
-
-
 
   const data = [
     { type: "Jan", sales: 38 },
@@ -295,11 +270,17 @@ const Dashboard = () => {
       <div className="mt-4">
         <h3 className="mb-5 title">Recent Booking</h3>
         <div>
-          <Table columns={columns} dataSource={data1} />
+          <Table columns={columns} dataSource={bookingData} />
         </div>
       </div>
+      {/* Recent Visitor */}
+      <div className="mt-4">  
       <h3 className="mb-5 title">Recent Visitor</h3>
+      <div>
       <Table columns={visitor} dataSource={visitorData} />
+      </div>
+      </div>
+
     </div>
   );
 };
