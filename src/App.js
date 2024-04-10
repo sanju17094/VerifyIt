@@ -32,7 +32,6 @@ import SubCategoryList from "./pages/SubCategoryList";
 import Userlist from "./pages/Userlist";
 import Venuetable from "./pages/Venuetable";
 import Adminlist from "./pages/Adminlist";
-import Adduser from "./pages/Adduser";
 import UpdateUser from "./pages/UpdateUser";
 import Login from "./pages/Login";
 import UserLogin from "./pages/UserLogin";
@@ -69,7 +68,6 @@ function App() {
           </Route> */}
             <Route path="/users" element={<Userlist />} />
             {/* <Route path="/adminlist" element={<Adminlist/>} /> */}
-            <Route path="/adduser" element={<Adduser />} />
             <Route path="/coaches" element={<ChoachingList />} />
             <Route path="/enquiries" element={<EnquiryList />} />
             <Route path="/enquiry/details/:_id" element={<EnquiryDetails />} />

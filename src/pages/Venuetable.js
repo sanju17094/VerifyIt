@@ -10,16 +10,17 @@ function VenueList() {
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10; 
 
   useEffect(() => {
     fetchData();
-  }, [currentPage, searchText]);
+  }, [currentPage, searchQuery]);
 
   const fetchData = async () => {
     try {
-      const apiUrl = `${API_URL}/venue/getVenue?page=${currentPage}&limit=${itemsPerPage}&search=${searchText}`;
+      const apiUrl = `${API_URL}/venue/getVenue?page=${currentPage}&limit=${itemsPerPage}&search=${searchQuery}`;
       const response = await fetch(apiUrl);
       const result = await response.json();
 
@@ -99,7 +100,8 @@ function VenueList() {
   };
 
   const handleSearch = () => {
-    setCurrentPage(1); // Reset to first page when searching
+    setSearchQuery(searchText);
+    setCurrentPage(1);
   };
 
   const handleSearchInputChange = (e) => {
