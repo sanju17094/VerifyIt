@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import { Table, Form, Row, Col, Button } from 'react-bootstrap'; // Import Bootstrap components
 import '../../src/Userlist.css';
+import { CSVLink } from 'react-csv';
 import { API_URL } from '../ApiUrl';
 import { ColorRing } from 'react-loader-spinner';
 
@@ -15,11 +16,17 @@ function Categorylist() {
   const [searchText, setSearchText] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(10); // Adjust as needed
+  const [itemsPerPage] = useState(10); 
+  const [csvData, setCsvData] = useState([]);
 
   useEffect(() => {
     fetchData();
   }, [currentPage, searchQuery]);
+
+  useEffect(() => {
+    formatCsvData();
+  }, [data]);
+
 
   const fetchData = async () => {
     try {
@@ -39,6 +46,15 @@ function Categorylist() {
       console.error('Error fetching data:', error);
       setLoading(false);
     }
+  };
+  const formatCsvData = () => {
+    const formattedData = data.map(row => ({
+      "category": row.category_name,
+      "Parent Category": row.parent_category_name,
+      "Status": row.status ? "Active" : "Inactive"
+    }));
+
+    setCsvData(formattedData);
   };
 
   const handleEdit = async (row) => {
@@ -126,11 +142,18 @@ function Categorylist() {
 
             />
           </Col>
-          <Col xs={12} sm={6} className="d-flex justify-content-end align-items-center">
+          <Col xs={12} sm={6} className="d-flex justify-content-end ">
             <div>
               <Link to="/categories/add">
                 <button className="add-button mr-2">Add Category</button>
               </Link>
+              <CSVLink data={csvData} filename={"user_list.csv"}>
+                <Button
+                  className="down-button"
+                >
+                  Download 
+                </Button>
+              </CSVLink>
             </div>
           </Col>
         </Form.Group>

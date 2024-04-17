@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import { Table, Form, Row, Col, Button } from 'react-bootstrap'; // Import Bootstrap components
 import { ColorRing } from 'react-loader-spinner';
 import '../../src/Userlist.css';
+import { CSVLink } from 'react-csv';
 import { API_URL } from '../ApiUrl';
 
 
@@ -15,11 +16,15 @@ function Coachlist() {
   const [searchText, setSearchText] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(10); // Adjust as needed
+  const [itemsPerPage] = useState(10); 
+  const [csvData, setCsvData] = useState([]);
 
   useEffect(() => {
     fetchData();
   }, [currentPage, searchQuery]);
+  useEffect(() => {
+    formatCsvData();
+  }, [data]);
 
   const fetchData = async () => {
     try {
@@ -41,6 +46,18 @@ function Coachlist() {
       console.error('Error fetching data:', error);
       setLoading(false);
     }
+  };
+  const formatCsvData = () => {
+    const formattedData = data.map(row => ({
+      "First Name": row.first_name,
+      "Last Name": row.last_name,
+      "Specializations": row.specializations,
+      "Location": row.location,
+      "Experience(yr)": row.experience,
+      "Status": row.status ? "Active" : "Inactive"
+    }));
+
+    setCsvData(formattedData);
   };
 
   const handleEdit = async (row) => {
@@ -128,6 +145,14 @@ function Coachlist() {
             <Link to="/coaches/add">
               <button className="add-button mr-2">Add Coach</button>
             </Link>
+            <CSVLink data={csvData} filename={"user_list.csv"}>
+                <Button
+                 
+                  className="down-button"
+                >
+                  Download 
+                </Button>
+              </CSVLink>
           </Col>
         </Form.Group>
         <div className="table-container">

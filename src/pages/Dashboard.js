@@ -28,6 +28,19 @@ const columns = [
     dataIndex: "mobile",
   },
   {
+    title: "Time of Booking",
+    dataIndex: "key",
+    // render: (_, __, index) => index + 1,
+  },
+  {
+    title: "category",
+    dataIndex: "category",
+  },
+  {
+    title: "Booking ID",
+    dataIndex: "Booking ID",
+  },
+  {
     title: "Role",
     dataIndex: "role",
   },
@@ -175,13 +188,14 @@ const Dashboard = () => {
   }, []);
 
 
+  
   const handleDateRangeChange = (dates) => {
     setSelectedDateRange(dates);
     console.log(dates, "<<<<<<<<<<<<<<<< Date");
   };
 
   const data = [
-    { type: "Jan", sales: 38 },
+    { type: "Jan", sales: 38 }, 
     { type: "Feb", sales: 52 },
     { type: "Mar", sales: 61 },
     { type: "Apr", sales: 145 },
@@ -259,7 +273,7 @@ const Dashboard = () => {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <h3 className="mb-4 title">Registration</h3>
           <div>
-            <RangePicker onChange={handleDateRangeChange} />
+            < RangePicker onChange={handleDateRangeChange} />
           </div>
         </div>
         <div>
@@ -269,9 +283,20 @@ const Dashboard = () => {
       {/* Recent Booking */}
       <div className="mt-4">
         <h3 className="mb-5 title">Recent Booking</h3>
-        <div>
+        {/* <div>
           <Table columns={columns} dataSource={bookingData} />
-        </div>
+        </div> */}
+  <div>
+    <Table
+      columns={columns}
+      dataSource={bookingData}
+      pagination={{
+        pageSizeOptions: ["5", "10", "20", "50"], // Available page sizes
+        showSizeChanger: true, // Show the page size changer dropdown
+        showQuickJumper: true, // Show quick jumper
+      }}
+    />
+  </div>
       </div>
       {/* Recent Visitor */}
       <div className="mt-4">  

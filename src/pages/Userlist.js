@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Button, Table, Form, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import Swal from 'sweetalert2';
+import { CSVLink } from 'react-csv';
 import { ColorRing } from 'react-loader-spinner';
+import Swal from 'sweetalert2';
 import '../../src/Userlist.css';
 import { API_URL } from '../ApiUrl';
 
@@ -14,10 +15,15 @@ function Userlist() {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
+  const [csvData, setCsvData] = useState([]);
 
   useEffect(() => {
     fetchData();
   }, [currentPage, searchQuery]);
+
+  useEffect(() => {
+    formatCsvData();
+  }, [data]);
 
   const fetchData = async () => {
     try {
@@ -26,7 +32,6 @@ function Userlist() {
       const result = await response.json();
 
       if (response.ok) {
-        console.log(result.data, ">>>>>>>>>>>>>>>>>>>>>>>DATA")
         setData(result.data);
       } else {
         console.error('Failed to fetch data:', result.error);
@@ -37,6 +42,20 @@ function Userlist() {
       console.error('Error fetching data:', error);
       setLoading(false);
     }
+  };
+
+  const formatCsvData = () => {
+    const formattedData = data.map(row => ({
+      "First Name": row.first_name,
+      "Last Name": row.last_name,
+      "Role": row.role,
+      "Booking ID": row.booking_id,
+      "Time of Booking": row.time_of_booking,
+      "category": row.category,
+      "Status": row.status ? "Active" : "Inactive"
+    }));
+
+    setCsvData(formattedData);
   };
 
   const handleEdit = async (row) => {
@@ -108,7 +127,7 @@ function Userlist() {
     <>
       <h3 className="mb-4 title">Users</h3>
       <div className="cnt">
-        <Form.Group as={Row} className="mb-3">
+        <Form.Group as={Row} className="mb-3 align-items-center">
           <Col sm={6}>
             <Form.Control
               type="text"
@@ -118,11 +137,19 @@ function Userlist() {
               className='search-input'
             />
           </Col>
-          <Col sm={6} className="d-flex justify-content-end">
+          <Col sm={6} className="d-flex justify-content-end align-items-center">
             <div>
               <Link to="/users/add">
-                <button className="add-button">Add User</button>
+                <Button className="add-button">Add User</Button>
               </Link>
+              <CSVLink data={csvData} filename={"user_list.csv"}>
+                <Button
+                  
+                  className="down-button"
+                >
+                  Download 
+                </Button>
+              </CSVLink>
             </div>
           </Col>
         </Form.Group>
@@ -145,11 +172,15 @@ function Userlist() {
               <thead>
                 <tr>
                   <th style={{ width: '7%' }}>S.No.</th>
-                  <th style={{ width: '30%' }}>First Name</th>
-                  <th style={{ width: '30%' }}>Last Name</th>
-                  <th style={{ width: '20%' }}>Role</th>
+                  <th style={{ width: '15%' }}>First Name</th>
+                  <th style={{ width: '15%' }}>Last Name</th>
+                  <th style={{ width: '10%' }}>Role</th>
+                  <th style={{ width: '15%' }}>Booking ID</th>
+                  <th style={{ width: '15%' }}>Time of Booking</th>
+                  <th style={{ width: '10%' }}>category</th>
                   <th style={{ width: '10%' }}>Status</th>
                   <th style={{ width: '7%' }}>Action</th>
+                  
                 </tr>
               </thead>
               <tbody>
@@ -160,8 +191,11 @@ function Userlist() {
                       <td>{row.first_name}</td>
                       <td>{row.last_name}</td>
                       <td>{row.role}</td>
+                      <td>{row.booking_id}</td>
+                      <td>{row.time_of_booking}</td>
+                      <td>{row.category}</td>
                       <td style={{ color: row.status ? "#4fd104" : "#ff0000", fontWeight: "bold" }}>
-                      {row.status ? "Active" : "Inactive"}
+                        {row.status ? "Active" : "Inactive"}
                       </td>
                       <td>
                         <div style={{ display: 'flex' }}>
@@ -191,9 +225,6 @@ function Userlist() {
                         </div>
                       </td>
                     </tr>
-                    {/* <tr>
-                    <td colSpan="6">Additional row after each entry</td>
-                  </tr> */}
                   </React.Fragment>
                 ))}
               </tbody>

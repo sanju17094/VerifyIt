@@ -3,6 +3,7 @@ import { Button, Table, Form, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import Swal from 'sweetalert2';
+import { CSVLink } from 'react-csv';
 import '../../src/Userlist.css';
 import { API_URL } from '../ApiUrl';
 
@@ -12,11 +13,17 @@ function VenueList() {
   const [searchText, setSearchText] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  const [csvData, setCsvData] = useState([]);
   const itemsPerPage = 10; 
 
   useEffect(() => {
     fetchData();
   }, [currentPage, searchQuery]);
+
+  useEffect(() => {
+    formatCsvData();
+  }, [records]);
+  
 
   const fetchData = async () => {
     try {
@@ -37,6 +44,19 @@ function VenueList() {
       setLoading(false);
     }
   };
+
+  const formatCsvData = () => {
+    const formattedData = records.map(row => ({
+      "Venue Name": row.name,
+      "Category": row.category,
+      "Status": row.status ? "Active" : "Inactive"
+    }));
+  
+    setCsvData(formattedData);
+  };
+  
+
+
 
   const handleEdit = async (venue) => {
     console.log('Edit clicked for row:', venue);
@@ -134,6 +154,14 @@ function VenueList() {
             <Link to="/venues/add">
               <button className="add-button mr-2">Add Venue</button>
             </Link>
+            <CSVLink data={csvData} filename={"user_list.csv"}>
+                <Button
+                 
+                  className="down-button"
+                >
+                  Download 
+                </Button>
+              </CSVLink>
           </Col>
         </Form.Group>
         <div className="table-container">

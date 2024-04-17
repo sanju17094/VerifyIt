@@ -1,25 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import Swal from 'sweetalert2';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
-import { Table, Form, Row, Col, Button } from 'react-bootstrap'; // Import Bootstrap components
-import { ColorRing } from 'react-loader-spinner';
-import '../../src/Userlist.css';
-import { API_URL } from '../ApiUrl';
-
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import Swal from "sweetalert2";
+import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
+import { Table, Form, Row, Col, Button } from "react-bootstrap"; // Import Bootstrap components
+import { ColorRing } from "react-loader-spinner";
+import "../../src/Userlist.css";
+import { CSVLink } from "react-csv";
+import { API_URL } from "../ApiUrl";
 
 function EventList() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchText, setSearchText] = useState('');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchText, setSearchText] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(10); // Adjust as needed
+  const [itemsPerPage] = useState(10);
+  const [csvData, setCsvData] = useState([]);
 
   useEffect(() => {
     fetchData();
   }, [currentPage, searchQuery]);
+
+  useEffect(() => {
+    formatCsvData();
+  }, [data]);
 
   const fetchData = async () => {
     try {
@@ -27,22 +32,34 @@ function EventList() {
       const apiUrl = `${API_URL}/event/fetchAll?page=${currentPage}&limit=${itemsPerPage}&search=${searchQuery}`;
       const response = await fetch(apiUrl);
       const result = await response.json();
-      console.log("result.....->>>", result)
+      console.log("result.....->>>", result);
       if (response.ok) {
         setData(result.data);
       } else {
-        console.error('Failed to fetch data:', result.error);
+        console.error("Failed to fetch data:", result.error);
       }
 
       setLoading(false);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error("Error fetching data:", error);
       setLoading(false);
     }
   };
 
+  const formatCsvData = () => {
+    const formattedData = data.map((row) => ({
+      Name: row.event_name,
+      "Start At": row.start_date,
+      "End At": row.end_date,
+      Location: row.location,
+      Status: row.status ? "Active" : "Inactive",
+    }));
+
+    setCsvData(formattedData);
+  };
+
   const handleEdit = async (row) => {
-    console.log('Edit clicked for row:', row);
+    console.log("Edit clicked for row:", row);
     try {
       const response = await fetch(`${API_URL}/event/get/${row._id}`, {
         method: "GET",
@@ -55,18 +72,21 @@ function EventList() {
           start_date: data.start_date,
           end_date: data.end_date,
           location: data.location,
-          status: data.status
+          status: data.status,
         }),
       });
 
       if (response.ok) {
-        console.log('event name updated successfully');
+        console.log("event name updated successfully");
       } else {
         const responseData = await response.json();
-        console.error('Failed to update event name:', responseData.message || 'Unknown error');
+        console.error(
+          "Failed to update event name:",
+          responseData.message || "Unknown error"
+        );
       }
     } catch (error) {
-      console.error('Error updating event name:', error);
+      console.error("Error updating event name:", error);
     }
   };
 
@@ -75,23 +95,31 @@ function EventList() {
       const apiUrl = `${API_URL}/event/delete/${row._id}`;
 
       const response = await fetch(apiUrl, {
-        method: 'DELETE',
+        method: "DELETE",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       });
 
       if (response.ok) {
-        Swal.fire('Deactivated!', 'Your Profile has been Deactivated.', 'success');
+        Swal.fire(
+          "Deactivated!",
+          "Your Profile has been Deactivated.",
+          "success"
+        );
         // Update your state or refetch data to reflect the deletion
         fetchData();
       } else {
-        console.error('Failed to delete event:', response.statusText);
-        Swal.fire('Error', 'Failed to delete event.', 'error');
+        console.error("Failed to delete event:", response.statusText);
+        Swal.fire("Error", "Failed to delete event.", "error");
       }
     } catch (error) {
-      console.error('Error deleting event:', error);
-      Swal.fire('Error', 'An error occurred while deleting the event.', 'error');
+      console.error("Error deleting event:", error);
+      Swal.fire(
+        "Error",
+        "An error occurred while deleting the event.",
+        "error"
+      );
     }
   };
 
@@ -111,7 +139,9 @@ function EventList() {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = data
-    .filter((row) => row.event_name.toLowerCase().includes(searchText.toLowerCase()))
+    .filter((row) =>
+      row.event_name.toLowerCase().includes(searchText.toLowerCase())
+    )
     .slice(indexOfFirstItem, indexOfLastItem);
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -135,10 +165,21 @@ function EventList() {
               onChange={handleSearchInputChange}
             />
           </Col>
-          <Col sm={6} className="d-flex justify-content-end">
-            <Link to="/event/add">
-              <button className="add-button mr-2">Add Events</button>
-            </Link>
+          <Col sm={6} className="d-flex justify-content-end align-items-center">
+            <div className="mr-2">
+              <Link to="/event/add">
+                <button className="add-button">Add Events</button>
+              </Link>
+            </div>
+            <div>
+              <CSVLink data={csvData} filename={"user_list.csv"}>
+                <Button
+                  className="down-button"
+                >
+                  Download
+                </Button>
+              </CSVLink>
+            </div>
           </Col>
         </Form.Group>
         <div className="table-container">
@@ -151,7 +192,7 @@ function EventList() {
                 ariaLabel="color-ring-loading"
                 wrapperStyle={{}}
                 wrapperClass="color-ring-wrapper"
-                colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
+                colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
               />
               <p>Loading...</p>
             </div>
@@ -176,8 +217,13 @@ function EventList() {
                     <td>{formatDate(row.start_date)}</td>
                     <td>{formatDate(row.end_date)}</td>
                     <td>{row.location}</td>
-                    <td style={{ color: row.status ? "#4fd104" : "#ff0000", fontWeight: "bold" }}>
-                    {row.status ? "Active" : "Inactive"}
+                    <td
+                      style={{
+                        color: row.status ? "#4fd104" : "#ff0000",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {row.status ? "Active" : "Inactive"}
                     </td>
                     <td>
                       <div style={{ display: "flex" }}>
@@ -221,8 +267,9 @@ function EventList() {
               (_, index) => (
                 <li
                   key={index}
-                  className={`page-item ${currentPage === index + 1 ? "active" : ""
-                    }`}
+                  className={`page-item ${
+                    currentPage === index + 1 ? "active" : ""
+                  }`}
                 >
                   <button
                     className="page-link"

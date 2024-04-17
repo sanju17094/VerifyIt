@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import Swal from 'sweetalert2';
 import { ColorRing } from 'react-loader-spinner';
+import { CSVLink } from 'react-csv';
 // import 'bootstrap/dist/css/bootstrap.min.css';
 // import '@fortawesome/fontawesome-free/css/all.min.css';
 import { Table, Form, Row, Col, Button } from 'react-bootstrap';
@@ -15,11 +16,18 @@ function PersonalTraininglist() {
   const [searchText, setSearchText] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(10); // Adjust as needed
+  const [itemsPerPage] = useState(10); 
+  const [csvData, setCsvData] = useState([]);
+
 
   useEffect(() => {
     fetchData();
   }, [currentPage, searchQuery]);
+
+  useEffect(() => {
+    formatCsvData();
+  }, [data]);
+
 
   const fetchData = async () => {
     try {
@@ -39,6 +47,19 @@ function PersonalTraininglist() {
       setLoading(false);
     }
   };
+
+  const formatCsvData = () => {
+    const formattedData = data.map(row => ({
+      "Trainer Name": `${row.first_name} ${row.last_name}`,
+      "Duration": row.duration,
+      "Focus Area": row.focus_area,
+      "Price": row.price,
+      "Status": row.status ? "Active" : "Inactive"
+    }));
+  
+    setCsvData(formattedData);
+  };
+  
 
   const handleEdit = async (row) => {
     try {
@@ -122,10 +143,22 @@ function PersonalTraininglist() {
               onChange={handleSearchInputChange}
             />
           </Col>
-          <Col sm={6} className="d-flex justify-content-end">
+          <Col sm={6} className="d-flex justify-content-end align-items-center">
+          <div className="mr-3">
             <Link to="/personal-traning/add">
               <button className="add-button mr-2">Add Personal Trainer</button>
             </Link>
+            </div>
+            <div>
+            <CSVLink data={csvData} filename={"user_list.csv"}>
+                <Button
+                  
+                  className="down-button"
+                >
+                  Download 
+                </Button>
+              </CSVLink>
+              </div>
           </Col>
         </Form.Group>
         <div className="table-container">
