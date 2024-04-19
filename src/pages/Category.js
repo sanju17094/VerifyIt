@@ -2,98 +2,86 @@ import '../../src/Category.css';
 import { Form } from "react-bootstrap";
 import Swal from "sweetalert2";
 import { Link } from 'react-router-dom';
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUpload, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { FiUpload, FiX } from 'react-icons/fi';
+import { API_URL } from '../ApiUrl';
+import { useNavigate } from 'react-router-dom';
+import Select from 'react-select'
 
 function Category() {
   const [input, setInput] = useState({
     category_name: "",
-    status: true,
     images: [],
-    imagePreviews: [],
-    imageNames: [],
+    status: true,
+    parent_category_name: "Select Parent Category",
   });
 
-  const fileInputRef = useRef(null);
+  const [parentCategories, setParentCategories] = useState([]);
 
-  const handleInputChange = (event) => {
-    const { name, value, type, checked } = event.target;
-    const newValue = type === 'checkbox' ? checked : value;
-    setInput((prevState) => ({
-      ...prevState,
-      [name]: newValue,
-    }));
+  useEffect(() => {
+    fetchParentCategories();
+  }, []);
+
+
+  const handleParentCategoryChange = (selectedOption) => {
+    console.log(selectedOption.value,"teh value...")
+    setInput({ ...input, parent_category_name: selectedOption.label });
   };
 
-  const handlePhotoChange = (e) => {
-    const selectedFiles = e.target.files;
-    const previews = [];
-    const names = [];
-    for (let i = 0; i < selectedFiles.length; i++) {
-      previews.push(URL.createObjectURL(selectedFiles[i]));
-      names.push(selectedFiles[i].name);
+
+  const fetchParentCategories = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/parent-category/fetch`);
+      setParentCategories(response.data.data);
+      console.log(response.data, ">>>>>>>>>>>>>>>>>>>>>>>>>>>DATA AA RAHA H");
+    } catch (error) {
+      console.error("Error fetching parent categories:", error);
     }
-    setInput((prevState) => ({
+  };
+
+
+  const handleFileInputChange = (e) => {
+    const files = Array.from(e.target.files);
+    setInput(prevState => ({
       ...prevState,
-      images: selectedFiles,
-      imagePreviews: previews,
-      imageNames: names,
+      images: files,
     }));
   };
 
-  const handleDrop = (e) => {
-    e.preventDefault();
-    const files = Array.from(e.dataTransfer.files);
-    const previews = [];
-    const names = [];
-    files.forEach((file) => {
-      previews.push(URL.createObjectURL(file));
-      names.push(file.name);
-    });
-    setInput((prevState) => ({
+  const handleRemovePhoto = (index) => {
+    setInput(prevState => ({
       ...prevState,
-      images: [...prevState.images, ...files],
-      imagePreviews: [...prevState.imagePreviews, ...previews],
-      imageNames: [...prevState.imageNames, ...names],
+      images: prevState.images.filter((_, i) => i !== index),
     }));
   };
 
-  const removeImage = (index) => {
-    const updatedImages = [...input.images];
-    const updatedPreviews = [...input.imagePreviews];
-    const updatedNames = [...input.imageNames];
-    updatedImages.splice(index, 1);
-    updatedPreviews.splice(index, 1);
-    updatedNames.splice(index, 1);
-    setInput((prevState) => ({
-      ...prevState,
-      images: updatedImages,
-      imagePreviews: updatedPreviews,
-      imageNames: updatedNames,
-    }));
+  const navigate = useNavigate();
+
+  const handleCancel = () => {
+    navigate('/categories');
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (input.category_name.trim() === '' || input.images.length === 0) {
+    if (input.category_name.trim() === '') {
       Swal.fire({
         title: "Validation Error!",
-        text: "Category name and photos are required",
+        text: "Category name is required",
         icon: "error"
       });
     } else {
       try {
         const formData = new FormData();
+        formData.append('parent_category_name', input.parent_category_name);
         formData.append('category_name', input.category_name);
         formData.append('status', input.status);
-        for (let i = 0; i < input.images.length; i++) {
-          formData.append('images', input.images[i]);
-        }
+        input.images.forEach((image) => {
+          formData.append('images', image);
+        });
 
         const response = await axios.post(
-          "http://localhost:4000/api/v1/kheloindore/category/create",
+          `${API_URL}/category/create`,
           formData,
           {
             headers: {
@@ -107,8 +95,7 @@ function Category() {
           text: "Category added successfully!",
           icon: "success"
         }).then(() => {
-          // Redirect to Categorylist after successful submission
-          window.location.href = "/Categorylist";
+          window.location.href = "/categories";
         });
       } catch (error) {
         console.error("Error:", error.response ? error.response.data : error.message);
@@ -123,10 +110,25 @@ function Category() {
 
   return (
     <>
-      <h3 class="mb-4 title">Category</h3>
-      <div className="form" onDrop={handleDrop} onDragOver={(e) => e.preventDefault()}>
+      <h3 className="mb-4 title">Category</h3>
+      <div className="form">
+        <Form.Group controlId="formParentCategory"  style={{ width: '67.5%' }}>
+          <Form.Label className="heading">
+            Parent Category <span className="StarSymbol">*</span>
+          </Form.Label>
+          <Select
+            name="parent_category_name"
+            value={input.parent_category_name}
+            options={parentCategories.map(category => ({
+              label: category.name,
+              value: category.name
+            }))}
+            onChange={handleParentCategoryChange}
+            placeholder={input.parent_category_name}
+          />
+        </Form.Group><br></br>
         <div className="mb-3">
-          <h7>Category Name</h7>
+          <h7 style={{ marginTop: '10px' }}>Category</h7>
           <span className="StarSymbol">*</span>
           <Form.Control
             type="text"
@@ -135,41 +137,46 @@ function Category() {
             aria-describedby="passwordHelpBlock"
             className="form-control-sm"
             value={input.category_name}
-            onChange={handleInputChange}
+            onChange={(e) => setInput({ ...input, category_name: e.target.value })}
+            style={{ marginTop: '10px' }}
           />
-          <br></br>
-          <Form.Group controlId="formPhotos">
-            <h7>Upload Photo</h7>
-            <span className="StarSymbol">*</span>
-            <div className="dropzone" >
-              <Form.Control
-                type="file"
-                multiple
-                name="photos"
-                style={{ display: 'none' }}
-                onChange={handlePhotoChange}
-                ref={fileInputRef}
-              />
-              <div className="dropzone-text" onClick={() => fileInputRef.current.click()}><br></br>
-                <FontAwesomeIcon icon={faUpload} className="upload-icon" style={{ fontSize: '20px', color: '#fcfcfa', borderRadius: '5px', padding: '5px', backgroundColor: '#ff5f15' }}/>
-                Click here to upload images
-              </div>
-              {input.imagePreviews.map((preview, index) => (
-                <div key={index} className="image-container">
-                  <img src={preview} alt={`Preview ${index + 1}`} className="preview-image" />
-                  <div className="image-info">
-                    <span>{input.imageNames[index]}</span>
-                    <FontAwesomeIcon
-                      icon={faTimesCircle}
-                      className="close-icon"
-                      onClick={() => removeImage(index)}
-                    />
-                  </div>
+        </div>
+        <div className="mb-3">
+          <h6 style={{ fontWeight: 'bold', marginBottom: '10px' }}>Upload Photo</h6>
+          <div
+            onDrop={(e) => {
+              e.preventDefault();
+              const files = Array.from(e.dataTransfer.files);
+              setInput(prevState => ({
+                ...prevState,
+                images: [...prevState.images, ...files.filter(file => file.type.startsWith('image/'))],
+              }));
+            }}
+            onDragOver={(e) => e.preventDefault()}
+            style={{ border: '2px dashed #ccc', padding: '20px', textAlign: 'center', width: '300px' }}
+          >
+            <h3 style={{ fontSize: '18px' }}>Drag & Drop here</h3>
+            <div style={{ marginBottom: '10px' }}>
+              <FiUpload style={{ fontSize: '48px', marginBottom: '10px' }} />
+              <input type="file" multiple onChange={handleFileInputChange} style={{ display: 'none' }} />
+              <button className='btn3' onClick={() => document.querySelector('input[type=file]').click()}> Or Click to Select </button>
+            </div>
+            <div>
+              {input.images.map((photo, index) => (
+                <div key={index} style={{ position: 'relative', display: 'inline-block' }}>
+                  <img src={URL.createObjectURL(photo)} alt={`Photo ${index}`} style={{ width: '100px', height: '100px', margin: '5px' }} />
+                  <button
+                    onClick={() => handleRemovePhoto(index)}
+                    style={{ position: 'absolute', top: '5px', right: '5px', background: 'none', border: 'none', cursor: 'pointer' }}
+                  >
+                    <FiX />
+                  </button>
                 </div>
               ))}
             </div>
-          </Form.Group>
+          </div>
         </div>
+
         <Form.Group controlId="formCheckbox">
           <div className="checkbox-container">
             <Form.Check
@@ -178,8 +185,8 @@ function Category() {
               name="status"
               aria-label="option 1"
               className="checkbox-input"
-              checked={input.status}
-              onChange={handleInputChange}
+              checked={input.status || false}
+              onChange={e => setInput({ ...input, status: e.target.checked })}
             />
           </div>
           <Form.Label className="checkbox-label">Status</Form.Label>
@@ -187,8 +194,8 @@ function Category() {
 
         <div className="mb-3">
           <form>
-            <button className="btn1" type="submit" onClick={handleSubmit}>Save</button>
-            <Link to="/Categorylist"><button className="btn2" >Cancel</button></Link>
+            <button className="btn1" type="save" onClick={handleSubmit}>Save</button>
+            <button className="btn2" type="cancel" onClick={handleCancel}>Cancel</button>
           </form>
         </div>
       </div>
@@ -197,3 +204,4 @@ function Category() {
 }
 
 export default Category;
+

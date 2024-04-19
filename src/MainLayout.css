@@ -1,6 +1,6 @@
 .lg-logo {
     height: 100%;
-    max-width: 40px; 
+    max-width: 210px; 
     width: auto; 
   }
   
@@ -14,3 +14,24 @@
 .sidelogo{
   background-color: rgb(255, 95, 21);
 }
+/* Apply the background color when item is selected */
+/* .ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected:active,
+.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected:focus {
+  background-color: rgb(255, 95, 21) !important;
+} */
+
+
+/* Disable pointer events on hover */
+/* .ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected:hover {
+  pointer-events: none;
+} */
+.dropdown-menu {
+  --bs-dropdown-link-active-bg:rgb(255, 95, 21) !important;
+
+} 
+
+.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    background-color: rgb(255, 95, 21) !important; 
+}
+
+

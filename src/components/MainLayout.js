@@ -12,7 +12,7 @@ import { RiLoginCircleLine } from 'react-icons/ri';
 import { FaChalkboard } from 'react-icons/fa';
 import { FaShoppingBag } from 'react-icons/fa';
 import { RiUserSearchLine } from 'react-icons/ri';
-import { FaCalendarAlt } from 'react-icons/fa';
+import { FaCalendarAlt, FaQuestionCircle } from 'react-icons/fa';
 import { RiAdminLine } from 'react-icons/ri';
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -20,22 +20,31 @@ import { Link } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 import { ImBlog } from "react-icons/im";
 import { IoIosNotifications, IoIosPerson } from 'react-icons/io';
+import { LogoutOutlined } from '@ant-design/icons';
 import { FaClipboardList, FaBloggerB } from "react-icons/fa";
 import { BiCategoryAlt } from "react-icons/bi";
 import { Layout, Menu, theme } from "antd";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExampleIcon } from '@fortawesome/free-solid-svg-icons';
-import logoImage from "../../src/image.png";
+import { faExampleIcon, faUser } from '@fortawesome/free-solid-svg-icons';
+import logoImage from "../Khelo Indore Logo/Group 86.png";
 import '../../src/MainLayout.css'
 
-const { Header, Sider, Content } = Layout;
+const { Header, Sider, Content, Footer } = Layout;
+
+
 const MainLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer },
   } = theme.useToken();
   const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/');
+  };
+
   return (
     <Layout /* onContextMenu={(e) => e.preventDefault()} */>
       <Sider trigger={null} collapsible collapsed={collapsed}>
@@ -43,8 +52,7 @@ const MainLayout = () => {
           <h2 className="text-white fs-5 text-center py-3 mb-0">
             <span className="sm-logo">KI</span>
             <img src={logoImage} alt="Khelo Indore Logo" className="lg-logo" />
-            <span className="lg-logo">Khelo Indore</span>
-                
+            <span className="lg-logo"></span>
           </h2>
         </div>
         <Menu
@@ -64,7 +72,7 @@ const MainLayout = () => {
               label: "Dashboard",
             },
             {
-              key: "userlist",
+              key: "users",
               icon: <RiUserLine className="fs-4" />,
               label: "Users",
               // children: [
@@ -81,26 +89,26 @@ const MainLayout = () => {
               // ],
             },
 
-            {
-              key: "adminlist",
-              icon: <RiUserLine className="fs-4" />,
-              label: "Admin",
-              // children: [
-              //   {
-              //     key: "adduser",
-              //     icon: <RiLoginCircleLine className="fs-4" />,
-              //     label: "Add",
-              //   },
-              //   {
-              //     key: "adminlist",
-              //     icon: <RiAdminLine className="fs-4" />,
-              //     label: "Admin List",
-              //   },
-              // ],
-            },
+            // {
+            //   key: "adminlist",
+            //   icon: <RiUserLine className="fs-4" />,
+            //   label: "Admin",
+            //   // children: [
+            //   //   {
+            //   //     key: "adduser",
+            //   //     icon: <RiLoginCircleLine className="fs-4" />,
+            //   //     label: "Add",
+            //   //   },
+            //   //   {
+            //   //     key: "adminlist",
+            //   //     icon: <RiAdminLine className="fs-4" />,
+            //   //     label: "Admin List",
+            //   //   },
+            //   // ],
+            // },
 
             {
-              key: "categorylist",
+              key: "categories",
               icon: <BiCategoryAlt className="fs-4" />,
               label: "Categories",
               // children: [
@@ -109,35 +117,35 @@ const MainLayout = () => {
               //     icon: <AiOutlineShoppingCart className="fs-4" />,
               //     label: "Add Category",
               //   },
-                // {
-                //   key: "Subcategory",
-                //   icon: <AiOutlineShoppingCart className="fs-4" />,
-                //   label: "Add Subcategory",
-                // },
-                // {
-                //   key: "category",
-                //   icon: <BiCategoryAlt className="fs-4" />,
-                //   label: "Category",
-                // },
-                // {
-                //   key: "categorylist",
-                //   icon: <BiCategoryAlt className="fs-4" />,
-                //   label: "Category List",
-                // },
-                // {
-                //   key: "subcategorylist",
-                //   icon: <BiCategoryAlt className="fs-4" />,
-                //   label: "Subcategory List",
-                // },
-                // {
-                //   key: "list-color",
-                //   icon: <AiOutlineBgColors className="fs-4" />,
-                //   label: "Color List",
-                // },
+              // {
+              //   key: "Subcategory",
+              //   icon: <AiOutlineShoppingCart className="fs-4" />,
+              //   label: "Add Subcategory",
+              // },
+              // {
+              //   key: "category",
+              //   icon: <BiCategoryAlt className="fs-4" />,
+              //   label: "Category",
+              // },
+              // {
+              //   key: "categorylist",
+              //   icon: <BiCategoryAlt className="fs-4" />,
+              //   label: "Category List",
+              // },
+              // {
+              //   key: "subcategorylist",
+              //   icon: <BiCategoryAlt className="fs-4" />,
+              //   label: "Subcategory List",
+              // },
+              // {
+              //   key: "list-color",
+              //   icon: <AiOutlineBgColors className="fs-4" />,
+              //   label: "Color List",
+              // },
               //],
             },
             {
-              key: "venuelist",
+              key: "venues",
               icon: <RiCouponLine className="fs-4" />,
               label: "Venues",
               // children: [
@@ -154,9 +162,9 @@ const MainLayout = () => {
               // ],
             },
             {
-              key: "coaching",
+              key: "coaches",
               icon: <FaBloggerB className="fs-4" />,
-              label: "Coaching",
+              label: "Coach",
               // children: [
               //   {
               //     key: "blog",
@@ -181,7 +189,7 @@ const MainLayout = () => {
               // ],
             },
             {
-              key: "personaltraining",
+              key: "personal-training",
               icon: <FaChalkboard className="fs-4" />,
               label: "Personal Training",
             },
@@ -191,10 +199,16 @@ const MainLayout = () => {
               label: "Events",
             },
             {
-              key: "shop",
-              icon: <FaShoppingBag className="fs-4" />,
-              label: "Shop",
-            },
+              key: "enquiries",
+              icon: <FaQuestionCircle className="fs-4" />,
+              label: "Enquiries",
+            }
+
+            // {
+            //   key: "",
+            //   icon: <FaShoppingBag className="fs-4" />,
+            //   label: "Shop",
+            // },
           ]}
         />
       </Sider>
@@ -226,9 +240,9 @@ const MainLayout = () => {
             </div> */}
 
             <div className="d-flex gap-3 align-items-center dropdown">
-              <div>
+              {/* <div>
                 <img src={logoImage} alt="Khelo Indore Logo" className="lg-logo" />
-              </div>
+              </div> */}
               <div
                 role="button"
                 id="dropdownMenuLink"
@@ -236,27 +250,40 @@ const MainLayout = () => {
                 aria-expanded="false"
               >
 
-                <h5 className="mb-0"><FontAwesomeIcon icon="fa-solid fa-user" />Admin</h5>
-                <p className="mb-0">admin12345@gmail.com</p>
+                <h5 className="mb-0">
+                  <FontAwesomeIcon
+                    icon={faUser}
+                    style={{
+                      marginRight: '5px',
+                      color: 'rgb(255, 95, 21)',
+                      borderRadius: '50%',
+                      backgroundColor: '#fff',
+                      padding: '5px',
+                      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+                      width: '20px',
+                      height: '20px',
+                    }}
+                  />
+                </h5>
               </div>
               <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
                 <li>
-                  <Link
+                  {/* <Link
                     className="dropdown-item py-1 mb-1"
                     style={{ height: "auto", lineHeight: "20px" }}
-                    to="/"
+                    to=""
                   >
-                    View Profile
-                  </Link>
+                    Edit
+                  </Link> */}
                 </li>
                 <li>
-                  <Link
+                  <button
                     className="dropdown-item py-1 mb-1"
                     style={{ height: "auto", lineHeight: "20px" }}
-                    to="/Loginadmin"
+                    onClick={handleLogout}
                   >
-                    Login
-                  </Link>
+                    <LogoutOutlined style={{ marginRight: '8px' }} /> Logout
+                  </button>
                 </li>
               </div>
             </div>
@@ -283,6 +310,12 @@ const MainLayout = () => {
           />
           <Outlet />
         </Content>
+
+        {/* <Footer className="footer">
+          
+          &copy; 2024 Khelo Indore. All rights reserved.
+        </Footer> */}
+
       </Layout>
     </Layout>
   );

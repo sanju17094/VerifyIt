@@ -1,26 +1,42 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import "../../src/User.css";
+import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import { API_URL } from '../ApiUrl';
-import { useNavigate } from 'react-router-dom';
 
+const UpdateUsers = () => {
+  const { _id } = useParams();
+  const navigate = useNavigate();
 
-
-const Users = () => {
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
     email: "",
     mobile: "",
     role: "",
-    status: true,
+    status: "",
   });
 
+
   const [errors, setErrors] = useState({});
-  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Fetch user data based on userId
+    axios
+      .get(`${API_URL}/user/fetch-user-by-id/${_id}`)
+      .then((res) => {
+        console.log(res.data, "Data")
+        const { first_name, last_name, email, mobile, role } = res.data;
+        setFormData({ first_name: res.data.data.first_name, last_name: res.data.data.last_name, email: res.data.data.email, mobile: res.data.data.mobile, role: res.data.data.role , status: res.data.data.status});
+      })
+      .catch((error) => {
+        console.error("Error fetching user data:", error);
+      });
+  }, [_id]);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -36,58 +52,48 @@ const Users = () => {
     });
   };
 
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate form fields
-    const validationErrors = {};
-    if (!formData.first_name.trim()) {
-      validationErrors.first_name = "First name is required";
-    }
-    if (!formData.last_name.trim()) {
-      validationErrors.last_name = "Last name is required";
-    }
-    if (
-      !formData.mobile.trim() ||
-      formData.mobile.trim().length !== 10 ||
-      !/^\d+$/.test(formData.mobile)
-    ) {
-      validationErrors.mobile = "Mobile number must be a 10-digit number";
-    }
-    if (!formData.role.trim()) {
-      validationErrors.role = "Role is required";
-    }
-
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      return;
-    }
-
-    try {
-      const response = await axios.post(
-        `${API_URL}/super-admin/add-user`,
-        formData
-      );
-      console.log(response);
-      Swal.fire({
-        icon: "success",
-        title: "Success!",
-        text: "User added successfully",
-
-      }).then(() => {
-        navigate('/users');
-      })
-    } catch (error) {
-      console.error("Error:", error);
+    // Validate each field
+    const { first_name, last_name, email, mobile, role } = formData;
+    if (!first_name || !last_name) {
       Swal.fire({
         icon: "error",
-        title: "Validation Error",
-        text: "Number Already Exist",
+        title: "Error",
+        text: "Please Update the field",
+      });
+      return;
+    }
+    try {
+      const response = await axios.put(`${API_URL}/super-admin/update-user/${_id}`, formData);
+      console.log(response.data);
+      Swal.fire({
+        icon: "success",
+        title: "Updated!",
+        text: "User updated successfully",
+      });
+      navigate('/users');
+
+    } catch (error) {
+      console.error("Error updating user:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Failed to update user",
       });
     }
   };
 
-  const handleCancel1 = () => {
+
+
+
+
+  const handleCancel = () => {
+
+    navigate('/users');
     // Clear form data
     setFormData({
       first_name: "",
@@ -100,14 +106,9 @@ const Users = () => {
     setErrors({});
   };
 
-  const handleCancel = () => {
-    navigate('/users');
-  };
-
-
   return (
     <>
-      <h3 className="mb-4 title">Users</h3>
+      <h3 className="mb-4 title">Update Users</h3>
       <Container
         style={{
           maxWidth: "1000px",
@@ -210,11 +211,11 @@ const Users = () => {
                     value={formData.role}
                     onChange={handleChange}
                     isInvalid={!!errors.role}
-                    style={{ height: "auto" }} // Adjust the height of the select element
+                    style={{ height: "auto" }} 
                   >
                     <option value="">Select Role</option>
                     <option value="User">User</option>
-                    {/* <option value="Coach">Coach</option> */}
+                    <option value="Coach">Coach</option>
                     <option value="Venue Admin">Venue Admin</option>
                     {/* <option value="Super Admin">Super Admin</option> */}
                     {/* <option value="vendor">Vendor</option> */}
@@ -226,24 +227,24 @@ const Users = () => {
                   {/* Downward arrow */}
                 </div>
               </Form.Group>
-            </Col>
 
-          <Form.Group controlId="formCheckbox">
-          <div className="checkbox-container">
-            <Form.Check
-              type="checkbox"
-              id="statusCheckbox"
-              name="status"
-              aria-label="option 1"
-              className="checkbox-input"
-              checked={formData.status || false}
-              onChange={e => setFormData({ ...formData, status: e.target.checked })}
-            />
-          </div>
-          <Form.Label className="checkbox-label">Status</Form.Label>
-        </Form.Group>
-        
-        </Row>
+              <Form.Group controlId="formCheckbox">
+                <div className="checkbox-container">
+                  <Form.Check
+                    type="checkbox"
+                    id="statusCheckbox"
+                    name="status"
+                    aria-label="option 1"
+                    className="checkbox-input"
+                    checked={formData.status || false}
+                    onChange={e => setFormData({ ...formData, status: e.target.checked })}
+                  />
+                </div>
+                <Form.Label className="checkbox-label">Status</Form.Label>
+              </Form.Group>
+
+            </Col>
+          </Row>
 
           {/* Buttons */}
           <Row style={{ marginTop: "20px", marginLeft: "0px" }}>
@@ -254,23 +255,26 @@ const Users = () => {
                 <button
                   type="submit"
                   className="submit-button"
+                  style={{ marginRight: "10px" }}
                 >
-                  Submit
+                  Update
                 </button>
                 <button
                   type="button"
                   className="cancel-button"
                   onClick={handleCancel}
+                  style={{ backgroundColor: "#303030", color: "#fff" }}
                 >
                   Cancel
                 </button>
               </div>
             </Col>
-          </Row>
+
+        </Row>
         </Form>
       </Container>
     </>
   );
 };
 
-export default Users;
+export default UpdateUsers;

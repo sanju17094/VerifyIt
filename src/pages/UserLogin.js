@@ -14,10 +14,11 @@ const UserLogin = () => {
 
   const handleLogout = () => {
     setToken('');
-    localStorage.removeItem('token'); // Remove token from local storage
+    localStorage.removeItem('token'); 
   };
 
   return (
+    <div className='container' >
     <div className='use'>
     <div className="box">
       <h1>User Login</h1>
@@ -31,6 +32,7 @@ const UserLogin = () => {
       ) : (
         <OtpForm setToken={setToken} navigate={navigate} />
       )}
+    </div>
     </div>
     </div>
   );
@@ -49,7 +51,7 @@ const LoginForm = ({ setOtpSent }) => {
 
   const handleSendOtp = async (values) => {
     try {
-      const response = await axios.post('http://localhost:4000/api/v1/kheloindore/user/login/mobile', {
+      const response = await axios.post('https://api-kheloindore.swapinfotech.com/api/v1/kheloindore/user/login/mobile', {
         mobile: values.mobile,
       });
       if (response.data.success) {
@@ -75,7 +77,7 @@ const LoginForm = ({ setOtpSent }) => {
         <label htmlFor="mobile">Enter Mobile Number:</label>
         <Field type="text" id="mobile" name="mobile" />
         <ErrorMessage name="mobile" component="div" className="error" />
-        <button type="submit">Send OTP</button>
+        <button className="mt-3" type="submit">Send OTP</button>
         <p>If you are an admin, click <Link to="/Loginadmin">here</Link> to login as admin.</p>
       </Form>
     </Formik>
@@ -96,7 +98,7 @@ const OtpForm = ({ setToken, navigate }) => {
   const handleLogin = async (values) => {
     try {
       const response = await axios.post(
-        'http://localhost:4000/api/v1/kheloindore/user/login/mobile/otp',
+        'https://api-kheloindore.swapinfotech.com//api/v1/kheloindore/user/login/mobile/otp',
         { otp: values.otp },
         {
           headers: {
@@ -131,7 +133,7 @@ const OtpForm = ({ setToken, navigate }) => {
         <label htmlFor="otp">Enter OTP:</label>
         <Field type="text" id="otp" name="otp" />
         <ErrorMessage name="otp" component="div" className="error" />
-        <button type="submit">Login</button>
+        <button className='mt-3' type="submit">Login</button>
       </Form>
     </Formik>
     

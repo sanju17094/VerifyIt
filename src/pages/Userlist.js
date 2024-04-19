@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Space } from 'antd';
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import DataTable from 'react-data-table-component';
-import Swal from 'sweetalert2';
+import { Button, Table, Form, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import Form from 'react-bootstrap/Form';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import { BsSearch } from 'react-icons/bs';
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { CSVLink } from 'react-csv';
+import { ColorRing } from 'react-loader-spinner';
+import Swal from 'sweetalert2';
 import '../../src/Userlist.css';
+// import 'antd/dist/antd.css';
+import { Pagination } from 'antd';
+// import 'antd/lib/style/index.css';
+import { API_URL } from '../ApiUrl';
 
 function Userlist() {
   const [data, setData] = useState([]);
@@ -16,23 +17,25 @@ function Userlist() {
   const [searchText, setSearchText] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(10); // Adjust as needed
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [csvData, setCsvData] = useState([]);
 
   useEffect(() => {
     fetchData();
   }, [currentPage, searchQuery]);
 
+  useEffect(() => {
+    formatCsvData();
+  }, [data]);
+
   const fetchData = async () => {
     try {
-      // Replace the URL with your actual API endpoint
-      const apiUrl = `http://localhost:4000/api/v1/kheloindore/user/getallUser?page=${currentPage}&limit=${itemsPerPage}&search=${searchQuery}`;
+      const apiUrl = `${API_URL}/user/getallUser?page=${currentPage}&limit=${itemsPerPage}&search=${searchQuery}`;
       const response = await fetch(apiUrl);
       const result = await response.json();
 
-
       if (response.ok) {
-        setData(result.data); 
-        console.log(result.data.first_name, ">>>>>>>>>>>>");
+        setData(result.data);
       } else {
         console.error('Failed to fetch data:', result.error);
       }
@@ -44,33 +47,45 @@ function Userlist() {
     }
   };
 
+  const formatCsvData = () => {
+    const formattedData = data.map(row => ({
+      "First Name": row.first_name,
+      "Last Name": row.last_name,
+      "Role": row.role,
+      "Booking ID": row.booking_id,
+      "Time of Booking": row.time_of_booking,
+      "category": row.category,
+      "Status": row.status ? "Active" : "Inactive"
+    }));
+
+    setCsvData(formattedData);
+  };
+
   const handleEdit = async (row) => {
     console.log('Edit clicked for row:', row);
     try {
-      const response = await fetch(`http://localhost:4000/api/v1/kheloindore/category/update/${row._id}`, {
+      const response = await fetch(`${API_URL}/super-admin/update-user/${row._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          category_name: data.category_name
-        })
+        body: JSON.stringify({})
       });
 
       if (response.ok) {
-        console.log('Category name updated successfully');
+        console.log('User name updated successfully');
       } else {
         const responseData = await response.json();
-        console.error('Failed to update category name:', responseData.message || 'Unknown error');
+        console.error('Failed to update User name:', responseData.message || 'Unknown error');
       }
     } catch (error) {
-      console.error('Error updating category name:', error);
+      console.error('Error updating User name:', error);
     }
   };
 
   const handleDelete = async (row) => {
     try {
-      const apiUrl = `http://localhost:4000/api/v1/kheloindore/category/delete/${row._id}`;
+      const apiUrl = `${API_URL}/user/delete/${row._id}`;
 
       const response = await fetch(apiUrl, {
         method: 'DELETE',
@@ -80,107 +95,173 @@ function Userlist() {
       });
 
       if (response.ok) {
-        Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
-        // Update your state or refetch data to reflect the deletion
+        Swal.fire('Deactivated!', 'Your Profile has been Inactivated.', 'success');
         fetchData();
       } else {
-        console.error('Failed to delete category:', response.statusText);
-        Swal.fire('Error', 'Failed to delete category.', 'error');
+        console.error('Failed to delete User:', response.statusText);
+        Swal.fire('Error', 'Failed to delete User.', 'error');
       }
     } catch (error) {
-      console.error('Error deleting category:', error);
-      Swal.fire('Error', 'An error occurred while deleting the category.', 'error');
+      console.error('Error deleting User:', error);
+      Swal.fire('Error', 'An error occurred while deleting the User.', 'error');
     }
   };
 
   const handleSearch = () => {
-    const filteredData = data.filter((row) =>
-      row.first_name.toLowerCase().includes(searchText.toLowerCase())
-      
-    );
-    console.log(filteredData,"<filteredData")
-    setData(filteredData);
+    setSearchQuery(searchText);
+    setCurrentPage(1);
   };
 
   const handleSearchInputChange = (e) => {
     setSearchText(e.target.value);
-    handleSearch();
   };
 
-  const columns = [
-    {
-      name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>S.No.</span>,
-      selector: (_, index) => index + 1 + (currentPage - 1) * itemsPerPage,
-      width: '10%',
-    },
-    {
-      name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>First Name</span>,
-      selector: (row) => row.first_name,
-      width: '30%',
-    },
-    {
-      name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Last Name</span>,
-      selector: (row) => row.last_name,
-      width: '30%',
-    },
-    {
-      name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}> Status </span>,
-      selector: (row) => row.status ? 'Active' : 'Inactive',
-      width: '20%',
-    },
-    {
-      name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Action</span>,
-      width: '10%',
-      editable: true,
-      cell: (row) => (
-        <div style={{ display: 'flex' }}>
-          <Link to={`/UpdateCategor/${row._id}`} style={{ marginLeft: '1%' }}>
-            <EditOutlined style={{ fontSize: '20px', color: '#fcfcfa', borderRadius: '5px', padding: '5px', backgroundColor: '#ff5f15' }} onClick={() => handleEdit(row)} />
-          </Link>
-          <DeleteOutlined style={{ fontSize: '20px', color: '#E7F3FF', borderRadius: '5px', padding: '5px', backgroundColor: '#3d9c06', marginLeft: '5px' }} onClick={() => handleDelete(row)} />
-        </div>
-      ),
-    },
-  ];
+  const handlePagination = (page, pageSize) => {
+    setCurrentPage(page);
+  };
+  console.log("Total items:", data.length);
 
+  
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = data
+    .filter((row) => row.first_name.toLowerCase().includes(searchText.toLowerCase()))
+    .slice(indexOfFirstItem, indexOfLastItem);
 
   return (
     <>
-     <h3 class="mb-4 title">Users</h3>
-     <Link to="/User"><button className="add-button mb-6">Add User</button>
-     </Link>
+      <h3 className="mb-4 title">Users</h3>
       <div className="cnt">
-        <DataTable
-          className="dataTable"
-          columns={columns}
-          data={data}
-          pagination
-          paginationPerPage={itemsPerPage}
-          paginationRowsPerPageOptions={[5, 10, 20]}
-          paginationTotalRows={data.length}
-          progressPending={loading}
-          onChangePage={(page) => setCurrentPage(page)}
-          noHeader
-          highlightOnHover
-          subHeader
-          subHeaderComponent={(
-            <Row className="justify-content-end align-items-center">
-              <Col xs={12} sm={6}>
-                <Form.Control
-                  type="text"
-                  placeholder="Search..."
-                  value={searchText}
-                  onChange={handleSearchInputChange}
-                  className="searchInput"
-                  style={{ width: '120%' }}
-                />
-              </Col>
-              <Col xs={10} sm={2}>
-              </Col>
-            </Row>
+        <Form.Group as={Row} className="mb-3 align-items-center">
+          <Col sm={6}>
+            <Form.Control
+              type="text"
+              placeholder="Search..."
+              value={searchText}
+              onChange={handleSearchInputChange}
+              className='search-input'
+            />
+          </Col>
+          <Col sm={6} className="d-flex justify-content-end align-items-center">
+            <div>
+              <Link to="/users/add">
+                <button className="add-button">Add User</button>
+              </Link>
+              <CSVLink data={csvData} filename={"user_list.csv"}>
+                <button
+                  
+                  className="down-button"
+                >
+                  Download 
+                </button>
+              </CSVLink>
+            </div>
+          </Col>
+        </Form.Group>
+        <div className="table-container">
+          {loading ? (
+            <div className="text-center">
+              <ColorRing
+                visible={true}
+                height="50"
+                width="50"
+                ariaLabel="color-ring-loading"
+                wrapperStyle={{}}
+                wrapperClass="color-ring-wrapper"
+                colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
+              />
+              <p>Loading...</p>
+            </div>
+          ) : (
+            <Table className="custom-table">
+              <thead>
+                <tr>
+                  <th style={{ width: '7%' }}>S.No.</th>
+                  <th style={{ width: '15%' }}>First Name</th>
+                  <th style={{ width: '15%' }}>Last Name</th>
+                  <th style={{ width: '10%' }}>Role</th>
+                  <th style={{ width: '15%' }}>Booking ID</th>
+                  <th style={{ width: '15%' }}>Time of Booking</th>
+                  <th style={{ width: '10%' }}>category</th>
+                  <th style={{ width: '10%' }}>Status</th>
+                  <th style={{ width: '7%' }}>Action</th>
+                  
+                </tr>
+              </thead>
+              <tbody>
+                {currentItems.map((row, index) => (
+                  <React.Fragment key={row._id}>
+                    <tr>
+                      <td>{index + 1 + indexOfFirstItem}</td>
+                      <td>{row.first_name}</td>
+                      <td>{row.last_name}</td>
+                      <td>{row.role}</td>
+                      <td>{row.booking_id}</td>
+                      <td>{row.time_of_booking}</td>
+                      <td>{row.category}</td>
+                      <td style={{ color: row.status ? "#4fd104" : "#ff0000", fontWeight: "bold" }}>
+                        {row.status ? "Active" : "Inactive"}
+                      </td>
+                      <td>
+                        <div style={{ display: 'flex' }}>
+                          <Link to={`/UpdateUser/${row._id}`} style={{ marginLeft: '1%' }}>
+                            <EditOutlined
+                              style={{
+                                fontSize: '20px',
+                                color: '#fcfcfa',
+                                borderRadius: '5px',
+                                padding: '5px',
+                                backgroundColor: '#3d9c06',
+                              }}
+                              onClick={() => handleEdit(row)}
+                            />
+                          </Link>
+                          <DeleteOutlined
+                            style={{
+                              fontSize: '20px',
+                              color: '#E7F3FF',
+                              borderRadius: '5px',
+                              padding: '5px',
+                              backgroundColor: '#ff5f15',
+                              marginLeft: '5px',
+                            }}
+                            onClick={() => handleDelete(row)}
+                          />
+                        </div>
+                      </td>
+                    </tr>
+                  </React.Fragment>
+                ))}
+              </tbody>
+            </Table>
           )}
-          subHeaderAlign="right"
-        />
+        </div>
+        {/* <div className="pagination-container">
+          <ul className="pagination">
+            {Array.from({ length: Math.ceil(data.length / itemsPerPage) }).map((_, index) => (
+              <li key={index} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
+                <button className="page-link" onClick={() => handlePagination(index + 1)}>
+                  {index + 1}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div> */}
+        <Pagination
+  pageSizeOptions={["5", "10", "20", "50"]} // Available page sizes
+  showSizeChanger={true} // Show the page size changer dropdown
+  showQuickJumper={true} // Show quick jumper
+  total={data.length} // Total number of items
+  pageSize={itemsPerPage} // Items per page
+  current={currentPage} // Current page
+  onChange={handlePagination} 
+  onShowSizeChange={(current, size) => {
+    setCurrentPage(1); // Reset to first page when changing page size
+    setItemsPerPage(size); // Update items per page
+  }}
+/>
+
       </div>
     </>
   );

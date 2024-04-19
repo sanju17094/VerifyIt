@@ -3,11 +3,10 @@
   margin-bottom: 20px;
   padding: 20px;
   border-radius: 8px;
+  /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+  background-color: rgb(255, 255, 255);
   font-weight: bold;
   width: 100%;
-  box-shadow:none!important;
-  background-color:#fff;
-  border:none;
 }
 #h3{
   font-size: 28px;
@@ -57,14 +56,6 @@ mb-4 {
 }
 .cancel-button{
   background-color: #303030;
-}
-
-.submit-button:hover {
-  background-color: #f9a602;
-}
-
-.cancel-button{
-  background-color: black;
   color: #fff;
   border: none;
   padding: 10px 20px;
@@ -72,6 +63,22 @@ mb-4 {
   border-radius: 5px;
   transition: background-color 0.3s ease-in-out;
   font-weight: bold;
+  margin-left: 1%;
+}
+
+.submit-button:hover {
+  background-color: #ff5f15 !important;
+}
+
+.cancel-button{
+  background-color: black;
+  /* color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease-in-out;
+  font-weight: bold; */
 }
 
 /* Define styles for the MultiSelect component */

@@ -3,9 +3,15 @@
   margin-bottom: 20px;
   padding: 20px;
   border-radius: 8px;
-  /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
-  background-color: #f8f9fa;
+  background-color: white;
   width: 100%;
+  font-weight: 400 !important;
+}
+.stsearch-box input{
+  border: none !important;
+}
+.stsearch-box input:focus{
+  border: none !important;
 }
 
 .form-group {
@@ -25,7 +31,7 @@
 }
 
 .submit-button {
-  background-color: #ffb700;
+  background-color: rgb(255, 95, 21);
   color: #fff;
   border: none;
   padding: 10px 20px;
@@ -36,11 +42,7 @@
   margin-right: 1%;
 }
 
-.submit-button:hover {
-  background-color: #f9a602;
-}
-
-.cancel-button{
+.cancel{
   background-color: black;
   color: #fff;
   border: none;
@@ -49,61 +51,76 @@
   border-radius: 5px;
   transition: background-color 0.3s ease-in-out;
   font-weight: bold;
+  margin-left: -87%;
 }
 
-/* Define styles for the MultiSelect component */
-.multiselect-input {
-  width: 100%; /* Set the width as needed */
-  padding: 8px; /* Adjust padding as per your design */
-  border: 1px solid #ced4da; /* Define border color */
-  border-radius: 4px; /* Add border-radius for rounded corners */
-  background-color: #fff; /* Set background color */
-  color: #495057; /* Set text color */
-  outline: none; /* Remove outline on focus */
+
+.drag-drop-container {
+  border: 2px dashed #ccc;
+  border-radius: 5px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
 }
 
-/* Style the dropdown arrow icon in the MultiSelect */
-.multiselect-input .multiselect__select {
-  border: none; /* Remove border */
-  background-color: white;
-
+.uploaded-files-container {
+  margin-top: 20px;
 }
 
-/* Style the dropdown menu items in the MultiSelect */
-.multiselect-input .multiselect__select-menu {
-  background-color: #fff; /* Set background color for dropdown menu */
-  border: 1px solid #ced4da; /* Define border color for dropdown menu */
-  border-radius: 4px; /* Add border-radius for rounded corners */
-  
+.uploaded-file {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
 }
 
-/* Style the selected items in the MultiSelect */
-.multiselect-input .multiselect__tags {
-  display: flex; /* Use flexbox for tags display */
-  flex-wrap: wrap; /* Allow tags to wrap if space is limited */
-  gap: 4px; /* Set gap between tags */
+.uploaded-file span {
+  flex: 1;
+  padding: 5px;
 }
 
-/* Style individual tag items in the MultiSelect */
-.multiselect-input .multiselect__tag {
-  background-color: #007bff; /* Set tag background color */
-  color: #fff; /* Set tag text color */
-  border-radius: 4px; /* Add border-radius for rounded corners */
-  padding: 2px 8px; /* Adjust padding as needed */
-  margin: 2px; /* Set margin between tags */
-  cursor: pointer; /* Set cursor as pointer for interaction */
+.uploaded-file button {
+  background: #ff5f15;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  margin-left: 10px;
 }
 
-/* Style the placeholder text in the MultiSelect */
-.multiselect-input .multiselect__placeholder {
-  color: #6c757d; /* Set placeholder text color */
-  background-color: white;
+.uploaded-file button:hover {
+  background: #e44d12;
 }
 
-/* Style the dropdown options in the MultiSelect */
-.multiselect-input .multiselect__option {
-  padding: 8px; /* Adjust padding for dropdown options */
-  cursor: pointer; /* Set cursor as pointer for interaction */
-  background-color: black; /* Set background color for dropdown options */
+/* Style the file input button */
+input[type="file"] {
+  display: none;
 }
 
+.drag-drop-container h3 {
+  margin: 0;
+}
+
+.drag-drop-container .fa-file-upload {
+  font-size: 24px;
+  margin-right: 10px;
+}
+
+/* Style the select from files button */
+.select-files-button {
+  background: #ff5f15;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.select-files-button:hover {
+  background: #e44d12;
+}
+
+
+/* .chip {
+  background: #e44d12 !important;
+} */

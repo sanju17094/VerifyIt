@@ -1,188 +1,258 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Space } from 'antd';
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import DataTable from 'react-data-table-component';
-import Swal from 'sweetalert2';
 import { Link } from 'react-router-dom';
-import Form from 'react-bootstrap/Form';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import { Table, Popconfirm } from "antd";
-import '../../src/Userlist.css';
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import Swal from 'sweetalert2';
+import { ColorRing } from 'react-loader-spinner';
+import { CSVLink } from 'react-csv';
+// import 'bootstrap/dist/css/bootstrap.min.css';
+// import '@fortawesome/fontawesome-free/css/all.min.css';
+import { Table, Form, Row, Col, Button } from 'react-bootstrap';
+//import '../../Userlist.css';
+import { API_URL } from '../ApiUrl';
+import { Pagination } from 'antd';
 
-function Categorylist() {
+function PersonalTraininglist() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(10); // Adjust as needed
+  // const [itemsPerPage] = useState(10); 
+  const [itemsPerPage, setItemsPerPage] = useState(10); // Initialize itemsPerPage state
+
+  const [csvData, setCsvData] = useState([]);
+
 
   useEffect(() => {
     fetchData();
   }, [currentPage, searchQuery]);
 
+  useEffect(() => {
+    formatCsvData();
+  }, [data]);
+
+
   const fetchData = async () => {
     try {
-      // Replace the URL with your actual API endpoint
-      const apiUrl = `http://localhost:4000/api/v1/kheloindore/category/fetch?page=${currentPage}&limit=${itemsPerPage}&search=${searchQuery}`;
+      const apiUrl = `${API_URL}/PersonalTraining/fetchAll`;
       const response = await fetch(apiUrl);
       const result = await response.json();
 
-
       if (response.ok) {
-        setData(result.categories);
+        setData(result.data);
       } else {
         console.error('Failed to fetch data:', result.error);
       }
 
       setLoading(false);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      //console.error('Error fetching data:', error);
       setLoading(false);
     }
   };
 
-  const handleEdit = async (row) => {
-    console.log('Edit clicked for row:', row);
-    try {
-      const response = await fetch(`http://localhost:4000/api/v1/kheloindore/category/update/${row._id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          category_name: data.category_name
-        })
-      });
+  const formatCsvData = () => {
+    const formattedData = data.map(row => ({
+      "Trainer Name": `${row.first_name} ${row.last_name}`,
+      "Duration": row.duration,
+      "Focus Area": row.focus_area,
+      "Price": row.price,
+      "Status": row.status ? "Active" : "Inactive"
+    }));
+  
+    setCsvData(formattedData);
+  };
+  
 
+  const handleEdit = async (row) => {
+    try {
+      const response = await fetch(`${API_URL}/PersonalTraining/fetch/${row._id}`);
       if (response.ok) {
-        console.log('Category name updated successfully');
+        const data = await response.json();
+        // Assuming the response data contains the necessary fields for editing
+        // Update state or navigate to the edit page with the fetched data
+        console.log('Fetched data for editing:', data);
       } else {
-        const responseData = await response.json();
-        console.error('Failed to update category name:', responseData.message || 'Unknown error');
+        console.error('Failed to fetch data for editing:', response.statusText);
       }
     } catch (error) {
-      console.error('Error updating category name:', error);
+      console.error('Error fetching data for editing:', error);
     }
   };
 
-  const handleDelete = async (row) => {
+  const handleDeactivate = async (row) => {
     try {
-      const apiUrl = `http://localhost:4000/api/v1/kheloindore/category/delete/${row._id}`;
+      // Construct the API endpoint URL for deactivating the personal training item
+      const apiUrl = `${API_URL}/PersonalTraining/deactive/${row._id}`;
 
+      // Send a POST request to the endpoint
       const response = await fetch(apiUrl, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
         },
+        // You may optionally include a request body if required by your backend
+        // body: JSON.stringify({ /* any data to be sent to the server */ }),
       });
 
       if (response.ok) {
-        Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
-        // Update your state or refetch data to reflect the deletion
+        // If the response is successful, display a success message
+        Swal.fire('Deactivated!', 'Personal Training has been deactivated.', 'success');
+        // Fetch updated data after deactivation
         fetchData();
       } else {
-        console.error('Failed to delete category:', response.statusText);
-        Swal.fire('Error', 'Failed to delete category.', 'error');
+        // If there's an error response, log the error message
+        console.error('Failed to deactivate Personal Training:', response.statusText);
+        // Display an error message to the user
+        Swal.fire('Error', 'Failed to deactivate Personal Training.', 'error');
       }
     } catch (error) {
-      console.error('Error deleting category:', error);
-      Swal.fire('Error', 'An error occurred while deleting the category.', 'error');
+      // If an exception occurs during the request, log the error and display an error message
+      console.error('Error deactivating Personal Training:', error);
+      Swal.fire('Error', 'An error occurred while deactivating the Personal Training.', 'error');
     }
   };
 
   const handleSearch = () => {
-    const filteredData = data.filter((row) =>
-      row.category_name.toLowerCase().includes(searchText.toLowerCase())
-
-    );
-    console.log(filteredData, "<filteredData")
-    setData(filteredData);
+    setSearchQuery(searchText);
+    setCurrentPage(1);
   };
 
   const handleSearchInputChange = (e) => {
     setSearchText(e.target.value);
-    handleSearch();
   };
 
-  const columns = [
-    {
-      name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>S.No.</span>,
-      selector: (_, index) => index + 1 + (currentPage - 1) * itemsPerPage,
-      editable: true,
-      width: '10%',
+  const handlePagination = (page, pageSize) => {
+    setCurrentPage(page);
+  };
 
-    },
-    {
-      name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Name</span>,
-      selector: (row) => row.category_name,
-      editable: true,
-      width: '60%',
-    },
-    {
-      name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Status</span>,
-      selector: (row) => row.status ? 'Active' : 'Inactive',
-      editable: true,
-      width: '20%',
-    },
-    {
-      name: <span style={{ fontWeight: 'bold', fontSize: '15px' }}>Action</span>,
-      width: '10%',
-      editable: true,
-      cell: (row) => (
-        <div style={{ display: 'flex' }}>
-          <Link to={`/UpdateCategory/${row._id}`} style={{ marginLeft: '1%' }}>
-            <EditOutlined style={{ fontSize: '20px', color: '#fcfcfa', borderRadius: '5px', padding: '5px', backgroundColor: '#ff5f15' }} onClick={() => handleEdit(row)} />
-          </Link>
-          <DeleteOutlined style={{ fontSize: '20px', color: '#E7F3FF', borderRadius: '5px', padding: '5px', backgroundColor: '#3d9c06', marginLeft: '5px' }} onClick={() => handleDelete(row)} />
-        </div>
-      ),
-    },
-  ];
-
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = data
+    .filter((row) => row.trainer_name.toLowerCase().includes(searchText.toLowerCase()))
+    .slice(indexOfFirstItem, indexOfLastItem);
 
   return (
     <>
-    <Link to="/Category"><button className="add-button mr-2">Add Category</button>
-    </Link>
-    <h3 class="mb-4 title">Personal Training</h3>
+      <h3 className="mb-4 title">Personal Training</h3>
       <div className="cnt">
-        <DataTable 
-          className="dataTable"
-          columns={columns}
-          data={data}
-          pagination
-          paginationPerPage={itemsPerPage}
-          paginationRowsPerPageOptions={[5, 10, 20]}
-          paginationTotalRows={data.length}
-          progressPending={loading}
-          onChangePage={(page) => setCurrentPage(page)}
-          noHeader
-          highlightOnHover
-          subHeader
-          subHeaderComponent={(
-            <Row className="justify-content-end align-items-center">
-              <Col xs={12} sm={6}>
-                <Form.Control
-                  type="text"
-                  className="searchInput"
-                  placeholder="Search..."
-                  value={searchText}
-                  onChange={handleSearchInputChange}
-                  style={{ width: '120%' }}
-                />
-              </Col>
-              <Col xs={10} sm={2}>
+        <Form.Group as={Row} className="mb-3">
+          <Col sm={6}>
+            <Form.Control
+              type="text"
+              className="search-input"
+              placeholder="Search..."
+              value={searchText}
+              onChange={handleSearchInputChange}
+            />
+          </Col>
+          <Col sm={6} className="d-flex justify-content-end align-items-center">
+          <div className="mr-3">
+            <Link to="/personal-traning/add">
+              <button className="add-button mr-2">Add Personal Trainer</button>
+            </Link>
+            </div>
+            <div>
+            <CSVLink data={csvData} filename={"user_list.csv"}>
+                <button
+                  
+                  className="down-button"
+                >
+                  Download 
+                </button>
+              </CSVLink>
+              </div>
+          </Col>
+        </Form.Group>
+        <div className="table-container">
+          {loading ? (
+            <div className="text-center">
+              <ColorRing
+                visible={true}
+                height="50"
+                width="50"
+                ariaLabel="color-ring-loading"
+                wrapperStyle={{}}
+                wrapperClass="color-ring-wrapper"
+                colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
+              />
+              <p>Loading...</p>
+            </div>
+          ) : (
+            <Table className='custom-table'>
+              <thead>
+                <tr>
+                  <th style={{ width: '7%' }}>S.No.</th>
+                  <th style={{ width: '25%' }}>Trainer Name</th>
+                  <th style={{ width: '15%' }}>Duration</th>
+                  <th style={{ width: '15%' }}>Focus Area</th>
+                  <th style={{ width: '10%' }}>Price</th>
+                  <th style={{ width: '8%' }}>Status</th>
+                  <th style={{ width: '5%' }}>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {currentItems.map((row, index) => (
+                  <tr key={row._id}>
+                    <td>{index + 1 + indexOfFirstItem}</td>
+                    <td>{row.trainer_name}</td>
+                    <td>{row.duration}</td>
+                    <td>{row.focus_area.join(', ')}</td>
+                    <td>{row.price}</td>
+                    <td style={{ color: row.status ? "#4fd104" : "#ff0000", fontWeight: "bold" }}>
+                    {row.status ? "Active" : "Inactive"}
+                    </td>
+                    <td>
+                      <div style={{ display: 'flex' }}>
+                        <Link to={`/personal-training/edit/${row._id}`} style={{ marginLeft: '1%' }}>
+                          <EditOutlined
+                            style={{
+                              fontSize: '20px',
+                              color: '#fcfcfa',
+                              borderRadius: '5px',
+                              padding: '5px',
+                              backgroundColor: '#3d9c06',
 
-              </Col>
-            </Row>
+                            }}
+                            onClick={() => handleEdit(row)}
+                          />
+                        </Link>
+                        {/* Change onClick event to call handleDeactivate */}
+                        <DeleteOutlined
+                          style={{
+                            fontSize: '20px',
+                            color: '#E7F3FF',
+                            borderRadius: '5px',
+                            padding: '5px',
+                            backgroundColor: '#ff5f15',
+                            marginLeft: '5px',
+                          }}
+                          onClick={() => handleDeactivate(row)}
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
           )}
-          subHeaderAlign="right"
-        />
+        </div>
+        <Pagination
+  pageSizeOptions={["5", "10", "20", "50"]} // Available page sizes
+  showSizeChanger={true} // Show the page size changer dropdown
+  showQuickJumper={true} // Show quick jumper
+  total={data.length} // Total number of items
+  pageSize={itemsPerPage} // Items per page
+  current={currentPage} // Current page
+  onChange={handlePagination} 
+  onShowSizeChange={(current, size) => {
+    setCurrentPage(1); // Reset to first page when changing page size
+    setItemsPerPage(size); // Update items per page
+  }}
+/>
       </div>
     </>
   );
 }
 
-export default Categorylist;
+export default PersonalTraininglist;
