@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import { Table, Form, Row, Col, Button } from 'react-bootstrap'; // Import Bootstrap components
 import { ColorRing } from 'react-loader-spinner';
 import '../../src/Userlist.css';
+import { Pagination } from 'antd';
 import { CSVLink } from 'react-csv';
 import { API_URL } from '../ApiUrl';
 
@@ -16,7 +17,7 @@ function Coachlist() {
   const [searchText, setSearchText] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(10); 
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   const [csvData, setCsvData] = useState([]);
 
   useEffect(() => {
@@ -117,7 +118,7 @@ function Coachlist() {
     setSearchText(e.target.value);
   };
 
-  const handlePagination = (page) => {
+  const handlePagination = (page, pageSize) => {
     setCurrentPage(page);
   };
 
@@ -146,8 +147,7 @@ function Coachlist() {
               <button className="add-button mr-2">Add Coach</button>
             </Link>
             <CSVLink data={csvData} filename={"user_list.csv"}>
-                <Button
-                 
+                <Button 
                   className="down-button"
                 >
                   Download 
@@ -228,7 +228,7 @@ function Coachlist() {
             </Table>
           )}
         </div>
-        <div className="pagination-container">
+        {/* <div className="pagination-container">
           <ul className="pagination">
             {Array.from({ length: Math.ceil(data.length / itemsPerPage) }).map((_, index) => (
               <li key={index} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
@@ -238,7 +238,20 @@ function Coachlist() {
               </li>
             ))}
           </ul>
-        </div>
+        </div> */}
+        <Pagination
+  pageSizeOptions={["5", "10", "20", "50"]} // Available page sizes
+  showSizeChanger={true} // Show the page size changer dropdown
+  showQuickJumper={true} // Show quick jumper
+  total={data.length} // Total number of items
+  pageSize={itemsPerPage} // Items per page
+  current={currentPage} // Current page
+  onChange={handlePagination} 
+  onShowSizeChange={(current, size) => {
+    setCurrentPage(1); // Reset to first page when changing page size
+    setItemsPerPage(size); // Update items per page
+  }}
+/>
       </div>
     </>
   );

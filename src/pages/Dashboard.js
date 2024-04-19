@@ -301,9 +301,20 @@ const Dashboard = () => {
       {/* Recent Visitor */}
       <div className="mt-4">  
       <h3 className="mb-5 title">Recent Visitor</h3>
-      <div>
+      {/* <div>
       <Table columns={visitor} dataSource={visitorData} />
-      </div>
+      </div> */}
+       <div>
+    <Table
+      columns={visitor}
+      dataSource={visitorData}
+      pagination={{
+        pageSizeOptions: ["5", "10", "20", "50"], // Available page sizes
+        showSizeChanger: true, // Show the page size changer dropdown
+        showQuickJumper: true, // Show quick jumper
+      }}
+    />
+  </div>
       </div>
 
     </div>

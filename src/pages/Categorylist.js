@@ -6,9 +6,9 @@ import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import { Table, Form, Row, Col, Button } from 'react-bootstrap'; // Import Bootstrap components
 import '../../src/Userlist.css';
 import { CSVLink } from 'react-csv';
+import { Pagination } from 'antd';
 import { API_URL } from '../ApiUrl';
 import { ColorRing } from 'react-loader-spinner';
-
 
 function Categorylist() {
   const [data, setData] = useState([]);
@@ -16,7 +16,7 @@ function Categorylist() {
   const [searchText, setSearchText] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(10); 
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   const [csvData, setCsvData] = useState([]);
 
   useEffect(() => {
@@ -27,10 +27,8 @@ function Categorylist() {
     formatCsvData();
   }, [data]);
 
-
   const fetchData = async () => {
     try {
-      // Replace the URL with your actual API endpoint
       const apiUrl = `${API_URL}/category/fetch?page=${currentPage}&limit=${itemsPerPage}&search=${searchQuery}`;
       const response = await fetch(apiUrl);
       const result = await response.json();
@@ -47,6 +45,7 @@ function Categorylist() {
       setLoading(false);
     }
   };
+
   const formatCsvData = () => {
     const formattedData = data.map(row => ({
       "category": row.category_name,
@@ -66,9 +65,9 @@ function Categorylist() {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          category_name: data.category_name,
-          parent_category_name: data.parent_category_name,
-          status: data.status
+          category_name: row.category_name,
+          parent_category_name: row.parent_category_name,
+          status: row.status
         })
       });
 
@@ -96,7 +95,6 @@ function Categorylist() {
 
       if (response.ok) {
         Swal.fire('Deactivated!', 'Category has been Inactivated.', 'success');
-        // Update your state or refetch data to reflect the deletion
         fetchData();
       } else {
         console.error('Failed to delete category:', response.statusText);
@@ -117,13 +115,13 @@ function Categorylist() {
     setSearchText(e.target.value);
   };
 
-  const handlePagination = (page) => {
+  const handlePagination = (page, pageSize) => {
     setCurrentPage(page);
   };
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = data
+  const currentItems = data && data
     .filter((row) => row.category_name.toLowerCase().includes(searchText.toLowerCase()))
     .slice(indexOfFirstItem, indexOfLastItem);
 
@@ -139,17 +137,16 @@ function Categorylist() {
               placeholder="Search..."
               value={searchText}
               onChange={handleSearchInputChange}
-
             />
           </Col>
-          <Col xs={12} sm={6} className="d-flex justify-content-end ">
+          <Col  sm={6} className="d-flex justify-content-end ">
             <div>
               <Link to="/categories/add">
                 <button className="add-button mr-2">Add Category</button>
               </Link>
               <CSVLink data={csvData} filename={"user_list.csv"}>
                 <Button
-                  className="down-button"
+                  style={{backgroundColor:'#3d9c06', border:'none'}}
                 >
                   Download 
                 </Button>
@@ -182,13 +179,8 @@ function Categorylist() {
                   <th style={{ width: '7%' }}>Action</th>
                 </tr>
               </thead>
-              {<>
-{console.log("currentItems",currentItems)}
-              </>
-                
-              }
               <tbody>
-                {currentItems.map((row, index) => (
+                {currentItems && currentItems.map((row, index) => (
                   <tr key={row._id}>
                     <td>{index + 1 + indexOfFirstItem}</td>
                     <td>{row.category_name}</td>
@@ -229,17 +221,20 @@ function Categorylist() {
             </Table>
           )}
         </div>
-        <div className="pagination-container">
-          <ul className="pagination">
-            {Array.from({ length: Math.ceil(data.length / itemsPerPage) }).map((_, index) => (
-              <li key={index} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
-                <button className="page-link" onClick={() => handlePagination(index + 1)}>
-                  {index + 1}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <Pagination
+  pageSizeOptions={["5", "10", "20", "50"]}
+  showSizeChanger={true}
+  showQuickJumper={true}
+  total={data ? data.length : 0}
+  pageSize={itemsPerPage}
+  current={currentPage}
+  onChange={handlePagination}
+  onShowSizeChange={(current, size) => {
+    setCurrentPage(1);
+    setItemsPerPage(size);
+  }}
+/>
+
       </div>
     </>
   );

@@ -6,6 +6,9 @@ import { CSVLink } from 'react-csv';
 import { ColorRing } from 'react-loader-spinner';
 import Swal from 'sweetalert2';
 import '../../src/Userlist.css';
+// import 'antd/dist/antd.css';
+import { Pagination } from 'antd';
+// import 'antd/lib/style/index.css';
 import { API_URL } from '../ApiUrl';
 
 function Userlist() {
@@ -14,7 +17,7 @@ function Userlist() {
   const [searchText, setSearchText] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(10);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   const [csvData, setCsvData] = useState([]);
 
   useEffect(() => {
@@ -113,9 +116,12 @@ function Userlist() {
     setSearchText(e.target.value);
   };
 
-  const handlePagination = (page) => {
+  const handlePagination = (page, pageSize) => {
     setCurrentPage(page);
   };
+  console.log("Total items:", data.length);
+
+  
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -140,15 +146,15 @@ function Userlist() {
           <Col sm={6} className="d-flex justify-content-end align-items-center">
             <div>
               <Link to="/users/add">
-                <Button className="add-button">Add User</Button>
+                <button className="add-button">Add User</button>
               </Link>
               <CSVLink data={csvData} filename={"user_list.csv"}>
-                <Button
+                <button
                   
                   className="down-button"
                 >
                   Download 
-                </Button>
+                </button>
               </CSVLink>
             </div>
           </Col>
@@ -231,7 +237,7 @@ function Userlist() {
             </Table>
           )}
         </div>
-        <div className="pagination-container">
+        {/* <div className="pagination-container">
           <ul className="pagination">
             {Array.from({ length: Math.ceil(data.length / itemsPerPage) }).map((_, index) => (
               <li key={index} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
@@ -241,7 +247,21 @@ function Userlist() {
               </li>
             ))}
           </ul>
-        </div>
+        </div> */}
+        <Pagination
+  pageSizeOptions={["5", "10", "20", "50"]} // Available page sizes
+  showSizeChanger={true} // Show the page size changer dropdown
+  showQuickJumper={true} // Show quick jumper
+  total={data.length} // Total number of items
+  pageSize={itemsPerPage} // Items per page
+  current={currentPage} // Current page
+  onChange={handlePagination} 
+  onShowSizeChange={(current, size) => {
+    setCurrentPage(1); // Reset to first page when changing page size
+    setItemsPerPage(size); // Update items per page
+  }}
+/>
+
       </div>
     </>
   );

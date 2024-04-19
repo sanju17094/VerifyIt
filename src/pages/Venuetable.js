@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import Swal from 'sweetalert2';
 import { CSVLink } from 'react-csv';
+import { Pagination } from 'antd';
 import '../../src/Userlist.css';
 import { API_URL } from '../ApiUrl';
 
@@ -14,7 +15,7 @@ function VenueList() {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [csvData, setCsvData] = useState([]);
-  const itemsPerPage = 10; 
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   useEffect(() => {
     fetchData();
@@ -55,49 +56,72 @@ function VenueList() {
     setCsvData(formattedData);
   };
   
-
-
-
   const handleEdit = async (venue) => {
     console.log('Edit clicked for row:', venue);
     try {
-      const apiUrl = `${API_URL}/venue/edit/${venue._id}`; 
-      const response = await fetch(apiUrl, {
-        method: 'GET',
+      const response = await fetch(`${API_URL}/venue/edit/${venue._id}`, {
+        method: 'PUT',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          activities: records.activities,
-          address: records.address,
-          amenities: records.amenities,
-          category: records.category,
-          city: records.city,
-          name: records.name,
-          state: records.state,
-          zipcode: records.zipcode,
-          status: records.status, 
-        }),
+        })
       });
-  
-      const result = await response.json();
-  
+
       if (response.ok) {
-      //  Swal.fire('Updated!', 'Venue updated successfully.', 'success');
-        fetchData(); // Refresh data after updating
+        console.log('Category name updated successfully');
       } else {
-        console.error('Failed to update venue:', result.error);
-        Swal.fire('Error', 'Failed to update venue.', 'error');
+        const responseData = await response.json();
+        console.error('Failed to update category name:', responseData.message || 'Unknown error');
       }
     } catch (error) {
-      console.error('Error updating venue:', error);
-      Swal.fire('Error', 'An error occurred while updating the venue.', 'error');
+      console.error('Error updating category name:', error);
     }
   };
+
+
+  // const handleEdit = async (venue) => {
+  //   console.log('Edit clicked for row:', venue);
+  //   try {
+  //     // const apiUrl = `${API_URL}/venue/individual/${venue._id}`; 
+  //     // const apiUrl = await axios.get(`${API_URL}/venue/individual/${venue._id}`);
+  //     const apiUrl = `${API_URL}/venue/edit/${venue._id}`; 
+  //     const response = await fetch(apiUrl, {
+  //       method: 'GET',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({
+  //         activities: records.activities,
+  //         address: records.address,
+  //         amenities: records.amenities,
+  //         category: records.category,
+  //         city: records.city,
+  //         name: records.name,
+  //         state: records.state,
+  //         zipcode: records.zipcode,
+  //         status: records.status, 
+  //       }),
+  //     });
   
-  const handleDelete = async (venue) => {
+  //     const result = await response.json();
+  
+  //     if (response.ok) {
+  //     //  Swal.fire('Updated!', 'Venue updated successfully.', 'success');
+  //       fetchData(); // Refresh data after updating
+  //     } else {
+  //       console.error('Failed to update venue:', result.error);
+  //       Swal.fire('Error', 'Failed to update venue.', 'error');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error updating venue:', error);
+  //     Swal.fire('Error', 'An error occurred while updating the venue.', 'error');
+  //   }
+  // };
+  
+  const handleDelete = async (row) => {
     try {
-      const apiUrl = `${API_URL}/venue/delete/${venue._id}`;
+      const apiUrl = `${API_URL}/venue/delete/${row._id}`;
 
       const response = await fetch(apiUrl, {
         method: 'DELETE',
@@ -128,7 +152,7 @@ function VenueList() {
     setSearchText(e.target.value);
   };
 
-  const handlePagination = (page) => {
+  const handlePagination = (page, pageSize) => {
     setCurrentPage(page);
   };
 
@@ -155,12 +179,12 @@ function VenueList() {
               <button className="add-button mr-2">Add Venue</button>
             </Link>
             <CSVLink data={csvData} filename={"user_list.csv"}>
-                <Button
+                <button
                  
                   className="down-button"
                 >
                   Download 
-                </Button>
+                </button>
               </CSVLink>
           </Col>
         </Form.Group>
@@ -216,17 +240,19 @@ function VenueList() {
             </tbody>
           </Table>
         </div>
-        <div className="pagination-container">
-          <ul className="pagination">
-            {Array.from({ length: Math.ceil(records.length / itemsPerPage) }).map((_, index) => (
-              <li key={index} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
-                <button className="page-link" onClick={() => handlePagination(index + 1)}>
-                  {index + 1}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <Pagination
+  pageSizeOptions={["5", "10", "20", "50"]} // Available page sizes
+  showSizeChanger={true} // Show the page size changer dropdown
+  showQuickJumper={true} // Show quick jumper
+  total={records.length} // Total number of items
+  pageSize={itemsPerPage} // Items per page
+  current={currentPage} // Current page
+  onChange={handlePagination} 
+  onShowSizeChange={(current, size) => {
+    setCurrentPage(1); // Reset to first page when changing page size
+    setItemsPerPage(size); // Update items per page
+  }}
+/>
       </div>
     </>
   );

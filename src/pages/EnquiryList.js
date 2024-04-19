@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { EyeOutlined, DeleteOutlined } from "@ant-design/icons";
-import Swal from "sweetalert2";
-import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
-import { Table, Form, Row, Col, Button } from "react-bootstrap"; // Import Bootstrap components
 import { ColorRing } from "react-loader-spinner";
-import "../../src/Userlist.css";
+import { Table, Form, Row, Col } from "react-bootstrap";
 import { API_URL } from "../ApiUrl";
+import Swal from "sweetalert2";
+import { Pagination } from 'antd';
 
 function Enquirylist() {
   const [data, setData] = useState([]);
@@ -14,43 +11,67 @@ function Enquirylist() {
   const [searchText, setSearchText] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(10); // Adjust as needed
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [previousData, setPreviousData] = useState([]);
 
   useEffect(() => {
     fetchData();
   }, [currentPage, searchQuery]);
 
+  useEffect(() => {
+    const interval = setInterval(fetchData, 3000); // Fetch data every 3 seconds
+    return () => clearInterval(interval); // Cleanup interval on component unmount
+  }, []); // Empty dependency array to run only once on component mount
+
+  useEffect(() => {
+    checkNewEnquiry();
+  }, [data]);
+
   const fetchData = async () => {
     try {
-      // Replace the URL with your actual API endpoint
       const apiUrl = `${API_URL}/contactUs/fetchAll?page=${currentPage}&limit=${itemsPerPage}&search=${searchQuery}`;
       const response = await fetch(apiUrl);
       const result = await response.json();
-      console.log(result.data, "result ka data hai");
 
       if (response.ok) {
         setData(result.data);
+        setLoading(false);
       } else {
         console.error("Failed to fetch data:", result.error);
+        setLoading(false);
       }
-
-      setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
       setLoading(false);
     }
   };
 
+  const checkNewEnquiry = () => {
+    if (previousData.length > 0 && data.length > previousData.length) {
+      showNewEnquiryAlert();
+    }
+    setPreviousData(data);
+  };
+
+  const showNewEnquiryAlert = () => {
+    Swal.fire({
+      iconHtml: '<i class="fas fa-bell"></i>',
+      title: 'New Enquiry Alert',
+      text: 'A new enquiry has arrived!',
+      confirmButtonColor: '#ff5f15',
+    });
+  };
+
   const handleSearch = () => {
     setSearchQuery(searchText);
-    setCurrentPage(1); // Reset to first page when searching
+    setCurrentPage(1);
   };
 
   const handleSearchInputChange = (e) => {
     setSearchText(e.target.value);
   };
 
-  const handlePagination = (page) => {
+  const handlePagination = (page, pageSize) => {
     setCurrentPage(page);
   };
 
@@ -76,11 +97,6 @@ function Enquirylist() {
               onChange={handleSearchInputChange}
             />
           </Col>
-          {/* <Col sm={6} className="d-flex justify-content-end">
-                        <Link to="/enquiry/add">
-                            <button className="add-button mr-2">Add Enquiry</button>
-                        </Link>
-                    </Col> */}
         </Form.Group>
         <div className="table-container">
           {loading ? (
@@ -90,7 +106,6 @@ function Enquirylist() {
                 height="50"
                 width="50"
                 ariaLabel="color-ring-loading"
-                wrapperStyle={{}}
                 wrapperClass="color-ring-wrapper"
                 colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
               />
@@ -142,33 +157,7 @@ function Enquirylist() {
                       )}
                     </td>
                     <td>
-                      {/* <div style={{ display: 'flex' }}>
-                                            <Link to={`/enquiry/details/${row._id}`} style={{ marginLeft: '1%' }}>
-                                                <EyeOutlined
-                                                    style={{
-                                                        fontSize: '20px',
-                                                        color: '#fcfcfa',
-                                                        borderRadius: '5px',
-                                                        padding: '5px',
-                                                        backgroundColor: '#3d9c06',
-                                                    }}
-                                                    onClick={() => handleEdit(row)}
-                                                />
-                                            </Link>
-
-                                            <DeleteOutlined
-                                                style={{
-                                                    fontSize: '20px',
-                                                    color: '#E7F3FF',
-                                                    borderRadius: '5px',
-                                                    padding: '5px',
-                                                    backgroundColor: '#ff5f15',
-                                                    marginLeft: '5px',
-                                                }}
-                                                onClick={() => handleDelete(row)}
-                                            />
-
-                                        </div> */}
+                      {/* Action buttons */}
                     </td>
                   </tr>
                 ))}
@@ -176,27 +165,19 @@ function Enquirylist() {
             </Table>
           )}
         </div>
-        <div className="pagination-container">
-          <ul className="pagination">
-            {Array.from({ length: Math.ceil(data.length / itemsPerPage) }).map(
-              (_, index) => (
-                <li
-                  key={index}
-                  className={`page-item ${
-                    currentPage === index + 1 ? "active" : ""
-                  }`}
-                >
-                  <button
-                    className="page-link"
-                    onClick={() => handlePagination(index + 1)}
-                  >
-                    {index + 1}
-                  </button>
-                </li>
-              )
-            )}
-          </ul>
-        </div>
+        <Pagination
+          pageSizeOptions={["5", "10", "20", "50"]}
+          showSizeChanger={true}
+          showQuickJumper={true}
+          total={data.length}
+          pageSize={itemsPerPage}
+          current={currentPage}
+          onChange={handlePagination} 
+          onShowSizeChange={(current, size) => {
+            setCurrentPage(1);
+            setItemsPerPage(size);
+          }}
+        />
       </div>
     </>
   );

@@ -48,7 +48,7 @@ import UpdateEvent from "./pages/UpdateEvent";
 import UpdatePT from "./pages/UpdatePT";
 import AddPT from "./pages/AddPT"
 import PersonalTrainingList from "./pages/PersonalTrainingList";
-// import AddEvent from "./pages/AddEvent";
+import AddEvent from "./pages/addEvent";
 import EnquiryList from "./pages/EnquiryList";
 import EnquiryDetails from "./pages/EnquiryDetail"
 
@@ -89,7 +89,7 @@ function App() {
             />
 
             <Route path="/events" element={<EventList />} />
-            {/* <Route path="/event/add" element={<AddEvent />} /> */}
+            <Route path="/event/add" element={<AddEvent />} />
             <Route path="/shop/add" element={<Shoplist />} />
             <Route path="/shop" element={<Shoplist />} />
             <Route path="/users/add" element={<User />} />

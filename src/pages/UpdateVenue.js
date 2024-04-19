@@ -14,7 +14,7 @@ import { FiUpload, FiX } from 'react-icons/fi';
 import '../../src/Venue.css';
 
 const UpdateVenue = () => {
-  const { _id } = useParams();
+  var { _id } = useParams();
   const [formData, setFormData] = useState({
     name: "",
     address: "",
