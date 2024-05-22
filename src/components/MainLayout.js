@@ -161,11 +161,11 @@ const MainLayout = () => {
               //   },
               // ],
             },
-            {
-              key: "coaches",
-              icon: <FaBloggerB className="fs-4" />,
-              label: "Coach",
-              // children: [
+            // {
+            //   key: "coaches",
+            //   icon: <FaBloggerB className="fs-4" />,
+            //   label: "Coach",
+            //   // children: [
               //   {
               //     key: "blog",
               //     icon: <ImBlog className="fs-4" />,
@@ -176,28 +176,28 @@ const MainLayout = () => {
               //     icon: <FaBloggerB className="fs-4" />,
               //     label: "Blog List",
               //   },
-              //   {
-              //     key: "blog-category",
-              //     icon: <ImBlog className="fs-4" />,
-              //     label: "Add Blog Category",
-              //   },
-              //   {
-              //     key: "blog-category-list",
-              //     icon: <FaBloggerB className="fs-4" />,
-              //     label: "Blog Category List",
-              //   },
-              // ],
-            },
-            {
-              key: "personal-training",
-              icon: <FaChalkboard className="fs-4" />,
-              label: "Personal Training",
-            },
-            {
-              key: "events",
-              icon: <FaCalendarAlt className="fs-4" />,
-              label: "Events",
-            },
+            //   //   {
+            //   //     key: "blog-category",
+            //   //     icon: <ImBlog className="fs-4" />,
+            //   //     label: "Add Blog Category",
+            //   //   },
+            //   //   {
+            //   //     key: "blog-category-list",
+            //   //     icon: <FaBloggerB className="fs-4" />,
+            //   //     label: "Blog Category List",
+            //   //   },
+            //   // ],
+            // },
+            // {
+            //   key: "personal-training",
+            //   icon: <FaChalkboard className="fs-4" />,
+            //   label: "Personal Training",
+            // },
+            // {
+            //   key: "events",
+            //   icon: <FaCalendarAlt className="fs-4" />,
+            //   label: "Events",
+            // },
             {
               key: "enquiries",
               icon: <FaQuestionCircle className="fs-4" />,
