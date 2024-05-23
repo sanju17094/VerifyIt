@@ -1,31 +1,25 @@
 import React from 'react';
+import { Outlet, Link } from 'react-router-dom';
 import Header from '../components/Navbar';
-import BasicDetailsForm from '../Forms/BasicDetails';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
 import './Mainlayout.css';
-import ProfessionalDetails from '../Forms/ProfessionalDetails';
 
 function Mainlayout() {
     return (
         <>
             <Header />
             <div className="main-container">
-                <div className="left-container">
-                <h5>Personal Details</h5>
-                <p>Let's get you started!</p>
-                <h5>Professional Details</h5>
-                <p>Fill up your past experiences</p>
-                <h5>Educational Details</h5>
-                <p>Provide details about your degree</p>
-                <h5>All Done!</h5>
-                <p>All done,let's go!</p>
+                <div className="sidebar">
+                    <h5><Link to="personal_details">Personal Details</Link></h5>
+                    <p>Let's get you started!</p>
+                    <h5><Link to="professional_details">Professional Details</Link></h5>
+                    <p>Fill up your past experiences</p>
+                    <h5><Link to="educational_details">Educational Details</Link></h5>
+                    <p>Provide details about your degree</p>
+                    <h5><Link to="preview_all"></Link>All Done!</h5>
+                    <p>All done, let's go!</p>
                 </div>
-                {/* <div className='circle-check'>
-                        <FontAwesomeIcon icon={faCircleCheck} />
-                </div> */}
                 <div className="right-container">
-                <BasicDetailsForm />
+                    <Outlet />
                 </div>
             </div>
         </>

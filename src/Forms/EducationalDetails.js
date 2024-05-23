@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Container, Form, Button } from 'react-bootstrap';
+import { Container, Form} from 'react-bootstrap';
 import EducationDetailForm from './EducationalDetailsForm';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import './Style.css';
+import './FormStyle.css';
 
 const EducationalDetails = () => {
   const [educationDetails, setEducationDetails] = useState([
@@ -56,8 +56,9 @@ const EducationalDetails = () => {
   };
 
   return (
+    <>
+    <h3 className="mb-4 title">Educational Details</h3>
     <Container>
-      <h3 className="mb-4 title">Educational Details</h3>
       <Form onSubmit={handleSubmit}>
         {educationDetails.map((detail, index) => (
           <EducationDetailForm
@@ -74,15 +75,12 @@ const EducationalDetails = () => {
         onClick={addEducationDetail} 
       />
     </div>
-        {/* <button variant="primary" onClick={addEducationDetail} className="mb-3">
-          Add More
-        </button> */}
-
         <button variant="success" type="submit">
           Submit
         </button>
       </Form>
     </Container>
+    </>
   );
 };
 

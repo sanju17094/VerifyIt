@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
-import './Style.css';
+import './FormStyle.css';
 
 const EducationDetailForm = ({ index, formData, handleChange, errors }) => {
     return (

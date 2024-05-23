@@ -1,16 +1,13 @@
 import React, { useState } from "react";
 // import "bootstrap/dist/css/bootstrap.min.css";
 // import axios from "axios";
-import { Container, Row, Col, Form} from "react-bootstrap";
-import './Style.css';
+import { Container, Row, Col, Form } from "react-bootstrap";
+import './FormStyle.css';
 // import Swal from "sweetalert2";
 // import { API_URL } from '../ApiUrl';
-// import { useNavigate } from 'react-router-dom';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-
-
-const Users = () => {
+const PersonalDetails = () => {
   const [formData, setFormData] = useState({
     firstName: "",
     middleName: "",
@@ -25,7 +22,7 @@ const Users = () => {
     phone: "",
     email: "",
     idProofType: "",
-    idProofFile: null,
+    idProofNum: "",
   });
 
   const [errors, setErrors] = useState({});
@@ -96,7 +93,7 @@ const Users = () => {
   //   }
   // };
 
-  
+
 
   const handleNext = () => {
     navigate('/professional_details');
@@ -105,7 +102,7 @@ const Users = () => {
 
   return (
     <>
-      <h3 className="mb-4 title"></h3>
+      <h3 className="mb-4 title">Personal Details</h3>
       <Container>
         <Form >
           <Row>
@@ -245,9 +242,7 @@ const Users = () => {
                 </Form.Control.Feedback>
               </Form.Group>
             </Col>
-          </Row>
-          <Row>
-          <Col md={4}>
+            <Col md={4}>
               <Form.Group controlId="formCountry">
                 <Form.Label>Country</Form.Label>
                 <Form.Control
@@ -264,8 +259,6 @@ const Users = () => {
                 </Form.Control.Feedback>
               </Form.Group>
             </Col>
-            
-
             <Col md={4}>
               <Form.Group controlId="formState">
                 <Form.Label>State</Form.Label>
@@ -283,8 +276,8 @@ const Users = () => {
                 </Form.Control.Feedback>
               </Form.Group>
             </Col>
-
-
+          </Row>
+          <Row>
             <Col md={4}>
               <Form.Group controlId="formCity">
                 <Form.Label>City</Form.Label>
@@ -302,9 +295,7 @@ const Users = () => {
                 </Form.Control.Feedback>
               </Form.Group>
             </Col>
-          </Row>
 
-          <Row>
             <Col md={4}>
               <Form.Group controlId="formZipCode">
                 <Form.Label>Zip Code</Form.Label>
@@ -344,7 +335,7 @@ const Users = () => {
           </Row>
 
           <Row>
-            {/* <Col md={4}>
+            <Col md={4}>
               <Form.Group controlId="formIdProofType">
                 <Form.Label>ID Proof Type</Form.Label>
                 <Form.Control
@@ -356,59 +347,51 @@ const Users = () => {
                   style={{ marginTop: "5px", marginBottom: "15px" }}
                 >
                   <option value="">Select ID Proof Type</option>
+                  <option value="aadhar_card">Aadhar Card</option>
+                  <option value="pan_card">PAN Card</option>
+                  <option value="voter_id">Voter ID</option>
                   <option value="passport">Passport</option>
-                  <option value="driving_license">Driving License</option>
-                  <option value="national_id">National ID</option>
                 </Form.Control>
                 <Form.Control.Feedback type="invalid">
                   {errors.idProofType}
                 </Form.Control.Feedback>
               </Form.Group>
-            </Col> */}
+            </Col>
 
-            {/* <Col md={4}>
+            <Col md={4}>
               <Form.Group controlId="formIdProofFile">
-                <Form.Label>ID Proof File</Form.Label>
+                <Form.Label>ID Proof Number</Form.Label>
                 <Form.Control
-                  type="file"
-                  name="idProofFile"
-                  onChange={handleFileChange}
-                  isInvalid={!!errors.idProofFile}
+                  type="num"
+                  name="idProofNum"
+                  isInvalid={!!errors.idProofNum}
                   style={{ marginTop: "5px", marginBottom: "15px" }}
                 />
                 <Form.Control.Feedback type="invalid">
-                  {errors.idProofFile}
+                  {errors.idProofNum}
                 </Form.Control.Feedback>
               </Form.Group>
-            </Col> */}
-          </Row>
-
-          {/* Buttons */}
-          <Row style={{ marginTop: "20px", marginLeft: "0px" }}>
-            <Col md={12}>
-              <div className="ButtonsContainer d-flex justify-content-start">
-                {" "}
-                {/* Align buttons to the left */}
-                <button
-                  type="button"
-                  className="cancel-button"
-                >
-                  Go Back
-                </button>
-                <button
-                  type="button"
-                  className="submit-button"
-                  onClick={handleNext}
-                >
-                  Save and Next
-                </button>
-              </div>
             </Col>
           </Row>
+
+
+          <button
+            type="button"
+            className="cancel-button"
+          >
+            Go Back
+          </button>
+          <button
+            type="button"
+            className="submit-button"
+            onClick={handleNext}
+          >
+            Save and Next
+          </button>
         </Form>
       </Container>
     </>
   );
 };
 
-export default Users;
+export default PersonalDetails;

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Container, Row, Col, Form } from "react-bootstrap";
-import './Style.css';
-import { Link, useNavigate } from 'react-router-dom';
+import './FormStyle.css';
+import { useNavigate } from 'react-router-dom';
 
 const ProfessionalDetails = () => {
   const [formData, setFormData] = useState({

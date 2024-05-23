@@ -1,57 +1,46 @@
 .main-container {
-    max-width: 1650px;
-    height: 90vh;
-    margin: 0 auto;
     display: flex;
 }
-.left-container {
-    width: 20%;
+
+.sidebar {
+    width: 250px;
     background-color: #01052e;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 100; 
+  }
+
+.sidebar h5 {
+    font-size: 18px; 
+    color: #fff; 
+    line-height: 1.6;
+    font-weight: bold;
+    margin-top: 4px;
+    text-decoration: none !important;
+}
+.sidebar h5 a {
+    text-decoration: none !important;
+    color: inherit; 
+}
+.sidebar p {
+    margin-bottom: 20px;
+    color: #c4bebe;
+    font-family: cursive;
 }
 
 .right-container {
-    width: 70%;
-    background-color: white;
-}
-
-
-.circle-check {
-    display: flex;
-    align-items: center; /* Center the icon vertically */
-    justify-content: center; /* Center the icon horizontally */
-    width: 40px; /* Set a fixed width for the container */
-    height: 40px; /* Set a fixed height for the container */
-    background-color: #01052e; /* Green background color */
-    border-radius: 50%; /* Make the container a circle */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow for depth */
-    color: white; /* White color for the icon */
-    font-size: 20px; /* Adjust the font size of the icon */
-    cursor: pointer; /* Change cursor to pointer on hover */
-    transition: background-color 0.3s ease; /* Smooth transition for background color change */
-    margin-top: 25px;
-}
-
-.circle-check:hover {
-    background-color: #01052e; /* Slightly darker green on hover */
-}
-
-.left-container h5 {
-    font-size: 18px; /* Increase the font size */
-    color: #fff; /* Slightly lighter color */
-    line-height: 1.6; /* Improve readability with line height */
-    font-weight: bold;
-    margin-top: 32px;
-    margin-left: 68px;
-}
-
-.left-container p {
-    color: #c4bebe;
-    font-family: cursive;
-    margin-left: 68px;
+    flex-grow: 1;
+    padding: 20px;
+    width: 80%;
+    padding: 20px;
 }
 
 @media (max-width: 768px) {
-    .left-container {
+    .sidebar {
         display: none;
     }
     .right-container {

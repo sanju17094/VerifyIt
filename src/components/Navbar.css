@@ -2,7 +2,7 @@
 /* Customize the Navbar background */
 .custom-navbar {
     background-color: #f8f9fa; /* Light gray background */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 10px 20px;
   }
   
@@ -11,24 +11,26 @@
     font-size: 1.5rem;
     font-weight: bold;
     color: #343a40; /* Dark gray color */
-  }
-  
-  /* Customize the Nav links */
-  .custom-nav-link {
-    font-size: 1.2rem;
-    color: #007bff; /* Bootstrap primary color */
-    margin-right: 15px;
-    transition: color 0.3s ease;
-  }
-  
-  .custom-nav-link:hover {
-    color: #0056b3; /* Darker shade of primary color on hover */
-  }
-  
+  }  
   /* Additional padding for Navbar collapse */
   #basic-navbar-nav {
     padding: 10px;
   }
+
+  /* Navbar.css */
+
+.user-link {
+  display: flex;
+  align-items: center;
+  color: inherit; /* Use the default text color */
+  text-decoration: none;
+}
+
+.user-icon {
+  margin-right: 5px; /* Adjust the margin as needed */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
   
   /* Mobile view adjustments */
   @media (max-width: 767.98px) {
