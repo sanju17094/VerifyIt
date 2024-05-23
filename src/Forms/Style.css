@@ -1,0 +1,130 @@
+.container {
+  /* margin-top: 20px; */
+  /* margin-bottom: 20px; */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: rgb(255, 255, 255);
+  font-weight: bold;
+  width: 100%;
+}
+#h3{
+  font-size: 28px;
+}
+mb-4 {
+  margin-bottom: 1.5rem !important;
+} 
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.custom-dropdown {
+  position: relative;
+}
+
+.custom-dropdown .dropdown-arrow {
+  position: absolute;
+  top: 50%;
+  right: 10px; /* Adjust as needed */
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.form-control {
+  border-radius: 1px;
+  border-color: #041446;
+  padding: 10px 15px;
+  font-size: 16px;
+  /* line-height: 1.5; */
+}
+
+.form-control:focus {
+  box-shadow: none;
+}
+
+.submit-button {
+  background-color: #1a1e5e;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease-in-out;
+  font-weight: bold;
+  margin-right: 1%;
+}
+.cancel-button{
+  background-color: #fff;
+  color: rgb(33, 32, 32);
+  /* border-color: #1a1e5e; */
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease-in-out;
+  font-weight: bold;
+  margin-left: 1%;
+}
+
+.submit-button:hover {
+  background-color: #1a1e5e !important;
+}
+
+
+
+/* Define styles for the MultiSelect component */
+.multiselect-input {
+  width: 100%; /* Set the width as needed */
+  padding: 8px; /* Adjust padding as per your design */
+  border: 1px solid #ced4da; /* Define border color */
+  border-radius: 4px; /* Add border-radius for rounded corners */
+  background-color: #fff; /* Set background color */
+  color: #495057; /* Set text color */
+  outline: none; /* Remove outline on focus */
+}
+
+/* Style the dropdown arrow icon in the MultiSelect */
+.multiselect-input .multiselect__select {
+  border: none; /* Remove border */
+  background-color: white;
+
+}
+
+/* Style the dropdown menu items in the MultiSelect */
+.multiselect-input .multiselect__select-menu {
+  background-color: #fff; /* Set background color for dropdown menu */
+  border: 1px solid #ced4da; /* Define border color for dropdown menu */
+  border-radius: 4px; /* Add border-radius for rounded corners */
+  
+}
+
+/* Style the selected items in the MultiSelect */
+.multiselect-input .multiselect__tags {
+  display: flex; /* Use flexbox for tags display */
+  flex-wrap: wrap; /* Allow tags to wrap if space is limited */
+  gap: 4px; /* Set gap between tags */
+}
+
+/* Style individual tag items in the MultiSelect */
+.multiselect-input .multiselect__tag {
+  background-color: #007bff; /* Set tag background color */
+  color: #fff; /* Set tag text color */
+  border-radius: 4px; /* Add border-radius for rounded corners */
+  padding: 2px 8px; /* Adjust padding as needed */
+  margin: 2px; /* Set margin between tags */
+  cursor: pointer; /* Set cursor as pointer for interaction */
+}
+
+/* Style the placeholder text in the MultiSelect */
+.multiselect-input .multiselect__placeholder {
+  color: #6c757d; /* Set placeholder text color */
+  background-color: white;
+}
+
+/* Style the dropdown options in the MultiSelect */
+.multiselect-input .multiselect__option {
+  padding: 8px; /* Adjust padding for dropdown options */
+  cursor: pointer; /* Set cursor as pointer for interaction */
+  background-color: black; /* Set background color for dropdown options */
+}
+
