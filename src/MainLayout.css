@@ -1,3 +1,4 @@
+
 .lg-logo {
     height: 100%;
     max-width: 210px; 
@@ -10,28 +11,40 @@
     max-width: 50px; /* Limit the maximum width to 50px */
     width: auto; /* Let the width adjust automatically */
 }
-
-.sidelogo{
-  background-color: rgb(255, 95, 21);
-}
-/* Apply the background color when item is selected */
-/* .ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected:active,
-.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected:focus {
-  background-color: rgb(255, 95, 21) !important;
-} */
-
-
-/* Disable pointer events on hover */
-/* .ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected:hover {
-  pointer-events: none;
-} */
 .dropdown-menu {
   --bs-dropdown-link-active-bg:rgb(255, 95, 21) !important;
-
 } 
 
-.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected {
-    background-color: rgb(255, 95, 21) !important; 
+.sidelogo_green{
+  background-color:rgb(2, 144, 52);
+}
+.sidelogo_red{
+  background-color: rgb(198, 0, 0);
+}
+.sidelogo_dark{
+  background-color: rgb(20, 16, 53);
+}
+.sidelogo_white{
+  background-color: rgb(244, 243, 255);
 }
 
 
+
+
+.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    background-color: rgb(113, 54, 239)!important; 
+}
+
+.SideBar_green{
+  background-color: rgb(36, 162, 31)!important;
+}
+.SideBar_red{
+  background-color: rgb(222, 32, 32)!important;
+}
+.SideBar_dark{
+background-color: rgb(20, 16, 53)!important;
+}
+.SideBar_white{
+background-color: rgb(211, 211, 211)!important;
+
+}

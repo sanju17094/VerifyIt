@@ -1,3 +1,4 @@
+// store vikas
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "../features/auth/authSlice";
 import customerReducer from "../features/cutomers/customerSlice";
@@ -10,6 +11,7 @@ import colorReducer from "../features/color/colorSlice";
 import enquiryReducer from "../features/enquiry/enquirySlice";
 import uploadReducer from "../features/upload/uploadSlice";
 import couponReducer from "../features/coupon/couponSlice";
+import rootReducer from "../reducers/rootReducer";
 export const store = configureStore({
   reducer: {
     auth: authReducer,
@@ -23,5 +25,6 @@ export const store = configureStore({
     enquiry: enquiryReducer,
     upload: uploadReducer,
     coupon: couponReducer,
+    themeColor:rootReducer
   },
 });
