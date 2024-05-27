@@ -15,6 +15,8 @@ function Mainlayout() {
                     <p>Fill up your past experiences</p>
                     <h5><Link to="educational_details">Educational Details</Link></h5>
                     <p>Provide details about your degree</p>
+                    <h5><Link to="documents">Profile Photo & Documents</Link></h5>
+                    <p>Upload profile photo & documents</p>
                     <h5><Link to="preview_all"></Link>All Done!</h5>
                     <p>All done, let's go!</p>
                 </div>
