@@ -5,33 +5,29 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [mobile, setMobile] = useState('');
+  const [identifier, setIdentifier] = useState(''); // Can be email or mobile
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleEmailChange = (e) => setEmail(e.target.value);
-  const handleMobileChange = (e) => setMobile(e.target.value);
+  const handleIdentifierChange = (e) => setIdentifier(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(''); 
 
+    const data = identifier.includes('@')
+      ? { email: identifier, password }
+      : { mobile: identifier, password };
+
     try {
-      const response = await axios.post('http://localhost:8000/api/v1/Verifyit/login/password', {
-        email,
-        mobile,
-        password
-      });
+      const response = await axios.post('http://localhost:8000/api/v1/Verifyit/login/password', data);
       console.log('Login successful:', response.data);
 
-     
       const authToken = response.data.token || '';
       localStorage.setItem('token', authToken);
 
-    
       navigate('/mainlayout');
     } catch (error) {
       console.error('There was an error logging in:', error.response || error.message);
@@ -47,25 +43,14 @@ function LoginPage() {
     <Container className="mt-5">
       <h3>Login</h3>
       <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="email" className="mb-3">
-          <Form.Label>Email</Form.Label>
-          <Form.Control
-            type="email"
-            value={email}
-            onChange={handleEmailChange}
-            isInvalid={!!error}
-            placeholder="Enter Email Address"
-            required
-          />
-        </Form.Group>
-        <Form.Group controlId="mobile" className="mb-3">
-          <Form.Label>Mobile Number</Form.Label>
+        <Form.Group controlId="identifier" className="mb-3">
+          <Form.Label>Email or Mobile Number</Form.Label>
           <Form.Control
             type="text"
-            value={mobile}
-            onChange={handleMobileChange}
+            value={identifier}
+            onChange={handleIdentifierChange}
             isInvalid={!!error}
-            placeholder="Enter Mobile Number"
+            placeholder="Enter Email Address or Mobile Number"
             required
           />
         </Form.Group>

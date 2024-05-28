@@ -70,6 +70,10 @@ mb-4 {
   background-color: #1a1e5e !important;
 }
 
+.disabled-field {
+  background-color: #f1f3f5 !important;
+  opacity: 1;
+}
 
 
 

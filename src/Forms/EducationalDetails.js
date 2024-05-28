@@ -4,6 +4,7 @@ import EducationDetailForm from './EducationalDetailsForm';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import './FormStyle.css';
+import axios from "axios";
 
 const EducationalDetails = () => {
   const [educationDetails, setEducationDetails] = useState([
@@ -35,9 +36,20 @@ const EducationalDetails = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => { // Make handleSubmit async
     e.preventDefault();
-    // Add form validation logic here
+    
+    try {
+      // Post data to the API
+      const response = await axios.post('http://localhost:8000/api/v1/Verifyit/education/add', {
+        education: educationDetails,
+        user_id: '664cd36d563acb8deb2a9a16' // Hardcoded user ID
+      });
+
+      console.log(response.data); // Log the response
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   const addEducationDetail = () => {

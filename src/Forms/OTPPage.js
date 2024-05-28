@@ -23,70 +23,36 @@ function OTPPage() {
   };
 
 
-
-// const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     setError(''); 
-  
-//     try {
-//       const response = await axios.post('http://localhost:8000/api/v1/Verifyit/signup/verify-otp', { otp });
-//       console.log('OTP verified successfully:', response.data);
-  
-   
-//       console.log('Full response:', response);
-  
-
-//       if (response.data && response.data.token) {
-//         const authToken = response.data.token;
-//         const sanitizedToken = authToken.replace(/["']/g, '');
-//         setToken(sanitizedToken);
-//         localStorage.setItem('token', sanitizedToken);
-//         navigate('/login');
-//       } else {
-//         throw new Error('Unexpected response format');
-//       }
-//     } catch (error) {
-//       console.error('There was an error verifying the OTP:', error.response || error.message);
-//       if (error.response && error.response.data && error.response.data.message) {
-//         setError(error.response.data.message);
-//       } else {
-//         setError('Invalid OTP. Please try again.');
-//       }
-//     }
-//   };
-
-
-
 const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
-    
-    try {
-      const response = await axios.post(
-        'http://localhost:8000/api/v1/Verifyit/signup/verify-otp',
-        { otp },
-        { headers: { Authorization: `Bearer ${token}` } } // Include token in headers
-      );
-      console.log('OTP verified successfully:', response.data);
+  e.preventDefault();
+  setError('');
   
-      if (response.data && response.data.token) {
-        const authToken = response.data.token;
-        const sanitizedToken = authToken.replace(/["']/g, '');
-        setToken(sanitizedToken);
-        localStorage.setItem('token', sanitizedToken);
-        navigate('/login');
-      } else {
-        throw new Error('Unexpected response format');
-      }
-    } catch (error) {
-      console.error('There was an error verifying the OTP:', error.response || error.message);
-      if (error.response && error.response.data && error.response.data.message) {
-        setError(error.response.data.message);
-      } else {
-        setError('Invalid OTP. Please try again.');
-      }
+  try {
+    const loginToken = localStorage.getItem("token2"); // Retrieve token from localStorage
+    if (!loginToken) {
+      throw new Error('Token not found');
     }
-  };
+
+    const response = await axios.post(
+      'http://localhost:8000/api/v1/Verifyit/signup/verify-otp',
+      { otp },
+      { headers: { Authorization: `Bearer ${loginToken}` } } // Include token in headers
+    );
+    
+    console.log('Response from OTP verification:', response.data);
+    
+    if (response.data && response.data.success) {
+      console.log('OTP verified successfully:', response.data.message);
+      navigate('/loginpage');
+    } else {
+      throw new Error(response.data.message || 'OTP verification failed');
+    }
+  } catch (error) {
+    console.error('There was an error verifying the OTP:', error.response || error.message);
+    setError(error.response && error.response.data && error.response.data.message ? error.response.data.message : 'Error verifying OTP');
+  }
+};
+
   
 
   

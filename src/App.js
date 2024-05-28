@@ -18,10 +18,10 @@ function App() {
       <Route path="/otppage" element={<OTPPage />} />
       <Route path="/loginpage" element={<LoginPage/>}/>
         <Route path="/mainlayout" element={<Mainlayout />}>
-          {/* <Route path="personal_details" element={<PersonalDetails />} />
+          <Route path="personal_details" element={<PersonalDetails />} />
           <Route path="professional_details" element={<ProfessionalDetails />} />
           <Route path="educational_details" element={<EducationalDetails />} />
-          <Route path="preview_all" element={<PreviewAll />} /> */}
+          <Route path="preview_all" element={<PreviewAll />} />
       </Route>
 
       </Routes>
