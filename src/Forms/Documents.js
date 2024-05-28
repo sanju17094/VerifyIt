@@ -48,10 +48,12 @@ const UploadDocuments = () => {
     }
   };
 
-  const handleRemove = (name) => {
+  const handleRemove = (name, type, file) => {
     setFormData({
       ...formData,
       [name]: null,
+      [type]: null,
+      [file]: null,
     });
 
     setPreviews({
@@ -94,7 +96,7 @@ const UploadDocuments = () => {
         ) : (
           <a href={file} target="_blank" rel="noopener noreferrer">View Document</a>
         )}
-        <button type="button" onClick={() => handleRemove(name)} style={{ marginLeft: "10px", border: "none", background: "none" }}>
+        <button type="button" onClick={() => handleRemove(name, type, file)} style={{ marginLeft: "10px", border: "none", background: "none" }}>
           <FontAwesomeIcon icon={faX} />
         </button>
       </div>

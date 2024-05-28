@@ -10,7 +10,6 @@ import { useNavigate } from 'react-router-dom';
 const PersonalDetails = () => {
   const [formData, setFormData] = useState({
     firstName: "",
-    middleName: "",
     lastName: "",
     gender: "",
     dob: "",
@@ -127,26 +126,6 @@ const PersonalDetails = () => {
             </Col>
 
             <Col md={4}>
-              <Form.Group controlId="formMiddleName">
-                <Form.Label>
-                  Middle Name<span className="text-danger">*</span>
-                </Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Enter Middle Name"
-                  name="middleName"
-                  value={formData.middleName}
-                  onChange={handleChange}
-                  isInvalid={!!errors.middleName}
-                  style={{ marginTop: "5px", marginBottom: "15px" }}
-                />
-                <Form.Control.Feedback type="invalid">
-                  {errors.middleName}
-                </Form.Control.Feedback>
-              </Form.Group>
-            </Col>
-
-            <Col md={4}>
               <Form.Group controlId="formLastName">
                 <Form.Label>
                   Last Name<span className="text-danger">*</span>
@@ -163,22 +142,6 @@ const PersonalDetails = () => {
                 <Form.Control.Feedback type="invalid">
                   {errors.lastName}
                 </Form.Control.Feedback>
-              </Form.Group>
-            </Col>
-          </Row>
-
-          <Row>
-            <Col md={4}>
-              <Form.Group controlId="formDob">
-                <Form.Label>Date of Birth</Form.Label>
-                <Form.Control
-                  type="date"
-                  placeholder="Select Date"
-                  name="dob"
-                  value={formData.dob}
-                  onChange={handleChange}
-                  style={{ marginTop: "5px", marginBottom: "15px" }}
-                />
               </Form.Group>
             </Col>
 
@@ -207,6 +170,23 @@ const PersonalDetails = () => {
                 </div>
               </Form.Group>
             </Col>
+          </Row>
+
+          <Row>
+            <Col md={4}>
+              <Form.Group controlId="formDob">
+                <Form.Label>Date of Birth</Form.Label>
+                <Form.Control
+                  type="date"
+                  placeholder="Select Date"
+                  name="dob"
+                  value={formData.dob}
+                  onChange={handleChange}
+                  style={{ marginTop: "5px", marginBottom: "15px" }}
+                />
+              </Form.Group>
+            </Col>
+
             <Col md={4}>
               <Form.Group controlId="formEmail">
                 <Form.Label>Email Address</Form.Label>
@@ -220,9 +200,7 @@ const PersonalDetails = () => {
                 />
               </Form.Group>
             </Col>
-          </Row>
 
-          <Row>
             <Col md={4}>
               <Form.Group controlId="formMobile">
                 <Form.Label>
@@ -242,6 +220,9 @@ const PersonalDetails = () => {
                 </Form.Control.Feedback>
               </Form.Group>
             </Col>
+          </Row>
+
+          <Row> 
             <Col md={4}>
               <Form.Group controlId="formCountry">
                 <Form.Label>Country</Form.Label>
@@ -259,6 +240,7 @@ const PersonalDetails = () => {
                 </Form.Control.Feedback>
               </Form.Group>
             </Col>
+
             <Col md={4}>
               <Form.Group controlId="formState">
                 <Form.Label>State</Form.Label>
@@ -276,8 +258,7 @@ const PersonalDetails = () => {
                 </Form.Control.Feedback>
               </Form.Group>
             </Col>
-          </Row>
-          <Row>
+
             <Col md={4}>
               <Form.Group controlId="formCity">
                 <Form.Label>City</Form.Label>
@@ -295,7 +276,9 @@ const PersonalDetails = () => {
                 </Form.Control.Feedback>
               </Form.Group>
             </Col>
+          </Row>
 
+          <Row>
             <Col md={4}>
               <Form.Group controlId="formZipCode">
                 <Form.Label>Zip Code</Form.Label>
@@ -314,7 +297,6 @@ const PersonalDetails = () => {
               </Form.Group>
             </Col>
 
-
             <Col md={4}>
               <Form.Group controlId="formAddress">
                 <Form.Label>Address</Form.Label>
@@ -332,9 +314,7 @@ const PersonalDetails = () => {
                 </Form.Control.Feedback>
               </Form.Group>
             </Col>
-          </Row>
 
-          <Row>
             <Col md={4}>
               <Form.Group controlId="formIdProofType">
                 <Form.Label>ID Proof Type</Form.Label>
@@ -357,7 +337,9 @@ const PersonalDetails = () => {
                 </Form.Control.Feedback>
               </Form.Group>
             </Col>
+          </Row>
 
+          <Row>
             <Col md={4}>
               <Form.Group controlId="formIdProofFile">
                 <Form.Label>ID Proof Number</Form.Label>
@@ -373,8 +355,7 @@ const PersonalDetails = () => {
               </Form.Group>
             </Col>
           </Row>
-
-
+          
           <button
             type="button"
             className="cancel-button"

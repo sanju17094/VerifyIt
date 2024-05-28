@@ -1,11 +1,25 @@
 import React from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import './FormStyle.css';
 
-const EducationDetailForm = ({ index, formData, handleChange, errors }) => {
+const EducationDetailForm = ({ index, formData, handleChange, removeEducationDetail, errors }) => {
+    const titles = ["High School", "Intermediate", "Graduate", "Post Graduate"];
+    const title = titles[index] || `Education Detail ${index + 1}`;
+
     return (
         <div className="mb-4">
-            <h5 className="mb-3">Education Detail {index + 1}</h5>
+            <h5 className="mb-3">
+                {title}
+                {index > 0 && (
+                    <FontAwesomeIcon
+                        icon={faTrash}
+                        onClick={() => removeEducationDetail(index)}
+                        className="remove-icon"
+                    />
+                )}
+            </h5>
             <Row>
                 <Col md={6}>
                     <Form.Group controlId={`formProgram${index}`}>
@@ -57,6 +71,41 @@ const EducationDetailForm = ({ index, formData, handleChange, errors }) => {
                         />
                         <Form.Control.Feedback type="invalid">
                             {errors[`boardUniversity${index}`]}
+                        </Form.Control.Feedback>
+                    </Form.Group>
+                </Col>
+
+                <Col md={6}>
+                    <Form.Group controlId={`formBranchSpecialization${index}`}>
+                        <Form.Label>Branch/Specialization</Form.Label>
+                        <Form.Control
+                            type="text"
+                            placeholder="Enter Branch/Specialization"
+                            name={`branchSpecialization${index}`}
+                            value={formData.branch_specialization}
+                            onChange={(e) => handleChange(e, index)}
+                            isInvalid={!!errors[`branchSpecialization${index}`]}
+                            style={{ marginTop: "5px", marginBottom: "15px" }}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                            {errors[`branchSpecialization${index}`]}
+                        </Form.Control.Feedback>
+                    </Form.Group>
+                </Col>
+                <Col md={6}>
+                    <Form.Group controlId={`formScoreType${index}`}>
+                        <Form.Label>Score Type<span className="text-danger">*</span></Form.Label>
+                        <Form.Control
+                            type="text"
+                            placeholder="Enter Score Type"
+                            name={`scoreType${index}`}
+                            value={formData.scoreType}
+                            onChange={(e) => handleChange(e, index)}
+                            isInvalid={!!errors[`scoreType${index}`]}
+                            style={{ marginTop: "5px", marginBottom: "15px" }}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                            {errors[`scoreType${index}`]}
                         </Form.Control.Feedback>
                     </Form.Group>
                 </Col>
@@ -113,23 +162,7 @@ const EducationDetailForm = ({ index, formData, handleChange, errors }) => {
                 </Col>
             </Row>
             <Row>
-                <Col md={6}>
-                    <Form.Group controlId={`formBranchSpecialization${index}`}>
-                        <Form.Label>Branch/Specialization</Form.Label>
-                        <Form.Control
-                            type="text"
-                            placeholder="Enter Branch/Specialization"
-                            name={`branchSpecialization${index}`}
-                            value={formData.branch_specialization}
-                            onChange={(e) => handleChange(e, index)}
-                            isInvalid={!!errors[`branchSpecialization${index}`]}
-                            style={{ marginTop: "5px", marginBottom: "15px" }}
-                        />
-                        <Form.Control.Feedback type="invalid">
-                            {errors[`branchSpecialization${index}`]}
-                        </Form.Control.Feedback>
-                    </Form.Group>
-                </Col>
+
             </Row>
         </div>
     );

@@ -5,7 +5,6 @@
   background-color: rgb(255, 255, 255);
   font-weight: bold;
   width: 100%;
-  /* display: flex; */
   overflow-y: auto; 
 }
 
@@ -70,6 +69,19 @@ mb-4 {
   background-color: #1a1e5e !important;
 }
 
+.remove-icon{
+  margin-left: 8px;
+  color:#1a1e5e;
+}
+
+.add-icon{
+  background-color: #1a1e5e;
+  color: #fff;
+  font-size: 24px; 
+  padding: 1px;
+  border-radius: 7px;
+  margin: 5px;
+}
 
 
 
