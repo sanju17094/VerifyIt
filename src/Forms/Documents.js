@@ -10,6 +10,14 @@ const UploadDocuments = () => {
     highSchoolDocument: null,
     intermediateDocument: null,
     graduateDocument: null,
+    postGraduateDocument: null,
+    aadharCard: null,
+    panCard: null,
+    licence: null,
+    voterIdCard: null,
+    offerLetter1: null,
+    offerLetter2: null,
+    offerLetter3: null,
     profilePhoto: null,
   });
 
@@ -18,6 +26,14 @@ const UploadDocuments = () => {
     highSchoolDocument: null,
     intermediateDocument: null,
     graduateDocument: null,
+    postGraduateDocument: null,
+    aadharCard: null,
+    panCard: null,
+    licence: null,
+    voterIdCard: null,
+    offerLetter1: null,
+    offerLetter2: null,
+    offerLetter3: null,
     profilePhoto: null,
   });
 
@@ -52,8 +68,6 @@ const UploadDocuments = () => {
     setFormData({
       ...formData,
       [name]: null,
-      [type]: null,
-      [file]: null,
     });
 
     setPreviews({
@@ -92,7 +106,7 @@ const UploadDocuments = () => {
     return (
       <div style={{ marginTop: "10px" }}>
         {type.startsWith('image/') ? (
-          <img src={file} alt="Preview" style={{ width: "70%", height: "auto" }} />
+          <img src={file} alt="Preview" style={{ width: "40%", height: "auto" }} />
         ) : (
           <a href={file} target="_blank" rel="noopener noreferrer">View Document</a>
         )}
@@ -159,9 +173,143 @@ const UploadDocuments = () => {
                 {renderPreview(previews.graduateDocument, formData.graduateDocument?.type, "graduateDocument")}
               </Form.Group>
             </Col>
-          </Row>
 
-          <Row>
+            <Col md={4}>
+              <Form.Group controlId="formPostGraduateDocument">
+                <Form.Label>Post Graduate Document<span className="text-danger">*</span></Form.Label>
+                <Form.Control
+                  type="file"
+                  name="postGraduateDocument"
+                  onChange={handleChange}
+                  isInvalid={!!errors.postGraduateDocument}
+                  style={{ marginTop: "5px", marginBottom: "15px" }}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {errors.postGraduateDocument}
+                </Form.Control.Feedback>
+                {renderPreview(previews.postGraduateDocument, formData.postGraduateDocument?.type, "postGraduateDocument")}
+              </Form.Group>
+            </Col>
+
+            <Col md={4}>
+              <Form.Group controlId="formAadharCard">
+                <Form.Label>Aadhar Card<span className="text-danger">*</span></Form.Label>
+                <Form.Control
+                  type="file"
+                  name="aadharCard"
+                  onChange={handleChange}
+                  isInvalid={!!errors.aadharCard}
+                  style={{ marginTop: "5px", marginBottom: "15px" }}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {errors.aadharCard}
+                </Form.Control.Feedback>
+                {renderPreview(previews.aadharCard, formData.aadharCard?.type, "aadharCard")}
+              </Form.Group>
+            </Col>
+
+            <Col md={4}>
+              <Form.Group controlId="formPanCard">
+                <Form.Label>PAN Card<span className="text-danger">*</span></Form.Label>
+                <Form.Control
+                  type="file"
+                  name="panCard"
+                  onChange={handleChange}
+                  isInvalid={!!errors.panCard}
+                  style={{ marginTop: "5px", marginBottom: "15px" }}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {errors.panCard}
+                </Form.Control.Feedback>
+                {renderPreview(previews.panCard, formData.panCard?.type, "panCard")}
+              </Form.Group>
+            </Col>
+
+            <Col md={4}>
+              <Form.Group controlId="formLicence">
+                <Form.Label>Licence<span className="text-danger">*</span></Form.Label>
+                <Form.Control
+                  type="file"
+                  name="licence"
+                  onChange={handleChange}
+                  isInvalid={!!errors.licence}
+                  style={{ marginTop: "5px", marginBottom: "15px" }}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {errors.licence}
+                </Form.Control.Feedback>
+                {renderPreview(previews.licence, formData.licence?.type, "licence")}
+              </Form.Group>
+            </Col>
+
+            <Col md={4}>
+              <Form.Group controlId="formVoterIdCard">
+                <Form.Label>Voter ID Card<span className="text-danger">*</span></Form.Label>
+                <Form.Control
+                  type="file"
+                  name="voterIdCard"
+                  onChange={handleChange}
+                  isInvalid={!!errors.voterIdCard}
+                  style={{ marginTop: "5px", marginBottom: "15px" }}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {errors.voterIdCard}
+                </Form.Control.Feedback>
+                {renderPreview(previews.voterIdCard, formData.voterIdCard?.type, "voterIdCard")}
+              </Form.Group>
+            </Col>
+
+            <Col md={4}>
+              <Form.Group controlId="formOfferLetter1">
+                <Form.Label>Offer Letter 1<span className="text-danger">*</span></Form.Label>
+                <Form.Control
+                  type="file"
+                  name="offerLetter1"
+                  onChange={handleChange}
+                  isInvalid={!!errors.offerLetter1}
+                  style={{ marginTop: "5px", marginBottom: "15px" }}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {errors.offerLetter1}
+                </Form.Control.Feedback>
+                {renderPreview(previews.offerLetter1, formData.offerLetter1?.type, "offerLetter1")}
+              </Form.Group>
+            </Col>
+
+            <Col md={4}>
+              <Form.Group controlId="formOfferLetter2">
+                <Form.Label>Offer Letter 2<span className="text-danger">*</span></Form.Label>
+                <Form.Control
+                  type="file"
+                  name="offerLetter2"
+                  onChange={handleChange}
+                  isInvalid={!!errors.offerLetter2}
+                  style={{ marginTop: "5px", marginBottom: "15px" }}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {errors.offerLetter2}
+                </Form.Control.Feedback>
+                {renderPreview(previews.offerLetter2, formData.offerLetter2?.type, "offerLetter2")}
+              </Form.Group>
+            </Col>
+
+            <Col md={4}>
+              <Form.Group controlId="formOfferLetter3">
+                <Form.Label>Offer Letter 3<span className="text-danger">*</span></Form.Label>
+                <Form.Control
+                  type="file"
+                  name="offerLetter3"
+                  onChange={handleChange}
+                  isInvalid={!!errors.offerLetter3}
+                  style={{ marginTop: "5px", marginBottom: "15px" }}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {errors.offerLetter3}
+                </Form.Control.Feedback>
+                {renderPreview(previews.offerLetter3, formData.offerLetter3?.type, "offerLetter3")}
+              </Form.Group>
+            </Col>
+
             <Col md={4}>
               <Form.Group controlId="formProfilePhoto">
                 <Form.Label>Profile Photo<span className="text-danger">*</span></Form.Label>

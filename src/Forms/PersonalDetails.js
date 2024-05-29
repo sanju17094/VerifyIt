@@ -1,31 +1,41 @@
-import React, { useState } from "react";
-// import "bootstrap/dist/css/bootstrap.min.css";
-// import axios from "axios";
+import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Form } from "react-bootstrap";
 import './FormStyle.css';
-// import Swal from "sweetalert2";
-// import { API_URL } from '../ApiUrl';
 import { useNavigate } from 'react-router-dom';
+import {jwtDecode} from 'jwt-decode';
 
 const PersonalDetails = () => {
+  const navigate = useNavigate();
+
+  // Retrieve and decode the token from local storage
+  const token = localStorage.getItem('token');
+  let userData = {};
+  if (token) {
+    try {
+      const decodedToken = jwtDecode(token);
+      userData = decodedToken; // Assuming the payload contains the user data
+    } catch (error) {
+      console.error("Invalid token:", error);
+    }
+  }
+
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    gender: "",
+    firstName: userData.first_name || "",
+    lastName: userData.last_name || "",
     dob: "",
     address: "",
     city: "",
     state: "",
     country: "",
     zipcode: "",
-    phone: "",
-    email: "",
+    phone: userData.mobile || "",
+    email: userData.email || "",
+    gender: "",
     idProofType: "",
     idProofNum: "",
   });
 
   const [errors, setErrors] = useState({});
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -41,71 +51,17 @@ const PersonalDetails = () => {
     });
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   // Validate form fields
-  //   const validationErrors = {};
-  //   if (!formData.first_name.trim()) {
-  //     validationErrors.first_name = "First name is required";
-  //   }
-  //   if (!formData.last_name.trim()) {
-  //     validationErrors.last_name = "Last name is required";
-  //   }
-  //   if (
-  //     !formData.mobile.trim() ||
-  //     formData.mobile.trim().length !== 10 ||
-  //     !/^\d+$/.test(formData.mobile)
-  //   ) {
-  //     validationErrors.mobile = "Mobile number must be a 10-digit number";
-  //   }
-  //   if (!formData.role.trim()) {
-  //     validationErrors.role = "Role is required";
-  //   }
-
-  //   if (Object.keys(validationErrors).length > 0) {
-  //     setErrors(validationErrors);
-  //     return;
-  //   }
-
-  //   try {
-  //     const response = await axios.post(
-  //       `${API_URL}/super-admin/add-user`,
-  //       formData
-  //     );
-  //     console.log(response);
-  //     Swal.fire({
-  //       icon: "success",
-  //       title: "Success!",
-  //       text: "User added successfully",
-
-  //     }).then(() => {
-  //       navigate('/users');
-  //     })
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //     Swal.fire({
-  //       icon: "error",
-  //       title: "Validation Error",
-  //       text: "Number Already Exist",
-  //     });
-  //   }
-  // };
-
-
-
   const handleNext = () => {
     navigate('/professional_details');
   };
-
 
   return (
     <>
       <h3 className="mb-4 title">Personal Details</h3>
       <Container>
-        <Form >
+        <Form>
           <Row>
-            <Col md={4}>
+            <Col md={6}>
               <Form.Group controlId="formFirstName">
                 <Form.Label>
                   First Name<span className="text-danger">*</span>
@@ -116,16 +72,18 @@ const PersonalDetails = () => {
                   name="firstName"
                   value={formData.firstName}
                   onChange={handleChange}
-                  isInvalid={!!errors.first_name}
+                  isInvalid={!!errors.firstName}
                   style={{ marginTop: "5px", marginBottom: "15px" }}
+                  disabled
+                  className="disabled-field"
                 />
                 <Form.Control.Feedback type="invalid">
-                  {errors.first_name}
+                  {errors.firstName}
                 </Form.Control.Feedback>
               </Form.Group>
             </Col>
 
-            <Col md={4}>
+            <Col md={6}>
               <Form.Group controlId="formLastName">
                 <Form.Label>
                   Last Name<span className="text-danger">*</span>
@@ -138,42 +96,18 @@ const PersonalDetails = () => {
                   onChange={handleChange}
                   isInvalid={!!errors.lastName}
                   style={{ marginTop: "5px", marginBottom: "15px" }}
+                  disabled
+                  className="disabled-field"
                 />
                 <Form.Control.Feedback type="invalid">
                   {errors.lastName}
                 </Form.Control.Feedback>
               </Form.Group>
             </Col>
-
-            <Col md={4}>
-              <Form.Group controlId="formGender">
-                <Form.Label>Gender</Form.Label>
-                <div className="custom-dropdown">
-                  <Form.Control
-                    as="select"
-                    name="gender"
-                    value={formData.gender}
-                    onChange={handleChange}
-                    style={{ height: "auto" }}
-                  >
-                    <option value="">Select Gender</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="other">Other</option>
-                  </Form.Control>
-                  {/* Add feedback for validation if needed */}
-                  {/* <Form.Control.Feedback type="invalid">
-                 {errors.gender}
-                 </Form.Control.Feedback> */}
-                  <span className="dropdown-arrow">&#9662;</span>{" "}
-                  {/* Downward arrow */}
-                </div>
-              </Form.Group>
-            </Col>
           </Row>
 
           <Row>
-            <Col md={4}>
+            <Col md={6}>
               <Form.Group controlId="formDob">
                 <Form.Label>Date of Birth</Form.Label>
                 <Form.Control
@@ -187,7 +121,30 @@ const PersonalDetails = () => {
               </Form.Group>
             </Col>
 
-            <Col md={4}>
+            <Col md={6}>
+              <Form.Group controlId="formGender">
+                <Form.Label>Gender</Form.Label>
+                <div className="custom-dropdown">
+                  <Form.Control
+                    as="select"
+                    name="gender"
+                    value={formData.gender}
+                    onChange={handleChange}
+                    style={{ height: "auto", marginTop: "5px", marginBottom: "15px" }}
+                  >
+                    <option value="">Select Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                  </Form.Control>
+                  <span className="dropdown-arrow">&#9662;</span>
+                </div>
+              </Form.Group>
+            </Col>
+          </Row>
+
+          <Row>
+            <Col md={6}>
               <Form.Group controlId="formEmail">
                 <Form.Label>Email Address</Form.Label>
                 <Form.Control
@@ -197,11 +154,13 @@ const PersonalDetails = () => {
                   value={formData.email}
                   onChange={handleChange}
                   style={{ marginTop: "5px", marginBottom: "15px" }}
+                  disabled
+                  className="disabled-field"
                 />
               </Form.Group>
             </Col>
 
-            <Col md={4}>
+            <Col md={6}>
               <Form.Group controlId="formMobile">
                 <Form.Label>
                   Mobile Number<span className="text-danger">*</span>
@@ -209,21 +168,23 @@ const PersonalDetails = () => {
                 <Form.Control
                   type="text"
                   placeholder="Enter Mobile Number"
-                  name="mobile"
-                  value={formData.mobile}
+                  name="phone"
+                  value={formData.phone}
                   onChange={handleChange}
-                  isInvalid={!!errors.mobile}
-                  style={{ marginTop: "5px", marginBottom: "4px" }}
+                  isInvalid={!!errors.phone}
+                  style={{ marginTop: "5px", marginBottom: "15px" }}
+                  disabled
+                  className="disabled-field"
                 />
                 <Form.Control.Feedback type="invalid">
-                  {errors.mobile}
+                  {errors.phone}
                 </Form.Control.Feedback>
               </Form.Group>
             </Col>
           </Row>
 
-          <Row> 
-            <Col md={4}>
+          <Row>
+            <Col md={6}>
               <Form.Group controlId="formCountry">
                 <Form.Label>Country</Form.Label>
                 <Form.Control
@@ -240,8 +201,7 @@ const PersonalDetails = () => {
                 </Form.Control.Feedback>
               </Form.Group>
             </Col>
-
-            <Col md={4}>
+            <Col md={6}>
               <Form.Group controlId="formState">
                 <Form.Label>State</Form.Label>
                 <Form.Control
@@ -258,8 +218,9 @@ const PersonalDetails = () => {
                 </Form.Control.Feedback>
               </Form.Group>
             </Col>
-
-            <Col md={4}>
+          </Row>
+          <Row>
+            <Col md={6}>
               <Form.Group controlId="formCity">
                 <Form.Label>City</Form.Label>
                 <Form.Control
@@ -276,10 +237,8 @@ const PersonalDetails = () => {
                 </Form.Control.Feedback>
               </Form.Group>
             </Col>
-          </Row>
 
-          <Row>
-            <Col md={4}>
+            <Col md={6}>
               <Form.Group controlId="formZipCode">
                 <Form.Label>Zip Code</Form.Label>
                 <Form.Control
@@ -296,8 +255,10 @@ const PersonalDetails = () => {
                 </Form.Control.Feedback>
               </Form.Group>
             </Col>
+          </Row>
 
-            <Col md={4}>
+          <Row>
+            <Col md={6}>
               <Form.Group controlId="formAddress">
                 <Form.Label>Address</Form.Label>
                 <Form.Control
@@ -314,8 +275,7 @@ const PersonalDetails = () => {
                 </Form.Control.Feedback>
               </Form.Group>
             </Col>
-
-            <Col md={4}>
+            <Col md={6}>
               <Form.Group controlId="formIdProofType">
                 <Form.Label>ID Proof Type</Form.Label>
                 <Form.Control
@@ -336,16 +296,14 @@ const PersonalDetails = () => {
                   {errors.idProofType}
                 </Form.Control.Feedback>
               </Form.Group>
-            </Col>
-          </Row>
-
-          <Row>
-            <Col md={4}>
-              <Form.Group controlId="formIdProofFile">
+              <Form.Group controlId="formIdProofNum">
                 <Form.Label>ID Proof Number</Form.Label>
                 <Form.Control
-                  type="num"
+                  type="text"
+                  placeholder="Enter ID Proof Number"
                   name="idProofNum"
+                  value={formData.idProofNum}
+                  onChange={handleChange}
                   isInvalid={!!errors.idProofNum}
                   style={{ marginTop: "5px", marginBottom: "15px" }}
                 />
@@ -355,7 +313,7 @@ const PersonalDetails = () => {
               </Form.Group>
             </Col>
           </Row>
-          
+
           <button
             type="button"
             className="cancel-button"
