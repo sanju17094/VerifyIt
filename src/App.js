@@ -6,7 +6,9 @@ import ProfessionalDetails from './Forms/ProfessionalDetails';
 import EducationalDetails from './Forms/EducationalDetails';
 import PreviewAll from './Forms/PreviewAll';
 import Documents from './Forms/Documents';
+import Home from './components/Home'
 // import Login from './Login/Signup/Login';
+
 
 function App() {
   return (
@@ -19,6 +21,7 @@ function App() {
           <Route path="documents" element={<Documents />} />
           <Route path="educational_details" element={<EducationalDetails />} />
           <Route path="preview_all" element={<PreviewAll />} />
+          <Route path="home" element={<Home />}/>
         </Route>
       </Routes>
     </Router>
