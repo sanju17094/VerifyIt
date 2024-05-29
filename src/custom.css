@@ -1,0 +1,36 @@
+
+@media (min-width: 1200px) {
+    .sgn{
+        max-width: 460px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .h3, h3 {
+        font-size: 1.75rem;
+        margin-bottom: 31px;
+        color:#01052e;
+    }
+}
+
+.btn{
+    margin-left: 130px;
+    width: 171px;
+    height: 39px;
+    background-color: #01052e;
+    border-color: #01052e;
+}
+
+
+.alrext p {
+    margin-left: 74px;
+}
+
+
+button.submit-button {
+    margin-left: 20px;
+}
+
+.dropdown-menu.show {
+    margin-left: -85px;
+}

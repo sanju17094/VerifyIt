@@ -1,182 +1,90 @@
-import React, { useEffect } from 'react';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
+import React, { useState } from 'react';
+import { Form, Button, Container } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
-import { css } from '@emotion/react';
-import { ClipLoader } from 'react-spinners';
-// import Swal from 'sweetalert2';
-import { useNavigate } from 'react-router-dom';
-// import logoImage from '../../src/Khelo Indore Logo/Group 88.png';
-import './Login.css';
-// import { API_URL } from '../ApiUrl';
+import { useNavigate, Link } from 'react-router-dom';
+import '../../../src/custom.css';
 
-function Loginadmin() {
+function LoginPage() {
+  const [identifier, setIdentifier] = useState(''); 
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      navigate('/dashboard');
+  const handleIdentifierChange = (e) => setIdentifier(e.target.value);
+  const handlePasswordChange = (e) => setPassword(e.target.value);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError(''); 
+
+    const data = identifier.includes('@')
+      ? { email: identifier, password }
+      : { mobile: identifier, password };
+
+    try {
+      const response = await axios.post('http://localhost:8000/api/v1/Verifyit/login/password', data);
+      console.log('Login successful:', response.data);
+
+      const authToken = response.data.token || '';
+      localStorage.setItem('token', authToken);
+      localStorage.setItem('user', JSON.stringify({
+  first_name: response.data.first_name,
+  last_name: response.data.last_name
+}));
+
+      navigate('/mainlayout');
+    } catch (error) {
+      console.error('There was an error logging in:', error.response || error.message);
+      if (error.response && error.response.data && error.response.data.message) {
+        setError(error.response.data.message);
+      } else {
+        setError('Login failed. Please try again.');
+      }
     }
-  }, []);
-
-  const validationSchema = Yup.object().shape({
-    mobile: Yup.string()
-      .matches(/^\d{10}$/, 'Mobile number must be exactly 10 digits')
-      .test('is-correct-number', 'Incorrect mobile number', function (value) {
-        return value === '9999999999';
-      })
-      .required('Mobile number is required'),
-    password: Yup.string()
-      .required('Password is required')
-      .matches(/^admin$/, 'Incorrect password'),
-    role: Yup.string().required('Role is required'),
-  });
-
-  const formik = useFormik({
-    initialValues: {
-      mobile: '',
-      password: '',
-      role: '',
-    },
-    validationSchema: validationSchema,
-    onSubmit: (values, { setSubmitting }) => {
-      setSubmitting(true);
-      if (values.password === 'admin') {
-        // handleApi(values, setSubmitting);
-      } else {
-        // Swal.fire({
-        //   title: 'Incorrect Password',
-        //   text: 'Please enter the correct password to log in',
-        //   icon: 'error',
-        // });
-        setSubmitting(false);
-      }
-    },
-  });
-
-  // const handleApi = (formData, setSubmitting) => {
-  //   axios
-  //     .post(`${API_URL}/user/login`, {
-  //       mobile: formData.mobile,
-  //       password: formData.password,
-  //     })
-  //     .then((response) => {
-  //       localStorage.setItem('token', JSON.stringify(response.data.token));
-  //       switch (formData.role) {
-  //         case 'admin':
-  //           navigate('/dashboard');
-  //           break;
-  //         case 'venue_admin':
-  //           navigate('/venue-admin-dashboard');
-  //           break;
-  //         case 'coach':
-  //           navigate('/coach-dashboard');
-  //           break;
-  //         default:
-  //           navigate('/dashboard');
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.log('Invalid mobile number or password');
-  //       console.log(error);
-  //       setSubmitting(false);
-  //     });
-  // };
-
-  const override = css`
-    display: block;
-    margin: 0 auto;
-  `;
-
-  document.addEventListener("DOMContentLoaded", function () {
-    const selectElement = document.getElementById("roleSelect");
-
-    selectElement.addEventListener("change", function () {
-      if (selectElement.value) {
-        selectElement.style.backgroundColor = "orange";
-      } else {
-        selectElement.style.backgroundColor = "white"; // Reset to default
-      }
-    });
-  });
-
+  };
 
   return (
-    <div className="con">
-      <div className="row justify-content-center">
-        <div className="col-md-6 col-10">
-          <div className="card mt-5">
-            <div className="card-body">
-              {/* <img src={logoImage} alt="Logo" className="logo-image" style={{ maxWidth: '150px' }} /> */}
-              <form onSubmit={formik.handleSubmit}>
-              <div className="form-group">
-                  <label htmlFor="role" style={{ fontWeight: 'bold' }}>Select Role</label>
-                  <div className="select-container">
-                    <select
-                      id="roleSelect"
-                      name="role"
-                      className="form-control"
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      value={formik.values.role}
-                    >
-                      <option value="">Select Role</option>
-                      <option value="admin">Super Admin</option>
-                      <option value="venue_admin">Venue Admin</option>
-                      <option value="coach">Coach</option>
-                    </select>
-                    <i className="fa fa-chevron-down select-icon"></i>
-                  </div>
-                  {formik.touched.role && formik.errors.role ? (
-                    <div className="text-danger">{formik.errors.role}</div>
-                  ) : null}
-                </div>
-                <div className="form-group">
-                  <label htmlFor="mobile" style={{ fontWeight: 'bold' }}>Mobile Number</label>
-                  <input
-                    id="mobile"
-                    name="mobile"
-                    type="text"
-                    maxLength={10}
-                    className="form-control"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.mobile}
-                  />
-                  {formik.touched.mobile && formik.errors.mobile ? (
-                    <div className="text-danger">{formik.errors.mobile}</div>
-                  ) : null}
-                </div>
-                <div className="form-group">
-                  <label htmlFor="password" style={{ fontWeight: 'bold' }}>Password</label>
-                  <input
-                    id="password"
-                    name="password"
-                    type="password"
-                    className="form-control"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.password}
-                  />
-                  {formik.touched.password && formik.errors.password ? (
-                    <div className="text-danger">{formik.errors.password}</div>
-                  ) : null}
-                </div>
-                
-                <div className="spinner">
-                <button type="submit" className="btn-login">Login
-                  <ClipLoader color={"#FFFFFF"} loading={formik.isSubmitting} css={override} size={20} />
-                  </button>
-                </div>
+    <Container className=" sgn mt-5">
+      <h3>Login</h3>
+      <Form onSubmit={handleSubmit}>
+        <Form.Group controlId="identifier" className="mb-3">
+          <Form.Label>Email or Mobile Number</Form.Label>
+          <Form.Control
+            type="text"
+            value={identifier}
+            onChange={handleIdentifierChange}
+            isInvalid={!!error}
+            placeholder="Enter Email Address or Mobile Number"
+            required
+          />
+        </Form.Group>
+        <Form.Group controlId="password" className="mb-3">
+          <Form.Label>Password</Form.Label>
+          <Form.Control
+            type="password"
+            value={password}
+            onChange={handlePasswordChange}
+            isInvalid={!!error}
+            placeholder="Enter Password"
+            required
+          />
+          <Form.Control.Feedback type="invalid">
+            {error}
+          </Form.Control.Feedback>
+        </Form.Group>
+        <Button variant="primary" type="submit">
+          Login
+        </Button>
+      </Form>
+      <div className=" alrext mt-3">
+      <p>Already have account? <Link to="/" style={{ color: '#01052e' }}>signup</Link>.</p>
 
-              </form>
-            </div>
-          </div>
-        </div>
       </div>
-    </div>
+    </Container>
   );
 }
 
-export default Loginadmin;
+export default LoginPage;
+
+
