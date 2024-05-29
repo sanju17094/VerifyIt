@@ -10,8 +10,10 @@
   .custom-brand {
     font-size: 1.5rem;
     font-weight: bold;
-    color: #343a40; /* Dark gray color */
+    color: #060606; 
+    font-family: fangsong !important;
   }  
+  
   /* Additional padding for Navbar collapse */
   #basic-navbar-nav {
     padding: 10px;
