@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import '../../../src/custom.css';
-
+import { jwtDecode } from 'jwt-decode';
 function LoginPage() {
   const [identifier, setIdentifier] = useState(''); 
   const [password, setPassword] = useState('');
@@ -28,12 +28,17 @@ function LoginPage() {
 
       const authToken = response.data.token || '';
       localStorage.setItem('token', authToken);
-      localStorage.setItem('user', JSON.stringify({
-  first_name: response.data.first_name,
-  last_name: response.data.last_name
-}));
+      const decoded = jwtDecode(authToken);
 
-      navigate('/mainlayout');
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          first_name: decoded.first_name,
+          last_name: decoded.last_name,
+        })
+      );
+
+      navigate('/home');
     } catch (error) {
       console.error('There was an error logging in:', error.response || error.message);
       if (error.response && error.response.data && error.response.data.message) {
@@ -78,7 +83,7 @@ function LoginPage() {
         </Button>
       </Form>
       <div className=" alrext mt-3">
-      <p>Already have account? <Link to="/" style={{ color: '#01052e' }}>signup</Link>.</p>
+      <p>Already have account? <Link to="/signup" style={{ color: '#01052e' }}>signup</Link>.</p>
 
       </div>
     </Container>

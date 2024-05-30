@@ -38,12 +38,14 @@ const PersonalDetails = () => {
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
+    
     const { name, value } = e.target;
+    console.log("id proof ka data",value)
     setFormData({
       ...formData,
       [name]: value,
     });
-
+   
     // Clear the validation error for the field when it's being filled
     setErrors({
       ...errors,
@@ -51,9 +53,31 @@ const PersonalDetails = () => {
     });
   };
 
-  const handleNext = () => {
-    navigate('/professional_details');
-  };
+let index;
+const sequenceArray = JSON.parse(localStorage.getItem("sequenceArrayData"));
+const storedMapArray = JSON.parse(localStorage.getItem("map1"));
+const map1 = new Map(storedMapArray);
+console.log("map1 ka data", map1);
+if (Array.isArray(sequenceArray)) {
+  index = sequenceArray.indexOf("Personal Details");
+} else {
+  console.error("sequenceArrayData is not a valid array");
+}
+console.log("index of Personal Details:", index);
+
+const handleNext = () => {
+  const documentUpload = JSON.parse(localStorage.getItem('documentUpload'));
+  if(!documentUpload.includes('profile')){
+    documentUpload.push('profile');
+    documentUpload.push(formData.idProofType);
+    localStorage.setItem('documentUpload', JSON.stringify(documentUpload));
+  }
+  const nextPage = sequenceArray[index + 1];
+  console.log("nextPage ki value", nextPage);
+  const link = map1.get(nextPage);
+  console.log("link next page ki", link);
+  navigate(`/${link}`);
+};
 
   return (
     <>
@@ -130,7 +154,11 @@ const PersonalDetails = () => {
                     name="gender"
                     value={formData.gender}
                     onChange={handleChange}
-                    style={{ height: "auto", marginTop: "5px", marginBottom: "15px" }}
+                    style={{
+                      height: "auto",
+                      marginTop: "5px",
+                      marginBottom: "15px",
+                    }}
                   >
                     <option value="">Select Gender</option>
                     <option value="male">Male</option>
@@ -291,6 +319,7 @@ const PersonalDetails = () => {
                   <option value="pan_card">PAN Card</option>
                   <option value="voter_id">Voter ID</option>
                   <option value="passport">Passport</option>
+                  <option value="licence">Licence</option>
                 </Form.Control>
                 <Form.Control.Feedback type="invalid">
                   {errors.idProofType}
@@ -314,17 +343,16 @@ const PersonalDetails = () => {
             </Col>
           </Row>
 
-          <button
-            type="button"
-            className="cancel-button"
-          >
-            Go Back
-          </button>
-          <button
-            type="button"
-            className="submit-button"
-            onClick={handleNext}
-          >
+          {index !== 0 && (
+            <button
+              type="button"
+              className="cancel-button"
+              onClick={() => navigate(-1)}
+            >
+              Go Back
+            </button>
+          )}
+          <button type="button" className="submit-button" onClick={handleNext}>
             Save and Next
           </button>
         </Form>

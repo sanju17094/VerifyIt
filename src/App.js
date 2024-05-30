@@ -13,6 +13,8 @@ import PreviewAll from './Forms/PreviewAll';
 import SignupForm from '../src/Login/Signup/signup';
 import OTPPage from '../src/Login/Signup/OTPPage';
 import LoginPage from '../src/Login/Signup/Login';
+import Home from '../src/Forms/Home'
+
 
 
 
@@ -21,10 +23,11 @@ function App() {
   return (
     <Router>
       <Routes>
-      <Route path="/" element={<SignupForm/>}/>
-      <Route path="/otppage" element={<OTPPage />} />
       <Route path="/loginpage" element={<LoginPage/>}/>
-      <Route path="/mainlayout" element={<Mainlayout />}>
+      <Route path="/signup" element={<SignupForm/>}/>
+      <Route path="/otppage" element={<OTPPage />} />
+      <Route path="/" element={<Mainlayout />}>
+          <Route path="home" element={<Home />} />
           <Route path="personal_details" element={<PersonalDetails />} />
           <Route path="professional_details" element={<ProfessionalDetails />} />
           <Route path="educational_details" element={<EducationalDetails />} />

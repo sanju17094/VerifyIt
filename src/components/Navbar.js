@@ -20,7 +20,7 @@ const Header = () => {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem('token2');
+    localStorage.removeItem('token');
     localStorage.removeItem('user');
     navigate('/loginpage'); 
   };
@@ -29,7 +29,7 @@ const Header = () => {
     <>
       <Navbar bg="light" expand="lg" className="custom-navbar">
         <Container fluid>
-          <Navbar.Brand href="#home" className="custom-brand">
+          <Navbar.Brand href="/home" className="custom-brand">
             <img
               src={logo}
               width="30"
@@ -47,7 +47,7 @@ const Header = () => {
               >
                 <NavDropdown.Item href="#profile">
                   <FontAwesomeIcon icon={faUser} className="me-2" />
-                  {user.first_name} {user.last_name}
+                  {user.first_name} 
                 </NavDropdown.Item>
                 <NavDropdown.Divider />
                 <NavDropdown.Item href="#settings">
