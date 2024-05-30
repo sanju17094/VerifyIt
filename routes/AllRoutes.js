@@ -54,5 +54,19 @@ router.post(
     uploadFile
   );
 
+//sequecing
+const {
+  updateSquence,
+  fetchSequence,
+} = require("../controllers/SequencingController");
+router.post("/sequencing/update", updateSquence);
+router.get("/sequencing/fetch", fetchSequence);
 
+//user Sequence
+const {
+  UserSquence,
+  setSequenceUser,
+} = require("../controllers/SequencingController");
+router.get("/user-sequence/fetch/:id", UserSquence);
+router.post("/user-sequence/set/:id", setSequenceUser);
 module.exports = router;

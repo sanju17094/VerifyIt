@@ -2,9 +2,10 @@ const User = require("../models/UserModel");
 const ProfessionalDetails = require("../models/ProfessionaldetailsModel");
 
 exports.addProfessionalDetails = async (req, res) => {
-  const { details } = req.body;
+  
+  const { user_id, details } = req.body;
 
-  const user_id = "664cd36d563acb8deb2a9a16"; // Hardcoded user ID
+  // const user_id = "664cd36d563acb8deb2a9a16"; // Hardcoded user ID
 
   try {
     const user = await User.findById(user_id);

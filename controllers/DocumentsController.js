@@ -13,7 +13,8 @@ exports.UploadDocuments = async (req, res) => {
     }
 
     // Hardcoded user_id
-    const user_id = "664cd36d563acb8deb2a9a16";
+    // const user_id = "664cd36d563acb8deb2a9a16";
+    const {user_id}=req.body;
 
     // Check if documents already exist for the user
     const existingDocuments = await Documents.findOne({ user_id: user_id });

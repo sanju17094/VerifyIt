@@ -2,7 +2,7 @@ const PersonalDetails = require('../models/PersonlaDetailsModel');
 const User = require('../models/UserModel');
 
 exports.createPersonalDetails = async (req, res) => {
-  const {
+  const {user_id,
     gender,
     dob,
     location,
@@ -37,7 +37,7 @@ exports.createPersonalDetails = async (req, res) => {
     });
   }
 
-  const user_id = "664cd36d563acb8deb2a9a16";
+
   try {
     const exist = await PersonalDetails.findOne({ user_id: user_id });
     let data;

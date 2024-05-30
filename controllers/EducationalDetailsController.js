@@ -7,8 +7,8 @@ exports.addEducationDetails = async (req, res) => {
   try {
     console.log("Request body:", req.body);
 
-    const user_id = "664cd36d563acb8deb2a9a16";
-    const { education } = req.body;
+  
+    const { education,user_id } = req.body;
 
     console.log("Education data:", education);
 

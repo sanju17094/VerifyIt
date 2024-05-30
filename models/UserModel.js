@@ -31,6 +31,10 @@ const userSchema = new mongoose.Schema(
       type:String,
       default:""
     },
+    sequence:{
+      type:[String],
+      default:null
+    },
     personal_details: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "PersonalDetails",
