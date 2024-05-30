@@ -14,37 +14,67 @@
 .dropdown-menu {
   --bs-dropdown-link-active-bg:rgb(255, 95, 21) !important;
 } 
-
-.sidelogo_green{
-  background-color:rgb(2, 144, 52);
-}
-.sidelogo_red{
-  background-color: rgb(198, 0, 0);
-}
-.sidelogo_dark{
-  background-color: rgb(20, 16, 53);
-}
-.sidelogo_white{
-  background-color: rgb(244, 243, 255);
+/* Sidebar and sidelogos color combinations */
+/* Ensure buttons have consistent size and appearance */
+.theme-btn {
+  width: 150px; /* Set a uniform width for all buttons */
+  height: 50px; /* Set a uniform height for all buttons */
+  margin: 5px; /* Add some margin for spacing */
 }
 
+/* Hover effects */
+.theme-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
 
+/* Dark Blue button specific styles */
+.btn-dark-blue {
+  background-color: #0d1b2a !important; /* Dark blue color */
+  color: white !important; /* Ensure the text color is white */
+}
 
+/* Light button hover effect */
+.btn-light:hover {
+  background-color: #000000 !important; /* Light sky blue */
+  color: #0c4a6e !important; /* Darker text color */
+}
 
+/* Sidebar and Header specific styles based on theme color */
+.sidelogo_green, .Header_green {
+  background-color: rgb(5, 53, 22);
+}
+
+.sidelogo_red, .Header_red {
+  background-color: rgb(97, 12, 12);
+}
+
+.sidelogo_black, .Header_black {
+  background-color: rgb(4, 38, 58);
+}
+
+.sidelogo_white, .Header_white {
+  background-color: rgb(0, 0, 0);
+}
+
+.SideBar_green {
+  background-color: rgb(25, 86, 23) !important;
+}
+
+.SideBar_red {
+  background-color: rgb(141, 32, 32) !important;
+}
+
+.SideBar_black {
+  background-color: rgb(18, 46, 77) !important;
+}
+
+.SideBar_white {
+  background-color: rgb(0, 0, 0) !important;
+}
+
+/* //selected */
 .ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected {
-    background-color: rgb(113, 54, 239)!important; 
-}
-
-.SideBar_green{
-  background-color: rgb(36, 162, 31)!important;
-}
-.SideBar_red{
-  background-color: rgb(222, 32, 32)!important;
-}
-.SideBar_dark{
-background-color: rgb(20, 16, 53)!important;
-}
-.SideBar_white{
-background-color: rgb(211, 211, 211)!important;
-
+  background-color: rgb(255, 255, 255) !important;
+  color: rgb(0, 0, 0);
 }

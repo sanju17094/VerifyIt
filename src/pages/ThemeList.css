@@ -1,0 +1,24 @@
+/* Ensure buttons have consistent size and appearance */
+.theme-btn {
+  width: 150px; /* Set a uniform width for all buttons */
+  height: 50px; /* Set a uniform height for all buttons */
+  margin: 5px; /* Add some margin for spacing */
+}
+
+/* Hover effects */
+.theme-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Dark Blue button specific styles */
+.btn-dark-blue {
+  background-color: #0d1b2a !important; /* Dark blue color */
+  color: white !important; /* Ensure the text color is white */
+}
+
+/* Light button hover effect */
+.btn-light:hover {
+  background-color: #e0f2fe !important; /* Light sky blue */
+  color: #0c4a6e !important; /* Darker text color */
+}

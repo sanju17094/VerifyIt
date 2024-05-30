@@ -1,29 +1,21 @@
 import React, { useState } from "react";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
-import {
-  AiOutlineDashboard,
-} from "react-icons/ai";
-import { RiCouponLine } from "react-icons/ri";
-import { RiUserLine } from 'react-icons/ri';
-
-import { FaCalendarAlt, FaQuestionCircle } from 'react-icons/fa';
+import { AiOutlineDashboard } from "react-icons/ai";
+import { RiCouponLine, RiUserLine } from "react-icons/ri";
+import { FaCalendarAlt, FaQuestionCircle } from "react-icons/fa";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Link } from "react-router-dom";
-import { Outlet } from "react-router-dom";
-import { LogoutOutlined } from '@ant-design/icons';
-
+import { Link, Outlet, useNavigate } from "react-router-dom";
+import { LogoutOutlined } from "@ant-design/icons";
 import { BiCategoryAlt } from "react-icons/bi";
 import { Layout, Menu, theme } from "antd";
-import { useNavigate } from "react-router-dom";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExampleIcon, faUser } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
 import logoImage from "../Khelo Indore Logo/Group 86.png";
-import '../../src/MainLayout.css'
+import "../../src/MainLayout.css";
 import { useSelector } from "react-redux";
 
 const { Header, Sider, Content, Footer } = Layout;
-
 
 const MainLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -33,11 +25,10 @@ const MainLayout = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    navigate('/');
+    localStorage.removeItem("token");
+    navigate("/");
   };
   const themeColor = useSelector((state) => state.themeColor.changeColor);
-  
 
   return (
     <Layout>
@@ -72,22 +63,20 @@ const MainLayout = () => {
               label: "Dashboard",
             },
             {
-              key: "users",
+              key: "workflow",
               icon: <RiUserLine className="fs-4" />,
-              label: "Users",
+              label: "Workflow Management",
             },
-
             {
-              key: "categories",
+              key: "theme",
               icon: <BiCategoryAlt className="fs-4" />,
-              label: "Categories",
+              label: "Theme",
             },
             {
-              key: "venues",
+              key: "userlist",
               icon: <RiCouponLine className="fs-4" />,
-              label: "Venues",
+              label: "User List",
             },
-
             {
               key: "enquiries",
               icon: <FaQuestionCircle className="fs-4" />,
@@ -98,10 +87,9 @@ const MainLayout = () => {
       </Sider>
       <Layout className="site-layout">
         <Header
-          className="d-flex justify-content-between ps-1 pe-5"
+          className={`Header_${themeColor} d-flex justify-content-between ps-1 pe-5`}
           style={{
             padding: 0,
-            background: colorBgContainer,
           }}
         >
           {React.createElement(
@@ -112,10 +100,7 @@ const MainLayout = () => {
             }
           )}
           <div className="d-flex gap-4 align-items-center">
-            {}
-
             <div className="d-flex gap-3 align-items-center dropdown">
-              {}
               <div
                 role="button"
                 id="dropdownMenuLink"
@@ -139,9 +124,6 @@ const MainLayout = () => {
                 </h5>
               </div>
               <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <li>
-                  {}
-                </li>
                 <li>
                   <button
                     className="dropdown-item py-1 mb-1"
@@ -176,8 +158,6 @@ const MainLayout = () => {
           />
           <Outlet />
         </Content>
-
-        {}
       </Layout>
     </Layout>
   );
