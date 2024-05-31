@@ -12,29 +12,27 @@ exports.UploadDocuments = async (req, res) => {
       });
     }
 
-    // Hardcoded user_id
-    // const user_id = "664cd36d563acb8deb2a9a16";
+
     const {user_id}=req.body;
 
-    // Check if documents already exist for the user
+
     const existingDocuments = await Documents.findOne({ user_id: user_id });
 
     let savedDoc;
-    if (existingDocuments) {
-      // Update existing documents
+    if (existingDocuments) {     
+
       savedDoc = await Documents.findOneAndUpdate(
         { user_id: user_id },
         { $set: req.body },
-        { new: true } // Return the updated document
+        { new: true }
       );
     } else {
-      // Create new documents
+ 
       const uploadDocData = { ...req.body, user_id: user_id };
       const uploadDoc = new Documents(uploadDocData);
       savedDoc = await uploadDoc.save();
     }
 
-    // Update user's documents_details field with the document ID
     const user = await User.findById(user_id);
     if (!user) {
       return res.status(404).json({

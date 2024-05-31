@@ -82,7 +82,7 @@ exports.createPersonalDetails = async (req, res) => {
   } catch (error) {
     console.error(error.message);
     return res.status(500).json({
-      message: 'Server error',
+      message: error.message,
       success: false
     });
   }
@@ -132,7 +132,9 @@ exports.getPersonalDetailsById = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const personalDetails = await PersonalDetails.findById(id).populate('user_id');
+    const personalDetails = await PersonalDetails.findOne({
+      user_id: id,
+    })
 
     if (!personalDetails) {
       return res.status(404).json({

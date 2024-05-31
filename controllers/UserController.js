@@ -1,12 +1,20 @@
-const User = require('../models/UserModel')
-const signupVerifyOTP = require('../models/SignUpVerifyModel')
+const User = require("../models/UserModel");
+const signupVerifyOTP = require("../models/SignUpVerifyModel");
 const otpGenerator = require("otp-generator");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
 exports.signup = async (req, res) => {
   try {
-    const { first_name, last_name, role, mobile, email, password, confirm_password } = req.body;
+    const {
+      first_name,
+      last_name,
+      role,
+      mobile,
+      email,
+      password,
+      confirm_password,
+    } = req.body;
 
     // Collecting validation errors
     let validationErrors = [];
@@ -34,28 +42,28 @@ exports.signup = async (req, res) => {
     } else if (!/\S+@\S+\.\S+/.test(email)) {
       return res.status(400).json({
         success: false,
-        message: "invalid email format"
+        message: "invalid email format",
       });
     }
 
     if (password.length === 0) {
       return res.status(400).json({
         success: false,
-        message: "Please enter the password"
+        message: "Please enter the password",
       });
     }
 
     if (confirm_password.length === 0) {
       return res.status(400).json({
         success: false,
-        message: "Please enter confirm password"
+        message: "Please enter confirm password",
       });
     }
 
     if (password !== confirm_password) {
       return res.status(400).json({
         success: false,
-        message: "Password and confirm password not matched!"
+        message: "Password and confirm password not matched!",
       });
     }
 
@@ -69,13 +77,14 @@ exports.signup = async (req, res) => {
 
     // Check if user already exists by mobile or email
     const existingUser = await User.findOne({
-      $or: [{ mobile: mobile }, { email: email }]
+      $or: [{ mobile: mobile }, { email: email }],
     });
 
     if (existingUser) {
       return res.status(400).json({
         success: false,
-        message: "The User with this mobile number or email already exists. Try to login",
+        message:
+          "The User with this mobile number or email already exists. Try to login",
       });
     }
 
@@ -85,7 +94,10 @@ exports.signup = async (req, res) => {
       specialChars: false,
     });
 
-    const localCheck = await signupVerifyOTP.findOne({ mobile: mobile, email: email });
+    const localCheck = await signupVerifyOTP.findOne({
+      mobile: mobile,
+      email: email,
+    });
 
     if (localCheck) {
       await signupVerifyOTP.findOneAndUpdate(
@@ -146,16 +158,16 @@ exports.signupVerifyOTP = async (req, res) => {
     const token = req.header("Authorization").replace("Bearer ", "");
     const decoded = jwt.verify(token, process.env.JWT_AUTH);
     const mobile = decoded.mobile;
-    const email=decoded.email;
+    const email = decoded.email;
     const check = await signupVerifyOTP.findOne({
       mobile: mobile,
       email: email,
     });
-    if(!otp){
+    if (!otp) {
       return res.status(400).json({
-        success : false,
-        message : "please enter otp"
-      })
+        success: false,
+        message: "please enter otp",
+      });
     }
 
     if (!check) {
@@ -172,20 +184,18 @@ exports.signupVerifyOTP = async (req, res) => {
     }
     // // Hash password
     let hashedPassword = "";
-    
-      hashedPassword = await bcrypt.hash(check.password, 10);
-    
+
+    hashedPassword = await bcrypt.hash(check.password, 10);
 
     // Create user in the database
 
-      const newUser = await User.create({
-        first_name: check.first_name,
-        last_name: check.last_name,
-        mobile: check.mobile,
-        email: check.email,
-        password: hashedPassword,
-      });
-    
+    const newUser = await User.create({
+      first_name: check.first_name,
+      last_name: check.last_name,
+      mobile: check.mobile,
+      email: check.email,
+      password: hashedPassword,
+    });
 
     await signupVerifyOTP.findByIdAndDelete(check._id);
     return res.status(200).json({
@@ -202,21 +212,19 @@ exports.signupVerifyOTP = async (req, res) => {
 
 exports.loginWithPassword = async (req, res) => {
   try {
-    const { email,mobile, password } = req.body;
+    const { email, mobile, password } = req.body;
 
-    if ( (!email && !mobile) || !password) {
+    if ((!email && !mobile) || !password) {
       return res
         .status(400)
         .json({ success: false, message: "Please fill all fields" });
     }
     let user;
-    if(mobile){
+    if (mobile) {
       user = await User.findOne({ mobile });
+    } else {
+      user = await User.findOne({ email });
     }
-  else {
-    user = await User.findOne({ email });
-  }
-  
 
     if (!user) {
       return res
@@ -224,34 +232,31 @@ exports.loginWithPassword = async (req, res) => {
         .json({ success: false, message: "User not found" });
     }
 
+    const isMatch = bcrypt.compare(password, user.password);
 
-      const isMatch = bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Incorrect password" });
+    }
 
-      if (!isMatch) {
-        return res
-          .status(400)
-          .json({ success: false, message: "Incorrect password" });
-      }
+    const payload = {
+      userID: user._id,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      email: user.email,
+      mobile: user.mobile,
+    };
 
-      const payload = {
-        userID: user._id,
-        first_name: user.first_name,
-        last_name: user.last_name,
-        email: user.email,
-        mobile : user.mobile
-      
-      };
+    const token = jwt.sign(payload, process.env.JWT_AUTH, {
+      expiresIn: "5d",
+    });
 
-      const token = jwt.sign(payload, process.env.JWT_AUTH, {
-        expiresIn: "5d",
-      });
-
-      res.status(200).json({
-        success: true,
-        message: "Logged in successfully",
-        token: token,
-      });
-   
+    res.status(200).json({
+      success: true,
+      message: "Logged in successfully",
+      token: token,
+    });
   } catch (error) {
     res
       .status(500)
@@ -282,26 +287,22 @@ exports.loginUserWithMobile = async (req, res) => {
       specialChars: false,
     });
     const checkUser = await User.findOne({ mobile });
-   
 
-
-    if (!checkUser ) {
+    if (!checkUser) {
       return res.status(400).json({
         success: false,
         message: "This user is not found in database",
       });
-    
     }
 
-      const data = await User.findOneAndUpdate(
-        { mobile },
-        {
-          last_login: Date.now(),
-          otp: 123456,
-        },
-        { new: true }
-      );
-    
+    const data = await User.findOneAndUpdate(
+      { mobile },
+      {
+        last_login: Date.now(),
+        otp: 123456,
+      },
+      { new: true }
+    );
 
     const payload = {
       mobile: mobile,
@@ -352,17 +353,14 @@ exports.loginCheckOTP = async (req, res) => {
     }
     const checkUser = await User.findOne({ mobile });
 
-
-    if (!checkUser ) {
+    if (!checkUser) {
       return res.status(400).json({
         success: false,
         message: "This account is not found",
       });
     }
 
-    if (
-      checkUser && checkUser.otp !== otp
-    ) {
+    if (checkUser && checkUser.otp !== otp) {
       return res.status(400).json({
         success: false,
         message: "Otp not matched",
@@ -380,7 +378,6 @@ exports.loginCheckOTP = async (req, res) => {
       userID: check._id,
       first_name: check.first_name,
       last_name: check.last_name,
-    
     };
     const token = jwt.sign(payload, process.env.JWT_AUTH, { expiresIn: "5d" });
 
@@ -407,26 +404,47 @@ exports.getAllUserDetails = async (req, res) => {
     if (search) {
       query = {
         $or: [
-          { first_name: { $regex: search, $options: 'i' } },
-          { last_name: { $regex: search, $options: 'i' } },
-          { email: { $regex: search, $options: 'i' } },
-          { mobile: { $regex: search, $options: 'i' } }
-        ]
+          { first_name: { $regex: search, $options: "i" } },
+          { last_name: { $regex: search, $options: "i" } },
+          { email: { $regex: search, $options: "i" } },
+          { mobile: { $regex: search, $options: "i" } },
+        ],
       };
     }
 
     const users = await User.find(query)
-      .populate('personal_details')
-      .populate('educational_details')
-      .populate('professional_details')
-      .populate('documents_details');
-      
-
+      .populate("personal_details")
+      .populate("educational_details")
+      .populate("professional_details")
+      .populate("documents_details");
 
     return res.status(200).json({
       success: true,
       message: "Users retrieved successfully",
-      data: users
+      data: users,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
+
+exports.getUsers = async (req, res) => {
+  try {
+    const users = await User.find().select("first_name last_name mobile email");
+    if (!users.length) {
+      return res.status(400).json({
+        success: false,
+        message: "No users found",
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Users retrieved successfully",
+      data: users,
     });
   } catch (error) {
     console.error(error);
@@ -441,10 +459,10 @@ exports.getUserDetailsById = async (req, res) => {
   try {
     const { id } = req.params;
     const user = await User.findById(id)
-      .populate('personal_details')
-      .populate('educational_details')
-      .populate('professional_details')
-      .populate('documents_details');
+      .populate("personal_details")
+      .populate("educational_details")
+      .populate("professional_details")
+      .populate("documents_details");
 
     if (!user) {
       return res.status(404).json({
@@ -456,7 +474,7 @@ exports.getUserDetailsById = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "User retrieved successfully",
-      data: user
+      data: user,
     });
   } catch (error) {
     console.error(error);

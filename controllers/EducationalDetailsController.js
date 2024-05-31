@@ -127,7 +127,7 @@ exports.getEducationDetailsById = async (req, res)=>{
  const {id} = req.params;
 
  try{
-  const educationDetails = await EducationalDetails.findById(id).populate('user_id');
+  const educationDetails = await EducationalDetails.findOne({user_id:id})
 
   if(!educationDetails){
     return res.status(400).json({
@@ -139,7 +139,7 @@ exports.getEducationDetailsById = async (req, res)=>{
   return res.status(200).json({
     success: true,
     message: "Eduactional details fetched successfully",
-    educationDetails
+    data:educationDetails
   })
 
  }

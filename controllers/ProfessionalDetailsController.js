@@ -106,7 +106,7 @@ exports.getProfessionalDetailsById = async (req, res) => {
   const {id } = req.params;
 
   try{
-    const professionaldetails = await ProfessionalDetails.findById(id).populate('user_id');
+    const professionaldetails = await ProfessionalDetails.findOne({user_id:id});
 
     if(!professionaldetails){
       return res.status(400).json({
@@ -118,7 +118,7 @@ exports.getProfessionalDetailsById = async (req, res) => {
     return res.status(200).json({
       success : true,
       message : "Professional details fetched successfully",
-      professionaldetails
+      data:professionaldetails
     })
   }
   catch(error){
