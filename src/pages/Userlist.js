@@ -1,20 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Button, Table, Form, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import {
-  DownloadOutlined,
-  EditOutlined,
-  DeleteOutlined,
-  InfoOutlined,
-} from "@ant-design/icons";
+import { DownloadOutlined, FilterOutlined } from "@ant-design/icons";
 import Swal from "sweetalert2";
 import { CSVLink } from "react-csv";
-import { Pagination, Tooltip } from "antd";
-import { PDFDownloadLink, Document, Page, Text } from "@react-pdf/renderer";
-import "../../src/Userlist.css";
-import { API_URL } from "../ApiUrl";
-import { Popover, Input, Select } from "antd";
-import { FilterOutlined } from "@ant-design/icons";
+import { Pagination, Tooltip, Popover, Input, Select } from "antd";
+import { API_URL } from "../ApiUrl"; // Make sure this contains the correct API URL
+import "../../src/Userlist.css"; // Make sure this path is correct
 
 function UserList() {
   const [records, setRecords] = useState([]);
@@ -24,8 +16,6 @@ function UserList() {
   const [currentPage, setCurrentPage] = useState(1);
   const [csvData, setCsvData] = useState([]);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [detailData, setDetailData] = useState(null);
-  const [pdfContent, setPdfContent] = useState(null);
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
   useEffect(() => {
@@ -38,13 +28,13 @@ function UserList() {
 
   const fetchData = async () => {
     try {
-      const apiUrl = `http://localhost:8000/api/v1/Verifyit/user/get?page=${currentPage}&limit=${itemsPerPage}&search=${searchQuery}`;
+      const apiUrl = `https://11951e54e5139431c2affc92e6e27798.serveo.net/api/v1/Verifyit/usersList/get?page=${currentPage}&limit=${itemsPerPage}&search=${searchQuery}`;
       const response = await fetch(apiUrl);
       const result = await response.json();
 
       if (response.ok) {
-        console.log("ye data venue ki list ka hai...", result.data);
-        setRecords(result.data); // Update to setRecords(result.venue)
+        console.log("Fetched user data:", result.data);
+        setRecords(result.data); // Update the records with the user data
       } else {
         console.error("Failed to fetch data:", result.error);
       }
@@ -58,159 +48,25 @@ function UserList() {
 
   const formatCsvData = () => {
     const formattedData = records.map((row) => ({
-      "Venue Name": row.name,
-      Category: row.category,
-      Status: row.status ? "Active" : "Inactive",
+      "First Name": row.first_name,
+      "Last Name": row.last_name,
+      Email: row.email,
+      Mobile: row.mobile,
+      Status: row.status ? "Approved" : "Pending",
     }));
 
     setCsvData(formattedData);
   };
 
-  const generatePdfContent = (rowData) => (
-    <Document>
-      <Page>
-        <Text>Venue Name: {rowData.name}</Text>
-        <Text>Address: {rowData.address}</Text>
-        <Text>State: {rowData.state}</Text>
-        <Text>City: {rowData.city}</Text>
-        <Text>Zipcode: {rowData.zipcode}</Text>
-        <Text>Amenities: {rowData.amenities}</Text>
-        <Text>Activities: {rowData.activities}</Text>
-        <Text>Category: {rowData.category}</Text>
-      </Page>
-    </Document>
-  );
-
-  const handlePdf = async (row) => {
-    console.log("Info clicked for row:", row);
-    try {
-      // Fetch detail data
-      const detailResponse = await fetch(
-        `${API_URL}/user/fetch-user-by-id/${row._id}`
-      );
-      const detailResult = await detailResponse.json();
-      if (detailResponse.ok) {
-        setDetailData(detailResult.data);
-        setPdfContent(generatePdfContent(detailResult.data));
-      } else {
-        console.error("Failed to fetch detail data:", detailResult.error);
-      }
-    } catch (error) {
-      console.error("Error fetching detail data:", error);
-    }
-  };
-
   const handleColumnFilter = (columnName, value) => {
     setCurrentPage(1);
     setSearchQuery("");
-    if (columnName === "status") {
-      if (value === "all") {
-        fetchData();
-      } else {
-        const filteredData = records.filter((row) => {
-          if (value === "active") {
-            return row.status === true;
-          } else if (value === "inactive") {
-            return row.status === false;
-          }
-          return true;
-        });
-        setRecords(filteredData);
-      }
-    } else {
-      // Handle filtering for other columns if needed
-      const filteredData = records.filter((row) =>
-        row[columnName].toLowerCase().includes(value.toLowerCase())
-      );
-      setRecords(filteredData);
-    }
-
+    const filteredData = records.filter((row) => row[columnName].toLowerCase().includes(value.toLowerCase()));
+    setRecords(filteredData);
     setIsPopoverOpen(false); // Close popover after filtering
   };
 
   const { Option } = Select;
-
-  const handleInfo = async (row) => {
-    console.log("Info clicked for row:", row);
-    try {
-      // Fetch detail data
-      const detailResponse = await fetch(
-        `${API_URL}/venue/individual/${row._id}`
-      );
-      const detailResult = await detailResponse.json();
-      if (detailResponse.ok) {
-        setDetailData(detailResult.data);
-      } else {
-        console.error("Failed to fetch detail data:", detailResult.error);
-      }
-    } catch (error) {
-      console.error("Error fetching detail data:", error);
-    }
-  };
-
-  const handleEdit = async (venue) => {
-    console.log("Edit clicked for row:", venue);
-    try {
-      const response = await fetch(`${API_URL}/venue/individual/${venue._id}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: venue.name,
-          address: venue.address,
-          state: venue.state,
-          zipcode: venue.zipcode,
-          city: venue.city,
-          amenities: venue.amenities,
-          category: venue.category,
-          activities: venue.activities,
-          images: venue.images,
-          status: venue.status,
-        }),
-      });
-
-      if (response.ok) {
-        console.log("Category name updated successfully");
-      } else {
-        const responseData = await response.json();
-        console.error(
-          "Failed to update category name:",
-          responseData.message || "Unknown error"
-        );
-      }
-    } catch (error) {
-      console.error("Error updating category name:", error);
-    }
-  };
-
-  const handleDelete = async (row) => {
-    try {
-      const apiUrl = `${API_URL}/venue/delete/${row._id}`;
-
-      const response = await fetch(apiUrl, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (response.ok) {
-        Swal.fire("Deactivated!", "Venue has been Inactivate.", "success");
-        fetchData(); // Refresh data after deletion
-      } else {
-        console.error("Failed to delete venue:", response.statusText);
-        Swal.fire("Error", "Failed to delete venue.", "error");
-      }
-    } catch (error) {
-      console.error("Error deleting venue:", error);
-      Swal.fire(
-        "Error",
-        "An error occurred while deleting the venue.",
-        "error"
-      );
-    }
-  };
 
   const handleSearch = () => {
     setSearchQuery(searchText);
@@ -227,13 +83,11 @@ function UserList() {
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentVenues = records.slice(indexOfFirstItem, indexOfLastItem);
-
-
+  const currentUsers = records.slice(indexOfFirstItem, indexOfLastItem);
 
   return (
     <>
-      <h3 className="mb-4 title">Venues</h3>
+      <h3 className="mb-4 title">Users</h3>
       <div className="cnt">
         <Form.Group as={Row} className="mb-3">
           <Col sm={6}>
@@ -246,11 +100,11 @@ function UserList() {
             />
           </Col>
           <Col sm={6} className="d-flex justify-content-end">
-            <Link to="/venues/add">
-              <button className="add-button mr-2">Add Venue</button>
+            <Link to="/users/add">
+              <Button variant="primary" className="mr-2">Add User</Button>
             </Link>
-            <CSVLink data={csvData} filename={"venue_list.csv"}>
-              <button className="down-button">Download</button>
+            <CSVLink data={csvData} filename={"user_list.csv"}>
+              <Button variant="success">Download</Button>
             </CSVLink>
           </Col>
         </Form.Group>
@@ -259,17 +113,15 @@ function UserList() {
             <thead>
               <tr>
                 <th style={{ width: "7%" }}>S.No.</th>
-                <th style={{ width: "22%" }}>
-                   Name{" "}
+                <th style={{ width: "15%" }}>
+                  First Name
                   <Popover
                     placement="bottom"
-                    title="Filter by Venue Name"
+                    title="Filter by First Name"
                     content={
                       <Input
                         placeholder="Search..."
-                        onChange={(e) =>
-                          handleColumnFilter("name", e.target.value)
-                        }
+                        onChange={(e) => handleColumnFilter("first_name", e.target.value)}
                       />
                     }
                     trigger="click"
@@ -277,17 +129,15 @@ function UserList() {
                     <FilterOutlined style={{ cursor: "pointer" }} />
                   </Popover>
                 </th>
-                <th style={{ width: "22%" }}>
-                  Mobile{" "}
+                <th style={{ width: "15%" }}>
+                  Last Name
                   <Popover
                     placement="bottom"
-                    title="Filter by Category"
+                    title="Filter by Last Name"
                     content={
                       <Input
                         placeholder="Search..."
-                        onChange={(e) =>
-                          handleColumnFilter("category", e.target.value)
-                        }
+                        onChange={(e) => handleColumnFilter("last_name", e.target.value)}
                       />
                     }
                     trigger="click"
@@ -295,17 +145,31 @@ function UserList() {
                     <FilterOutlined style={{ cursor: "pointer" }} />
                   </Popover>
                 </th>
-                <th style={{ width: "22%" }}>
-                  Email{" "}
+                <th style={{ width: "20%" }}>
+                  Email
                   <Popover
                     placement="bottom"
-                    title="Filter by Address"
+                    title="Filter by Email"
                     content={
                       <Input
                         placeholder="Search..."
-                        onChange={(e) =>
-                          handleColumnFilter("address", e.target.value)
-                        }
+                        onChange={(e) => handleColumnFilter("email", e.target.value)}
+                      />
+                    }
+                    trigger="click"
+                  >
+                    <FilterOutlined style={{ cursor: "pointer" }} />
+                  </Popover>
+                </th>
+                <th style={{ width: "15%" }}>
+                  Mobile
+                  <Popover
+                    placement="bottom"
+                    title="Filter by Mobile"
+                    content={
+                      <Input
+                        placeholder="Search..."
+                        onChange={(e) => handleColumnFilter("mobile", e.target.value)}
                       />
                     }
                     trigger="click"
@@ -314,20 +178,18 @@ function UserList() {
                   </Popover>
                 </th>
                 <th style={{ width: "10%" }}>
-                  Status{" "}
+                  Status
                   <Popover
                     placement="bottom"
                     content={
                       <Select
                         placeholder="Select status"
-                        onChange={(value) =>
-                          handleColumnFilter("status", value)
-                        }
+                        onChange={(value) => handleColumnFilter("status", value)}
                         style={{ width: 190 }}
                       >
                         <Option value="all">All</Option>
-                        <Option value="active">Active</Option>
-                        <Option value="inactive">Inactive</Option>
+                        <Option value="active">Approved</Option>
+                        <Option value="inactive">Pending</Option>
                       </Select>
                     }
                     trigger="click"
@@ -335,44 +197,31 @@ function UserList() {
                     <FilterOutlined style={{ cursor: "pointer" }} />
                   </Popover>
                 </th>
-                <th style={{ width: "15%" }}>Action</th>
+                <th style={{ width: "18%" }}>Action</th>
               </tr>
             </thead>
             <tbody>
-              {currentVenues &&
-                currentVenues.map((user, index) => (
+              {currentUsers &&
+                currentUsers.map((user, index) => (
                   <tr key={user._id}>
                     <td>{index + 1 + indexOfFirstItem}</td>
-                    <td>{`${user.first_name} ${user.last_name}`}</td>
-                    <td>{user.mobile}</td>
+                    <td>{user.first_name}</td>
+                    <td>{user.last_name}</td>
                     <td>{user.email}</td>
+                    <td>{user.mobile}</td>
                     <td
                       style={{
                         color: user.status ? "#4fd104" : "#ff0000",
                         fontWeight: "bold",
                       }}
                     >
-                      {user.status ? "Active" : "Inactive"}
+                      {user.status ? "Approved" : "Pending"}
                     </td>
                     <td>
                       <div style={{ display: "flex" }}>
-                        
-                        <Link
-                          to={`/venues/edit/${user._id}`}
-                          style={{ marginRight: "5px" }}
-                        >
-                          <EditOutlined
-                            style={{
-                              fontSize: "20px",
-                              color: "#fcfcfa",
-                              borderRadius: "5px",
-                              padding: "5px",
-                              backgroundColor: "#3d9c06",
-                            }}
-                            onClick={() => handleEdit(user)}
-                          />
+                        <Link to="/fieldmanagement">
+                          <Button variant="success" className="view-more-button">View More</Button>
                         </Link>
-                        
                       </div>
                     </td>
                   </tr>
@@ -381,16 +230,16 @@ function UserList() {
           </Table>
         </div>
         <Pagination
-          pageSizeOptions={["5", "10", "20", "50"]} // Available page sizes
-          showSizeChanger={true} // Show the page size changer dropdown
-          showQuickJumper={true} // Show quick jumper
-          total={records.length} // Total number of items
-          pageSize={itemsPerPage} // Items per page
-          current={currentPage} // Current page
+          pageSizeOptions={["5", "10", "20", "50"]}
+          showSizeChanger
+          showQuickJumper
+          total={records.length}
+          pageSize={itemsPerPage}
+          current={currentPage}
           onChange={handlePagination}
           onShowSizeChange={(current, size) => {
-            setCurrentPage(1); // Reset to first page when changing page size
-            setItemsPerPage(size); // Update items per page
+            setCurrentPage(1);
+            setItemsPerPage(size);
           }}
         />
       </div>

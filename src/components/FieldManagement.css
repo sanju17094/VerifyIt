@@ -1,0 +1,54 @@
+
+
+.sidebar {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+  }
+  
+  .main-content {
+    padding: 20px;
+  }
+  
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  li {
+    margin-bottom: 10px;
+  }
+  
+  .btn-danger {
+    margin-top: 35%;
+  }
+
+  @media (min-width: 768px) {
+    .col-md-3 {
+        flex: 0 0 auto;
+        width: 25%;
+        height: 591px;
+    }
+}
+
+label.form-check-label {
+  margin: 15px;
+  margin-left: -9px;
+}
+
+  
+.form-check-input[type=checkbox] {
+  margin: 20px;
+}
+
+.dropdown, .dropdown-center, .dropend, .dropstart, .dropup, .dropup-center {
+    position: relative;
+    margin-left: 50px;
+}
+
+@media (min-width: 1200px) {
+  .h4, h4 {
+      font-size: 1.5rem;
+      margin-top: 10px;
+  }
+}
