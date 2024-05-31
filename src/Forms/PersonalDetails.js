@@ -4,6 +4,7 @@ import './FormStyle.css';
 import { useNavigate } from 'react-router-dom';
 import {jwtDecode} from 'jwt-decode';
 
+
 const PersonalDetails = () => {
   const navigate = useNavigate();
 
@@ -38,14 +39,12 @@ const PersonalDetails = () => {
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
-    
     const { name, value } = e.target;
-    console.log("id proof ka data",value)
     setFormData({
       ...formData,
       [name]: value,
     });
-   
+
     // Clear the validation error for the field when it's being filled
     setErrors({
       ...errors,
@@ -53,31 +52,48 @@ const PersonalDetails = () => {
     });
   };
 
-let index;
-const sequenceArray = JSON.parse(localStorage.getItem("sequenceArrayData"));
-const storedMapArray = JSON.parse(localStorage.getItem("map1"));
-const map1 = new Map(storedMapArray);
-console.log("map1 ka data", map1);
-if (Array.isArray(sequenceArray)) {
-  index = sequenceArray.indexOf("Personal Details");
-} else {
-  console.error("sequenceArrayData is not a valid array");
-}
-console.log("index of Personal Details:", index);
-
-const handleNext = () => {
-  const documentUpload = JSON.parse(localStorage.getItem('documentUpload'));
-  if(!documentUpload.includes('profile')){
-    documentUpload.push('profile');
-    documentUpload.push(formData.idProofType);
-    localStorage.setItem('documentUpload', JSON.stringify(documentUpload));
+  let index;
+  const sequenceArray = JSON.parse(localStorage.getItem("sequenceArrayData"));
+  const storedMapArray = JSON.parse(localStorage.getItem("map1"));
+  const map1 = new Map(storedMapArray);
+  if (Array.isArray(sequenceArray)) {
+    index = sequenceArray.indexOf("Personal Details");
+  } else {
+    console.error("sequenceArrayData is not a valid array");
   }
-  const nextPage = sequenceArray[index + 1];
-  console.log("nextPage ki value", nextPage);
-  const link = map1.get(nextPage);
-  console.log("link next page ki", link);
-  navigate(`/${link}`);
-};
+
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.dob) newErrors.dob = "Date of Birth is required.";
+    if (!formData.gender) newErrors.gender = "Gender is required.";
+    if (!formData.country) newErrors.country = "Country is required.";
+    if (!formData.state) newErrors.state = "State is required.";
+    if (!formData.city) newErrors.city = "City is required.";
+    if (!formData.zipcode) newErrors.zipcode = "Zip Code is required.";
+    if (!formData.address) newErrors.address = "Address is required.";
+    if (!formData.idProofType) newErrors.idProofType = "ID Proof Type is required.";
+    if (!formData.idProofNum) newErrors.idProofNum = "ID Proof Number is required.";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleNext = () => {
+    if (!validateForm()) {
+      return;
+    }
+
+    const documentUpload = JSON.parse(localStorage.getItem('documentUpload'));
+    if (!documentUpload.includes('profile')) {
+      documentUpload.push('profile');
+      documentUpload.push(formData.idProofType);
+      localStorage.setItem('documentUpload', JSON.stringify(documentUpload));
+    }
+
+    const nextPage = sequenceArray[index + 1];
+    const link = map1.get(nextPage);
+    navigate(`/${link}`);
+  };
 
   return (
     <>
@@ -133,7 +149,7 @@ const handleNext = () => {
           <Row>
             <Col md={6}>
               <Form.Group controlId="formDob">
-                <Form.Label>Date of Birth</Form.Label>
+                <Form.Label>Date of Birth<span className="text-danger">*</span></Form.Label>
                 <Form.Control
                   type="date"
                   placeholder="Select Date"
@@ -141,19 +157,26 @@ const handleNext = () => {
                   value={formData.dob}
                   onChange={handleChange}
                   style={{ marginTop: "5px", marginBottom: "15px" }}
+                  isInvalid={!!errors.dob}
+                  required
                 />
+                <Form.Control.Feedback type="invalid">
+                  {errors.dob}
+                </Form.Control.Feedback>
               </Form.Group>
             </Col>
 
             <Col md={6}>
               <Form.Group controlId="formGender">
-                <Form.Label>Gender</Form.Label>
+                <Form.Label>Gender<span className="text-danger">*</span></Form.Label>
                 <div className="custom-dropdown">
                   <Form.Control
                     as="select"
                     name="gender"
                     value={formData.gender}
                     onChange={handleChange}
+                    isInvalid={!!errors.gender}
+                    required
                     style={{
                       height: "auto",
                       marginTop: "5px",
@@ -167,6 +190,9 @@ const handleNext = () => {
                   </Form.Control>
                   <span className="dropdown-arrow">&#9662;</span>
                 </div>
+                <Form.Control.Feedback type="invalid">
+                  {errors.gender}
+                </Form.Control.Feedback>
               </Form.Group>
             </Col>
           </Row>
@@ -174,7 +200,7 @@ const handleNext = () => {
           <Row>
             <Col md={6}>
               <Form.Group controlId="formEmail">
-                <Form.Label>Email Address</Form.Label>
+                <Form.Label>Email Address<span className="text-danger">*</span></Form.Label>
                 <Form.Control
                   type="email"
                   placeholder="Enter Email"
@@ -214,7 +240,7 @@ const handleNext = () => {
           <Row>
             <Col md={6}>
               <Form.Group controlId="formCountry">
-                <Form.Label>Country</Form.Label>
+                <Form.Label>Country<span className="text-danger">*</span></Form.Label>
                 <Form.Control
                   type="text"
                   placeholder="Enter Country"
@@ -223,6 +249,7 @@ const handleNext = () => {
                   onChange={handleChange}
                   isInvalid={!!errors.country}
                   style={{ marginTop: "5px", marginBottom: "15px" }}
+                  required
                 />
                 <Form.Control.Feedback type="invalid">
                   {errors.country}
@@ -231,7 +258,7 @@ const handleNext = () => {
             </Col>
             <Col md={6}>
               <Form.Group controlId="formState">
-                <Form.Label>State</Form.Label>
+                <Form.Label>State<span className="text-danger">*</span></Form.Label>
                 <Form.Control
                   type="text"
                   placeholder="Enter State"
@@ -240,6 +267,7 @@ const handleNext = () => {
                   onChange={handleChange}
                   isInvalid={!!errors.state}
                   style={{ marginTop: "5px", marginBottom: "15px" }}
+                  required
                 />
                 <Form.Control.Feedback type="invalid">
                   {errors.state}
@@ -250,7 +278,7 @@ const handleNext = () => {
           <Row>
             <Col md={6}>
               <Form.Group controlId="formCity">
-                <Form.Label>City</Form.Label>
+                <Form.Label>City<span className="text-danger">*</span></Form.Label>
                 <Form.Control
                   type="text"
                   placeholder="Enter City"
@@ -259,6 +287,7 @@ const handleNext = () => {
                   onChange={handleChange}
                   isInvalid={!!errors.city}
                   style={{ marginTop: "5px", marginBottom: "15px" }}
+                  required
                 />
                 <Form.Control.Feedback type="invalid">
                   {errors.city}
@@ -268,7 +297,7 @@ const handleNext = () => {
 
             <Col md={6}>
               <Form.Group controlId="formZipCode">
-                <Form.Label>Zip Code</Form.Label>
+                <Form.Label>Zip Code<span className="text-danger">*</span></Form.Label>
                 <Form.Control
                   type="text"
                   placeholder="Enter Zip Code"
@@ -277,6 +306,7 @@ const handleNext = () => {
                   onChange={handleChange}
                   isInvalid={!!errors.zipcode}
                   style={{ marginTop: "5px", marginBottom: "15px" }}
+                  required
                 />
                 <Form.Control.Feedback type="invalid">
                   {errors.zipcode}
@@ -288,7 +318,7 @@ const handleNext = () => {
           <Row>
             <Col md={6}>
               <Form.Group controlId="formAddress">
-                <Form.Label>Address</Form.Label>
+                <Form.Label>Address<span className="text-danger">*</span></Form.Label>
                 <Form.Control
                   as="textarea"
                   placeholder="Enter Address"
@@ -297,6 +327,7 @@ const handleNext = () => {
                   onChange={handleChange}
                   isInvalid={!!errors.address}
                   style={{ marginTop: "5px", marginBottom: "15px" }}
+                  required
                 />
                 <Form.Control.Feedback type="invalid">
                   {errors.address}
@@ -305,7 +336,7 @@ const handleNext = () => {
             </Col>
             <Col md={6}>
               <Form.Group controlId="formIdProofType">
-                <Form.Label>ID Proof Type</Form.Label>
+                <Form.Label>ID Proof Type<span className="text-danger">*</span></Form.Label>
                 <Form.Control
                   as="select"
                   name="idProofType"
@@ -313,6 +344,7 @@ const handleNext = () => {
                   onChange={handleChange}
                   isInvalid={!!errors.idProofType}
                   style={{ marginTop: "5px", marginBottom: "15px" }}
+                  required
                 >
                   <option value="">Select ID Proof Type</option>
                   <option value="aadhar_card">Aadhar Card</option>
@@ -326,7 +358,7 @@ const handleNext = () => {
                 </Form.Control.Feedback>
               </Form.Group>
               <Form.Group controlId="formIdProofNum">
-                <Form.Label>ID Proof Number</Form.Label>
+                <Form.Label>ID Proof Number<span className="text-danger">*</span></Form.Label>
                 <Form.Control
                   type="text"
                   placeholder="Enter ID Proof Number"
@@ -335,6 +367,7 @@ const handleNext = () => {
                   onChange={handleChange}
                   isInvalid={!!errors.idProofNum}
                   style={{ marginTop: "5px", marginBottom: "15px" }}
+                  required
                 />
                 <Form.Control.Feedback type="invalid">
                   {errors.idProofNum}

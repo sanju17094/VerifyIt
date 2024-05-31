@@ -55,11 +55,7 @@ function Mainlayout() {
       } catch (error) {
         console.error("Error fetching sequence:", error);
       }
-      
-     
     }
-
-
       sequenceFetch();
 
   }, []);

@@ -136,6 +136,7 @@ const documentUpload = JSON.parse(localStorage.getItem('documentUpload'));
                     onChange={handleChange}
                     isInvalid={!!errors.highSchoolDocument}
                     style={{ marginTop: "5px", marginBottom: "15px" }}
+                    required
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.highSchoolDocument}
@@ -160,6 +161,7 @@ const documentUpload = JSON.parse(localStorage.getItem('documentUpload'));
                     onChange={handleChange}
                     isInvalid={!!errors.intermediateDocument}
                     style={{ marginTop: "5px", marginBottom: "15px" }}
+                    required
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.intermediateDocument}
@@ -184,6 +186,7 @@ const documentUpload = JSON.parse(localStorage.getItem('documentUpload'));
                     onChange={handleChange}
                     isInvalid={!!errors.graduateDocument}
                     style={{ marginTop: "5px", marginBottom: "15px" }}
+                    required
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.graduateDocument}
@@ -208,6 +211,7 @@ const documentUpload = JSON.parse(localStorage.getItem('documentUpload'));
                     onChange={handleChange}
                     isInvalid={!!errors.postGraduateDocument}
                     style={{ marginTop: "5px", marginBottom: "15px" }}
+                    required
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.postGraduateDocument}
@@ -232,6 +236,7 @@ const documentUpload = JSON.parse(localStorage.getItem('documentUpload'));
                     onChange={handleChange}
                     isInvalid={!!errors.aadharCard}
                     style={{ marginTop: "5px", marginBottom: "15px" }}
+                    required
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.aadharCard}
@@ -256,6 +261,7 @@ const documentUpload = JSON.parse(localStorage.getItem('documentUpload'));
                     onChange={handleChange}
                     isInvalid={!!errors.panCard}
                     style={{ marginTop: "5px", marginBottom: "15px" }}
+                    required
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.panCard}
@@ -280,6 +286,7 @@ const documentUpload = JSON.parse(localStorage.getItem('documentUpload'));
                     onChange={handleChange}
                     isInvalid={!!errors.licence}
                     style={{ marginTop: "5px", marginBottom: "15px" }}
+                    required
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.licence}
@@ -304,6 +311,7 @@ const documentUpload = JSON.parse(localStorage.getItem('documentUpload'));
                     onChange={handleChange}
                     isInvalid={!!errors.voterIdCard}
                     style={{ marginTop: "5px", marginBottom: "15px" }}
+                    required
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.voterIdCard}
@@ -328,6 +336,7 @@ const documentUpload = JSON.parse(localStorage.getItem('documentUpload'));
                     onChange={handleChange}
                     isInvalid={!!errors.voterIdCard}
                     style={{ marginTop: "5px", marginBottom: "15px" }}
+                    required
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.voterIdCard}
@@ -352,6 +361,7 @@ const documentUpload = JSON.parse(localStorage.getItem('documentUpload'));
                     onChange={handleChange}
                     isInvalid={!!errors.offerLetter1}
                     style={{ marginTop: "5px", marginBottom: "15px" }}
+                    required
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.offerLetter1}
@@ -424,6 +434,7 @@ const documentUpload = JSON.parse(localStorage.getItem('documentUpload'));
                     onChange={handleChange}
                     isInvalid={!!errors.profilePhoto}
                     style={{ marginTop: "5px", marginBottom: "15px" }}
+                    required
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.profilePhoto}

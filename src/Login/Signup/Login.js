@@ -38,7 +38,7 @@ function LoginPage() {
         })
       );
 
-      navigate('/home');
+      navigate('/');
     } catch (error) {
       console.error('There was an error logging in:', error.response || error.message);
       if (error.response && error.response.data && error.response.data.message) {

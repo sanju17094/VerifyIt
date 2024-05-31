@@ -32,6 +32,7 @@ const EducationDetailForm = ({ index, formData, handleChange, removeEducationDet
                             onChange={(e) => handleChange(e, index)}
                             isInvalid={!!errors[`program${index}`]}
                             style={{ marginTop: "5px", marginBottom: "15px" }}
+                            required
                         />
                         <Form.Control.Feedback type="invalid">
                             {errors[`program${index}`]}
@@ -49,6 +50,7 @@ const EducationDetailForm = ({ index, formData, handleChange, removeEducationDet
                             onChange={(e) => handleChange(e, index)}
                             isInvalid={!!errors[`schoolCollegeName${index}`]}
                             style={{ marginTop: "5px", marginBottom: "15px" }}
+                            required
                         />
                         <Form.Control.Feedback type="invalid">
                             {errors[`schoolCollegeName${index}`]}
@@ -68,6 +70,7 @@ const EducationDetailForm = ({ index, formData, handleChange, removeEducationDet
                             onChange={(e) => handleChange(e, index)}
                             isInvalid={!!errors[`boardUniversity${index}`]}
                             style={{ marginTop: "5px", marginBottom: "15px" }}
+                            required
                         />
                         <Form.Control.Feedback type="invalid">
                             {errors[`boardUniversity${index}`]}
@@ -77,7 +80,7 @@ const EducationDetailForm = ({ index, formData, handleChange, removeEducationDet
 
                 <Col md={6}>
                     <Form.Group controlId={`formBranchSpecialization${index}`}>
-                        <Form.Label>Branch/Specialization</Form.Label>
+                        <Form.Label>Branch/Specialization<span className="text-danger">*</span></Form.Label>
                         <Form.Control
                             type="text"
                             placeholder="Enter Branch/Specialization"
@@ -103,6 +106,7 @@ const EducationDetailForm = ({ index, formData, handleChange, removeEducationDet
                             onChange={(e) => handleChange(e, index)}
                             isInvalid={!!errors[`scoreType${index}`]}
                             style={{ marginTop: "5px", marginBottom: "15px" }}
+                            required
                         />
                         <Form.Control.Feedback type="invalid">
                             {errors[`scoreType${index}`]}
@@ -120,6 +124,7 @@ const EducationDetailForm = ({ index, formData, handleChange, removeEducationDet
                             onChange={(e) => handleChange(e, index)}
                             isInvalid={!!errors[`score${index}`]}
                             style={{ marginTop: "5px", marginBottom: "15px" }}
+                            required
                         />
                         <Form.Control.Feedback type="invalid">
                             {errors[`score${index}`]}
@@ -138,6 +143,7 @@ const EducationDetailForm = ({ index, formData, handleChange, removeEducationDet
                             onChange={(e) => handleChange(e, index)}
                             isInvalid={!!errors[`startDate${index}`]}
                             style={{ marginTop: "5px", marginBottom: "15px" }}
+                            required
                         />
                         <Form.Control.Feedback type="invalid">
                             {errors[`startDate${index}`]}
@@ -154,6 +160,7 @@ const EducationDetailForm = ({ index, formData, handleChange, removeEducationDet
                             onChange={(e) => handleChange(e, index)}
                             isInvalid={!!errors[`endDate${index}`]}
                             style={{ marginTop: "5px", marginBottom: "15px" }}
+                            required
                         />
                         <Form.Control.Feedback type="invalid">
                             {errors[`endDate${index}`]}

@@ -2,7 +2,7 @@
 
 
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, BrowserRouter } from 'react-router-dom';
 import Mainlayout from '../src/components/Mainlayout';
 import PersonalDetails from './Forms/PersonalDetails';
 import ProfessionalDetails from './Forms/ProfessionalDetails';
@@ -13,22 +13,24 @@ import PreviewAll from './Forms/PreviewAll';
 import SignupForm from '../src/Login/Signup/signup';
 import OTPPage from '../src/Login/Signup/OTPPage';
 import LoginPage from '../src/Login/Signup/Login';
-import Home from '../src/Forms/Home'
-
+import HomePage from '../src/Forms/Home'
+import ContactUsForm from './Forms/ContactUs';
 
 
 
 
 function App() {
   return (
-    <Router>
+    <BrowserRouter>
+ 
       <Routes>
       <Route path="/loginpage" element={<LoginPage/>}/>
       <Route path="/signup" element={<SignupForm/>}/>
       <Route path="/otppage" element={<OTPPage />} />
       <Route path="/" element={<Mainlayout />}>
-          <Route path="home" element={<Home />} />
+          <Route index element={<HomePage />} />
           <Route path="personal_details" element={<PersonalDetails />} />
+          <Route path="contact_us" element={<ContactUsForm/>}/> 
           <Route path="professional_details" element={<ProfessionalDetails />} />
           <Route path="educational_details" element={<EducationalDetails />} />
           <Route path="documents" element={<DocumentsDetails />} />
@@ -36,7 +38,8 @@ function App() {
       </Route>
 
       </Routes>
-    </Router>
+
+    </BrowserRouter>
   );
 }
 

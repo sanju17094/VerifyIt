@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { Container, Form} from 'react-bootstrap';
 import EducationDetailForm from './EducationalDetailsForm';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import './FormStyle.css';
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
@@ -13,6 +11,7 @@ const EducationalDetails = () => {
       program: "",
       school_college_name: "",
       board_university: "",
+      scoreType: "",
       score: "",
       start_date: "",
       end_date: "",
@@ -96,6 +95,7 @@ handleNext();
      program: "",
      school_college_name: "",
      board_university: "",
+     scoreType: "",
      score: "",
      start_date: "",
      end_date: "",

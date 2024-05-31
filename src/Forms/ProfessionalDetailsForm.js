@@ -29,6 +29,7 @@ const ProfessionalDetailsForm = ({ index, formData, handleChange, removeProfessi
               onChange={(e) => handleChange(e, index)}
               isInvalid={!!errors[`companyName${index}`]}
               style={{ marginTop: "5px", marginBottom: "15px" }}
+              required
             />
             <Form.Control.Feedback type="invalid">
               {errors[`companyName${index}`]}
@@ -47,6 +48,7 @@ const ProfessionalDetailsForm = ({ index, formData, handleChange, removeProfessi
               onChange={(e) => handleChange(e, index)}
               isInvalid={!!errors[`jobTitle${index}`]}
               style={{ marginTop: "5px", marginBottom: "15px" }}
+              required
             />
             <Form.Control.Feedback type="invalid">
               {errors[`jobTitle${index}`]}
@@ -56,7 +58,7 @@ const ProfessionalDetailsForm = ({ index, formData, handleChange, removeProfessi
 
         <Col md={4}>
           <Form.Group controlId={`formLocation${index}`}>
-            <Form.Label>Location</Form.Label>
+            <Form.Label>Location<span className="text-danger">*</span></Form.Label>
             <Form.Control
               type="text"
               placeholder="Enter Location"
@@ -64,6 +66,7 @@ const ProfessionalDetailsForm = ({ index, formData, handleChange, removeProfessi
               value={formData.location}
               onChange={(e) => handleChange(e, index)}
               style={{ marginTop: "5px", marginBottom: "15px" }}
+              required
             />
           </Form.Group>
         </Col>
@@ -72,13 +75,14 @@ const ProfessionalDetailsForm = ({ index, formData, handleChange, removeProfessi
       <Row>
         <Col md={4}>
           <Form.Group controlId={`formPositionType${index}`}>
-            <Form.Label>Position Type</Form.Label>
+            <Form.Label>Position Type<span className="text-danger">*</span></Form.Label>
             <Form.Control
               as="select"
               name="positionType"
               value={formData.positionType}
               onChange={(e) => handleChange(e, index)}
               style={{ marginTop: "5px", marginBottom: "15px" }}
+              required
             >
               <option value="">Select Position Type</option>
               <option value="Full-time">Full-time</option>
@@ -92,7 +96,7 @@ const ProfessionalDetailsForm = ({ index, formData, handleChange, removeProfessi
 
         <Col md={4}>
           <Form.Group controlId={`formCompanySector${index}`}>
-            <Form.Label>Company Sector</Form.Label>
+            <Form.Label>Company Sector<span className="text-danger">*</span></Form.Label>
             <Form.Control
               type="text"
               placeholder="Enter Company Sector"
@@ -100,13 +104,14 @@ const ProfessionalDetailsForm = ({ index, formData, handleChange, removeProfessi
               value={formData.companySector}
               onChange={(e) => handleChange(e, index)}
               style={{ marginTop: "5px", marginBottom: "15px" }}
+              required
             />
           </Form.Group>
         </Col>
 
         <Col md={4}>
           <Form.Group controlId={`formSalary${index}`}>
-            <Form.Label>Salary</Form.Label>
+            <Form.Label>Salary<span className="text-danger">*</span></Form.Label>
             <Form.Control
               type="number"
               placeholder="Enter Salary"
@@ -114,6 +119,7 @@ const ProfessionalDetailsForm = ({ index, formData, handleChange, removeProfessi
               value={formData.salary}
               onChange={(e) => handleChange(e, index)}
               style={{ marginTop: "5px", marginBottom: "15px" }}
+              required
             />
           </Form.Group>
         </Col>
@@ -122,26 +128,28 @@ const ProfessionalDetailsForm = ({ index, formData, handleChange, removeProfessi
       <Row>
         <Col md={4}>
           <Form.Group controlId={`formStartTime${index}`}>
-            <Form.Label>Start Time</Form.Label>
+            <Form.Label>Start Time<span className="text-danger">*</span></Form.Label>
             <Form.Control
               type="date"
               name="startTime"
               value={formData.startTime}
               onChange={(e) => handleChange(e, index)}
               style={{ marginTop: "5px", marginBottom: "15px" }}
+              required
             />
           </Form.Group>
         </Col>
 
         <Col md={4}>
           <Form.Group controlId={`formEndTime${index}`}>
-            <Form.Label>End Time</Form.Label>
+            <Form.Label>End Time<span className="text-danger">*</span></Form.Label>
             <Form.Control
               type="date"
               name="endTime"
               value={formData.endTime}
               onChange={(e) => handleChange(e, index)}
               style={{ marginTop: "5px", marginBottom: "15px" }}
+              required
             />
           </Form.Group>
         </Col>

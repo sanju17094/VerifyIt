@@ -29,7 +29,7 @@ const Header = () => {
     <>
       <Navbar bg="light" expand="lg" className="custom-navbar">
         <Container fluid>
-          <Navbar.Brand href="/home" className="custom-brand">
+          <Navbar.Brand href="/" className="custom-brand">
             <img
               src={logo}
               width="30"
