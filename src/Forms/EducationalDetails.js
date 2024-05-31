@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
-import { Container, Form} from 'react-bootstrap';
-import EducationDetailForm from './EducationalDetailsForm';
-import './FormStyle.css';
+import React, { useEffect,useState } from "react";
+import { Container, Form } from "react-bootstrap";
+import EducationDetailForm from "./EducationalDetailsForm";
+import "./FormStyle.css";
 import axios from "axios";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 const EducationalDetails = () => {
   const [educationDetails, setEducationDetails] = useState([
@@ -11,17 +12,60 @@ const EducationalDetails = () => {
       program: "",
       school_college_name: "",
       board_university: "",
-      scoreType: "",
       score: "",
+      score_type: "", // Added score_type field
       start_date: "",
       end_date: "",
-      branch_specialization: ""
-    }
+      branch_specialization: "",
+    },
   ]);
 
   const [errors, setErrors] = useState({});
-  const educationDoc = ['high','inter','graduate','postgraduate','phd'];
-const navigate = useNavigate();
+  const educationDoc = ["high", "inter", "graduate", "postgraduate", "phd"];
+  const navigate = useNavigate();
+
+  // Retrieve and decode the token from local storage
+  const token = localStorage.getItem("token");
+  let user_id = "";
+  if (token) {
+    try {
+      const decodedToken = jwtDecode(token);
+      user_id = decodedToken.userID;
+    } catch (error) {
+      console.error("Invalid token:", error);
+    }
+  }
+
+useEffect(() => {
+  async function setField() {
+    try {
+      const response = await fetch(
+        `http://localhost:8000/api/v1/Verifyit/education-details/get-id/${user_id}`
+      );
+      const result = await response.json();
+      console.log("result ka data ", result.data.education);
+
+      const data = result.data.education;
+
+   
+      const formattedData = data.map((item) => ({
+        program: item.program,
+        school_college_name: item.school_college_name,
+        board_university: item.board_university,
+        score: item.score,
+        score_type: item.score_type,
+        start_date: new Date(item.start_date).toISOString().split("T")[0],
+        end_date: new Date(item.end_date).toISOString().split("T")[0],
+        branch_specialization: item.branch_specialization,
+      }));
+
+      setEducationDetails(formattedData);
+    } catch (error) {
+      console.error("Error fetching education details: ", error);
+    }
+  }
+  setField();
+}, []);
   const handleChange = (e, index) => {
     const { name, value } = e.target;
     const updatedDetails = [...educationDetails];
@@ -37,73 +81,75 @@ const navigate = useNavigate();
     });
   };
 
-  
-  let index;
+  let pageIndex;
   const sequenceArray = JSON.parse(localStorage.getItem("sequenceArrayData"));
   const storedMapArray = JSON.parse(localStorage.getItem("map1"));
   const map1 = new Map(storedMapArray);
   console.log("map1 ka data", map1);
   if (Array.isArray(sequenceArray)) {
-    index = sequenceArray.indexOf("Educational Details");
+    pageIndex = sequenceArray.indexOf("Educational Details");
   } else {
     console.error("sequenceArrayData is not a valid array");
   }
-  console.log("index of Educational Details:", index);
+  console.log("index of Educational Details:", pageIndex);
 
   const handleNext = () => {
-     const documentUpload = JSON.parse(localStorage.getItem("documentUpload"));
-     const size = educationDetails.length;
-     const updatedDocumentUpload = documentUpload.concat(
-       educationDoc.slice(0, size)
-     );
-     localStorage.setItem(
-       "documentUpload",
-       JSON.stringify(updatedDocumentUpload)
-     );
-    const nextPage = sequenceArray[index + 1];
+    const documentUpload = JSON.parse(localStorage.getItem("documentUpload"));
+    const size = educationDetails.length;
+    const updatedDocumentUpload = documentUpload.concat(
+      educationDoc.slice(0, size)
+    );
+    localStorage.setItem(
+      "documentUpload",
+      JSON.stringify(updatedDocumentUpload)
+    );
+    const nextPage = sequenceArray[pageIndex + 1];
     console.log("nextPage ki value", nextPage);
     const link = map1.get(nextPage);
     console.log("link next page ki", link);
     navigate(`/${link}`);
   };
- 
 
-  const handleSubmit = async (e) => { // Make handleSubmit async
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     try {
-      // Post data to the API
-      const response = await axios.post('http://localhost:8000/api/v1/Verifyit/education/add', {
-        education: educationDetails,
-        user_id: '664cd36d563acb8deb2a9a16' // Hardcoded user ID
-      });
-handleNext();
+      const response = await axios.post(
+        "http://localhost:8000/api/v1/Verifyit/education/add",
+        {
+          education: educationDetails,
+          user_id: user_id,
+        }
+      );
 
       console.log(response.data); // Log the response
+      handleNext(); // Navigate to the next page only after a successful API call
     } catch (error) {
-      console.error('Error:', error);
+      console.error(
+        "API Error:",
+        error.response ? error.response.data : error.message
+      );
     }
   };
 
   const addEducationDetail = () => {
-    if (educationDetails.length>=4){
-       alert("You can add only 4 eductional details");
-    }else{
- setEducationDetails([
-   ...educationDetails,
-   {
-     program: "",
-     school_college_name: "",
-     board_university: "",
-     scoreType: "",
-     score: "",
-     start_date: "",
-     end_date: "",
-     branch_specialization: "",
-   },
- ]);
+    if (educationDetails.length >= 4) {
+      alert("You can add only 4 educational details");
+    } else {
+      setEducationDetails([
+        ...educationDetails,
+        {
+          program: "",
+          school_college_name: "",
+          board_university: "",
+          score: "",
+          score_type: "", // Added score_type field
+          start_date: "",
+          end_date: "",
+          branch_specialization: "" || "NA",
+        },
+      ]);
     }
-     
   };
 
   return (
@@ -142,7 +188,7 @@ handleNext();
             Education Details
           </button>
 
-          {index !== 0 && (
+          {pageIndex !== 0 && (
             <button
               type="button"
               className="cancel-button"
@@ -151,7 +197,7 @@ handleNext();
               Go Back
             </button>
           )}
-          <button type="button" className="submit-button" onClick={handleNext}>
+          <button type="submit" className="submit-button">
             Save and Next
           </button>
         </Form>

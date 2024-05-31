@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Container, Form } from "react-bootstrap";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { useNavigate } from 'react-router-dom';
-import './FormStyle.css';
-import ProfessionalDetailsForm from './ProfessionalDetailsForm';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
+import "./FormStyle.css";
+import ProfessionalDetailsForm from "./ProfessionalDetailsForm";
+import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
 const ProfessionalDetails = () => {
   const [professionalDetails, setProfessionalDetails] = useState([
@@ -18,13 +20,60 @@ const ProfessionalDetails = () => {
       endTime: "",
       salary: "",
       moreDetails: "",
-    }
+    },
   ]);
 
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
-     const ProfessionalDoc = ["job1", "job2", "job3"];
+  const ProfessionalDoc = ["job1", "job2", "job3"];
+   const token = localStorage.getItem("token");
+   let user_id = "";
+   if (token) {
+     try {
+       const decodedToken = jwtDecode(token);
+       user_id = decodedToken.userID; // Assuming the payload contains the user_id
+     } catch (error) {
+       console.error("Invalid token:", error);
+     }
+   }
+  useEffect(() => {
+    async function setField() {
+      try {
+        const response = await fetch(
+          `http://localhost:8000/api/v1/Verifyit/professional-details/get-id/${user_id}`
+        );
+        const result = await response.json();
+        console.log("result ka data ", result.data.details);
 
+        const data = result.data.details;
+
+        const formattedData = data.map((item) => {
+        
+          const parseDate = (dateString) => {
+            const date = new Date(dateString);
+            return isNaN(date) ? "" : date.toISOString().split("T")[0];
+          };
+
+          return {
+            companyName: item.company_name || "",
+            jobTitle: item.job_title || "",
+            location: item.location || "",
+            positionType: item.position_type || "",
+            companySector: item.company_sector || "",
+            startTime: parseDate(item.start_date),
+            endTime: parseDate(item.end_date),
+            salary: item.salary || "",
+            moreDetails: item.more_details || "",
+          };
+        });
+
+        setProfessionalDetails(formattedData);
+      } catch (error) {
+        console.error("Error fetching professional details: ", error);
+      }
+    }
+    setField();
+  }, []); 
   const handleChange = (e, index) => {
     const { name, value } = e.target;
     const updatedDetails = [...professionalDetails];
@@ -32,7 +81,7 @@ const ProfessionalDetails = () => {
       ...updatedDetails[index],
       [name]: value,
     };
- 
+
     setProfessionalDetails(updatedDetails);
 
     setErrors({
@@ -40,6 +89,7 @@ const ProfessionalDetails = () => {
       [`${name}${index}`]: "",
     });
   };
+
   let index;
   const sequenceArray = JSON.parse(localStorage.getItem("sequenceArrayData"));
   const storedMapArray = JSON.parse(localStorage.getItem("map1"));
@@ -53,11 +103,11 @@ const ProfessionalDetails = () => {
   console.log("index of professional Details:", index);
 
   const handleNext = () => {
-    const documentUpload = JSON.parse(localStorage.getItem('documentUpload'));
+    const documentUpload = JSON.parse(localStorage.getItem("documentUpload"));
     const size = professionalDetails.length;
-  const updatedDocumentUpload = documentUpload.concat(
-    ProfessionalDoc.slice(0, size)
-  );
+    const updatedDocumentUpload = documentUpload.concat(
+      ProfessionalDoc.slice(0, size)
+    );
     localStorage.setItem(
       "documentUpload",
       JSON.stringify(updatedDocumentUpload)
@@ -69,40 +119,65 @@ const ProfessionalDetails = () => {
     navigate(`/${link}`);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add form validation logic here
-    handleNext();
+
+    const details = professionalDetails.map((detail) => ({
+      company_name: detail.companyName,
+      job_title: detail.jobTitle,
+      location: detail.location,
+      position_type: detail.positionType,
+      company_sector: detail.companySector,
+      start_time: detail.startTime,
+      end_time: detail.endTime,
+      salary: detail.salary,
+      more_details: detail.moreDetails,
+    }));
+
+    // API call
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/api/v1/Verifyit/professional-details/create",
+        {
+          user_id,
+          details,
+        }
+      );
+      console.log(response.data); // Log the response
+      handleNext(); // Navigate to the next page only after a successful API call
+    } catch (error) {
+      console.error(
+        "API Error:",
+        error.response ? error.response.data : error.message
+      );
+    }
   };
 
   const addProfessionalDetail = () => {
-    if (professionalDetails.length>=3){
-      alert("You can add only 3 professional details")
-    }else{
-          setProfessionalDetails([
-            ...professionalDetails,
-            {
-              companyName: "",
-              jobTitle: "",
-              location: "",
-              positionType: "",
-              companySector: "",
-              startTime: "",
-              endTime: "",
-              salary: "",
-              moreDetails: "",
-            },
-          ]);
+    if (professionalDetails.length >= 3) {
+      alert("You can add only 3 professional details");
+    } else {
+      setProfessionalDetails([
+        ...professionalDetails,
+        {
+          companyName: "",
+          jobTitle: "",
+          location: "",
+          positionType: "",
+          companySector: "",
+          startTime: "",
+          endTime: "",
+          salary: "",
+          moreDetails: "",
+        },
+      ]);
     }
-  
   };
 
   const removeProfessionalDetail = (index) => {
     const updatedDetails = professionalDetails.filter((_, i) => i !== index);
     setProfessionalDetails(updatedDetails);
   };
-
-
 
   return (
     <>
@@ -138,7 +213,7 @@ const ProfessionalDetails = () => {
                 ></path>
               </svg>
             </span>
-            Professional Details
+            Add Professional Detail
           </button>
           <div className="ButtonsContainer d-flex justify-content-start">
             {index !== 0 && (
@@ -151,11 +226,7 @@ const ProfessionalDetails = () => {
               </button>
             )}
 
-            <button
-              type="submit"
-              className="submit-button"
-              onClick={handleNext}
-            >
+            <button type="submit" className="submit-button">
               Save and Next
             </button>
           </div>

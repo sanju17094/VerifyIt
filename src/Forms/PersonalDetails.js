@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Form } from "react-bootstrap";
-import './FormStyle.css';
-import { useNavigate } from 'react-router-dom';
-import {jwtDecode} from 'jwt-decode';
-
+import "./FormStyle.css";
+import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode"; // Use the correct import
+import axios from "axios";
 
 const PersonalDetails = () => {
   const navigate = useNavigate();
 
   // Retrieve and decode the token from local storage
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   let userData = {};
   if (token) {
     try {
@@ -20,7 +20,9 @@ const PersonalDetails = () => {
     }
   }
 
+
   const [formData, setFormData] = useState({
+    user_id: userData.userID,
     firstName: userData.first_name || "",
     lastName: userData.last_name || "",
     dob: "",
@@ -37,14 +39,38 @@ const PersonalDetails = () => {
   });
 
   const [errors, setErrors] = useState({});
+  useEffect(()=>{
+    async function setField(){
+const response = await fetch(
+  `http://localhost:8000/api/v1/Verifyit/personal-details/get-id/${userData.userID}`
+);
+const result = await response.json();
+console.log("result ka data ", result.personalDetails);
+const data=result.personalDetails;
+const dateObj = new Date(data.dob).toISOString().split("T")[0];
 
+setFormData({
+  dob: dateObj || "",
+  address: data.location.address || "",
+  city: data.location.city || "",
+  state: data.location.state || "",
+  country: data.location.country || "",
+  zipcode: data.location.zipcode || "",
+
+  gender: data.gender || "",
+  idProofType: data.idProof || "",
+  idProofNum: data.idProofNumber || "",
+});
+
+    }
+    setField();
+  },[])
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
       [name]: value,
     });
-
     // Clear the validation error for the field when it's being filled
     setErrors({
       ...errors,
@@ -56,43 +82,55 @@ const PersonalDetails = () => {
   const sequenceArray = JSON.parse(localStorage.getItem("sequenceArrayData"));
   const storedMapArray = JSON.parse(localStorage.getItem("map1"));
   const map1 = new Map(storedMapArray);
+  console.log("map1 ka data", map1);
   if (Array.isArray(sequenceArray)) {
     index = sequenceArray.indexOf("Personal Details");
   } else {
     console.error("sequenceArrayData is not a valid array");
   }
-
-  const validateForm = () => {
-    const newErrors = {};
-    if (!formData.dob) newErrors.dob = "Date of Birth is required.";
-    if (!formData.gender) newErrors.gender = "Gender is required.";
-    if (!formData.country) newErrors.country = "Country is required.";
-    if (!formData.state) newErrors.state = "State is required.";
-    if (!formData.city) newErrors.city = "City is required.";
-    if (!formData.zipcode) newErrors.zipcode = "Zip Code is required.";
-    if (!formData.address) newErrors.address = "Address is required.";
-    if (!formData.idProofType) newErrors.idProofType = "ID Proof Type is required.";
-    if (!formData.idProofNum) newErrors.idProofNum = "ID Proof Number is required.";
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+  console.log("index of Personal Details:", index);
 
   const handleNext = () => {
-    if (!validateForm()) {
-      return;
-    }
-
-    const documentUpload = JSON.parse(localStorage.getItem('documentUpload'));
-    if (!documentUpload.includes('profile')) {
-      documentUpload.push('profile');
+    const documentUpload = JSON.parse(localStorage.getItem("documentUpload"));
+    if (!documentUpload.includes("profile")) {
+      documentUpload.push("profile");
       documentUpload.push(formData.idProofType);
-      localStorage.setItem('documentUpload', JSON.stringify(documentUpload));
+      localStorage.setItem("documentUpload", JSON.stringify(documentUpload));
     }
-
     const nextPage = sequenceArray[index + 1];
+    console.log("nextPage ki value", nextPage);
     const link = map1.get(nextPage);
+    console.log("link next page ki", link);
     navigate(`/${link}`);
+  };
+
+  const handleSubmit = async () => {
+    const requestBody = {
+      user_id: userData.userID, // Assuming the user_id is present in the token payload
+      gender: formData.gender,
+      dob: formData.dob,
+      location: {
+        address: formData.address,
+        city: formData.city,
+        state: formData.state,
+        country: formData.country,
+        zipcode: formData.zipcode,
+      },
+      idProof: formData.idProofType,
+      idProofNumber: formData.idProofNum,
+    };
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/api/v1/Verifyit/personal-details/create",
+        requestBody
+      );
+      console.log("API Response:", response.data);
+      handleNext(); // Navigate to the next page only after a successful API call
+    } catch (error) {
+      console.error("API Error:", error);
+      // Handle API error here if needed
+    }
   };
 
   return (
@@ -149,7 +187,7 @@ const PersonalDetails = () => {
           <Row>
             <Col md={6}>
               <Form.Group controlId="formDob">
-                <Form.Label>Date of Birth<span className="text-danger">*</span></Form.Label>
+                <Form.Label>Date of Birth</Form.Label>
                 <Form.Control
                   type="date"
                   placeholder="Select Date"
@@ -157,26 +195,19 @@ const PersonalDetails = () => {
                   value={formData.dob}
                   onChange={handleChange}
                   style={{ marginTop: "5px", marginBottom: "15px" }}
-                  isInvalid={!!errors.dob}
-                  required
                 />
-                <Form.Control.Feedback type="invalid">
-                  {errors.dob}
-                </Form.Control.Feedback>
               </Form.Group>
             </Col>
 
             <Col md={6}>
               <Form.Group controlId="formGender">
-                <Form.Label>Gender<span className="text-danger">*</span></Form.Label>
+                <Form.Label>Gender</Form.Label>
                 <div className="custom-dropdown">
                   <Form.Control
                     as="select"
                     name="gender"
                     value={formData.gender}
                     onChange={handleChange}
-                    isInvalid={!!errors.gender}
-                    required
                     style={{
                       height: "auto",
                       marginTop: "5px",
@@ -190,9 +221,6 @@ const PersonalDetails = () => {
                   </Form.Control>
                   <span className="dropdown-arrow">&#9662;</span>
                 </div>
-                <Form.Control.Feedback type="invalid">
-                  {errors.gender}
-                </Form.Control.Feedback>
               </Form.Group>
             </Col>
           </Row>
@@ -200,7 +228,7 @@ const PersonalDetails = () => {
           <Row>
             <Col md={6}>
               <Form.Group controlId="formEmail">
-                <Form.Label>Email Address<span className="text-danger">*</span></Form.Label>
+                <Form.Label>Email Address</Form.Label>
                 <Form.Control
                   type="email"
                   placeholder="Enter Email"
@@ -240,7 +268,7 @@ const PersonalDetails = () => {
           <Row>
             <Col md={6}>
               <Form.Group controlId="formCountry">
-                <Form.Label>Country<span className="text-danger">*</span></Form.Label>
+                <Form.Label>Country</Form.Label>
                 <Form.Control
                   type="text"
                   placeholder="Enter Country"
@@ -249,7 +277,6 @@ const PersonalDetails = () => {
                   onChange={handleChange}
                   isInvalid={!!errors.country}
                   style={{ marginTop: "5px", marginBottom: "15px" }}
-                  required
                 />
                 <Form.Control.Feedback type="invalid">
                   {errors.country}
@@ -258,7 +285,7 @@ const PersonalDetails = () => {
             </Col>
             <Col md={6}>
               <Form.Group controlId="formState">
-                <Form.Label>State<span className="text-danger">*</span></Form.Label>
+                <Form.Label>State</Form.Label>
                 <Form.Control
                   type="text"
                   placeholder="Enter State"
@@ -267,7 +294,6 @@ const PersonalDetails = () => {
                   onChange={handleChange}
                   isInvalid={!!errors.state}
                   style={{ marginTop: "5px", marginBottom: "15px" }}
-                  required
                 />
                 <Form.Control.Feedback type="invalid">
                   {errors.state}
@@ -278,7 +304,7 @@ const PersonalDetails = () => {
           <Row>
             <Col md={6}>
               <Form.Group controlId="formCity">
-                <Form.Label>City<span className="text-danger">*</span></Form.Label>
+                <Form.Label>City</Form.Label>
                 <Form.Control
                   type="text"
                   placeholder="Enter City"
@@ -287,7 +313,6 @@ const PersonalDetails = () => {
                   onChange={handleChange}
                   isInvalid={!!errors.city}
                   style={{ marginTop: "5px", marginBottom: "15px" }}
-                  required
                 />
                 <Form.Control.Feedback type="invalid">
                   {errors.city}
@@ -297,7 +322,7 @@ const PersonalDetails = () => {
 
             <Col md={6}>
               <Form.Group controlId="formZipCode">
-                <Form.Label>Zip Code<span className="text-danger">*</span></Form.Label>
+                <Form.Label>Zip Code</Form.Label>
                 <Form.Control
                   type="text"
                   placeholder="Enter Zip Code"
@@ -306,7 +331,6 @@ const PersonalDetails = () => {
                   onChange={handleChange}
                   isInvalid={!!errors.zipcode}
                   style={{ marginTop: "5px", marginBottom: "15px" }}
-                  required
                 />
                 <Form.Control.Feedback type="invalid">
                   {errors.zipcode}
@@ -318,7 +342,7 @@ const PersonalDetails = () => {
           <Row>
             <Col md={6}>
               <Form.Group controlId="formAddress">
-                <Form.Label>Address<span className="text-danger">*</span></Form.Label>
+                <Form.Label>Address</Form.Label>
                 <Form.Control
                   as="textarea"
                   placeholder="Enter Address"
@@ -327,7 +351,6 @@ const PersonalDetails = () => {
                   onChange={handleChange}
                   isInvalid={!!errors.address}
                   style={{ marginTop: "5px", marginBottom: "15px" }}
-                  required
                 />
                 <Form.Control.Feedback type="invalid">
                   {errors.address}
@@ -336,7 +359,7 @@ const PersonalDetails = () => {
             </Col>
             <Col md={6}>
               <Form.Group controlId="formIdProofType">
-                <Form.Label>ID Proof Type<span className="text-danger">*</span></Form.Label>
+                <Form.Label>ID Proof Type</Form.Label>
                 <Form.Control
                   as="select"
                   name="idProofType"
@@ -344,7 +367,6 @@ const PersonalDetails = () => {
                   onChange={handleChange}
                   isInvalid={!!errors.idProofType}
                   style={{ marginTop: "5px", marginBottom: "15px" }}
-                  required
                 >
                   <option value="">Select ID Proof Type</option>
                   <option value="aadhar_card">Aadhar Card</option>
@@ -358,7 +380,7 @@ const PersonalDetails = () => {
                 </Form.Control.Feedback>
               </Form.Group>
               <Form.Group controlId="formIdProofNum">
-                <Form.Label>ID Proof Number<span className="text-danger">*</span></Form.Label>
+                <Form.Label>ID Proof Number</Form.Label>
                 <Form.Control
                   type="text"
                   placeholder="Enter ID Proof Number"
@@ -367,7 +389,6 @@ const PersonalDetails = () => {
                   onChange={handleChange}
                   isInvalid={!!errors.idProofNum}
                   style={{ marginTop: "5px", marginBottom: "15px" }}
-                  required
                 />
                 <Form.Control.Feedback type="invalid">
                   {errors.idProofNum}
@@ -385,7 +406,11 @@ const PersonalDetails = () => {
               Go Back
             </button>
           )}
-          <button type="button" className="submit-button" onClick={handleNext}>
+          <button
+            type="button"
+            className="submit-button"
+            onClick={handleSubmit}
+          >
             Save and Next
           </button>
         </Form>

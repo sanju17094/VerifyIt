@@ -1,11 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Form } from "react-bootstrap";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faX } from '@fortawesome/free-solid-svg-icons';
-import './FormStyle.css';
-import { useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faX } from "@fortawesome/free-solid-svg-icons";
+import "./FormStyle.css";
+import { useNavigate } from "react-router-dom";
+import {jwtDecode} from "jwt-decode";
 
 const UploadDocuments = () => {
+  const token = localStorage.getItem("token");
+  const decode = jwtDecode(token);
+  const user_id = decode.userID;
+  const [done, setDone] = useState(false);
   const [formData, setFormData] = useState({
     highSchoolDocument: null,
     intermediateDocument: null,
@@ -36,7 +41,36 @@ const UploadDocuments = () => {
     offerLetter3: null,
     profilePhoto: null,
   });
-const documentUpload = JSON.parse(localStorage.getItem('documentUpload'));
+
+  const [finalResp, setFinalResp] = useState({
+    user_id: user_id,
+    x_marksheet: null,
+    xii_marksheet: null,
+    graduationMarksheet: null,
+    postGraduationMarksheet: null,
+    adharCard: null,
+    pan: null,
+    licence: null,
+    voterId: null,
+    offerLetter: null,
+    profilePhoto: null,
+  });
+  const keyMapping = new Map([
+    ["highSchoolDocument", "x_marksheet"],
+    ["intermediateDocument", "xii_marksheet"],
+    ["graduateDocument", "graduationMarksheet"],
+    ["postGraduateDocument", "postGraduationMarksheet"],
+    ["aadharCard", "adharCard"],
+    ["panCard", "pan"],
+    ["licence", "licence"],
+    ["voterIdCard", "voterId"],
+    ["offerLetter1", "offerLetter1"],
+    ["offerLetter2", "offerLetter2"],
+    ["offerLetter3", "offerLetter3"],
+    ["profilePhoto", "profilePhoto"],
+  ]);
+  console.log("keymapping",keyMapping)
+  const documentUpload = JSON.parse(localStorage.getItem("documentUpload"));
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -82,36 +116,127 @@ const documentUpload = JSON.parse(localStorage.getItem('documentUpload'));
   };
 
   const handleNext = () => {
-    navigate('/preview_all');
+    navigate("/preview_all");
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add form validation logic here
-    // const newErrors = {};
-    // Object.keys(formData).forEach(key => {
-    //   if (!formData[key]) {
-    //     newErrors[key] = "This field is required.";
-    //   }
-    // });
-    // if (Object.keys(newErrors).length > 0) {
-    //   setErrors(newErrors);
-    // } else {
-      handleNext();
 
+    const newErrors = {};
+    Object.keys(formData).forEach((key) => {
+      if (!formData[key]) {
+        newErrors[key] = "This field is required.";
+      }
+    });
+
+    setErrors(newErrors);
+
+    // if (Object.keys(newErrors).length > 0) {
+    //   return;
     // }
+
+    console.log("form data", formData);
+    const entries = Object.entries(formData);
+
+    const arrOfferLetter = [];
+    const updatedFinalResp = { ...finalResp };
+
+    await Promise.all(
+      entries.map(async ([key, file]) => {
+        if (file) {
+          const formData = new FormData();
+          formData.append("uploadFile", file);
+
+          try {
+            const response = await fetch(
+              "http://localhost:8000/api/v1/Verifyit/upload-file",
+              {
+                method: "POST",
+                body: formData,
+              }
+            );
+
+            if (!response.ok) {
+              throw new Error(`Failed to upload ${key}`);
+            }
+
+            const data = await response.json();
+            console.log(`Uploaded ${key}:`, data.file_data[0]);
+
+            if (
+              key === "offerLetter1" ||
+              key === "offerLetter2" ||
+              key === "offerLetter3"
+            ) {
+              arrOfferLetter.push(data.file_data[0]);
+            } else {
+              updatedFinalResp[keyMapping.get(key)] = data.file_data[0];
+              console.log("BAWa key_>>", keyMapping.get(key));
+            }
+          } catch (error) {
+            console.error(`Error uploading ${key}:`, error);
+          }
+        }
+      })
+    );
+
+    updatedFinalResp.offerLetter = arrOfferLetter;
+    setFinalResp(updatedFinalResp);
+   setDone(true);
   };
+
+  useEffect(() => {
+    if (done) {
+      console.log("_>>>>>>>")
+      async function uploadData() {
+        try {
+          const response = await fetch(
+            "http://localhost:8000/api/v1/Verifyit/documentation/create",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(finalResp),
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error(
+              `Failed to create documentation: ${response.statusText}`
+            );
+          }
+
+          const data = await response.json();
+          console.log("response Data of Last Upload", data);
+        } catch (error) {
+          console.error("Error uploading final data:", error);
+        }
+      }
+      uploadData();
+    }
+  }, [done, finalResp]);
 
   const renderPreview = (file, type, name) => {
     if (!file) return null;
     return (
       <div style={{ marginTop: "10px" }}>
-        {type.startsWith('image/') ? (
-          <img src={file} alt="Preview" style={{ width: "40%", height: "auto" }} />
+        {type.startsWith("image/") ? (
+          <img
+            src={file}
+            alt="Preview"
+            style={{ width: "40%", height: "auto" }}
+          />
         ) : (
-          <a href={file} target="_blank" rel="noopener noreferrer">View Document</a>
+          <a href={file} target="_blank" rel="noopener noreferrer">
+            View Document
+          </a>
         )}
-        <button type="button" onClick={() => handleRemove(name, type, file)} style={{ marginLeft: "10px", border: "none", background: "none" }}>
+        <button
+          type="button"
+          onClick={() => handleRemove(name, type, file)}
+          style={{ marginLeft: "10px", border: "none", background: "none" }}
+        >
           <FontAwesomeIcon icon={faX} />
         </button>
       </div>
