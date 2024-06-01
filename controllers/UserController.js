@@ -434,7 +434,7 @@ exports.getAllUserDetails = async (req, res) => {
 
 exports.getUsers = async (req, res) => {
   try {
-    const users = await User.find().select("first_name last_name mobile email");
+    const users = await User.find().select("first_name last_name mobile email verified");
     if (!users.length) {
       return res.status(400).json({
         success: false,
@@ -471,10 +471,18 @@ exports.getUserDetailsById = async (req, res) => {
       });
     }
 
+    // Remove fields with null or empty string values
+    const cleanUser = JSON.parse(JSON.stringify(user), (key, value) => {
+      if (value === null || value === "") {
+        return undefined; // Remove the key if the value is null or an empty string
+      }
+      return value;
+    });
+
     return res.status(200).json({
       success: true,
       message: "User retrieved successfully",
-      data: user,
+      data: cleanUser,
     });
   } catch (error) {
     console.error(error);
@@ -484,3 +492,90 @@ exports.getUserDetailsById = async (req, res) => {
     });
   }
 };
+exports.SubmitDoc = async (req,res)=>{
+  try {
+    const { id } = req.params;
+    if(!id){
+      return res.status(400).json({
+        success: false,
+        message: "Invalid user id"
+        })
+    }
+    const update = await User.findByIdAndUpdate(id,{
+      submitted:true
+    },{new:true});
+    return res.status(200).json({
+      success: true,
+      message: "Document submitted successfully",
+    })
+  }catch(err){
+return res.status(500).json({
+  success: false,
+  message: err.message,
+})
+  }
+}
+exports.Verfication = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!id) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid user id",
+      });
+    }
+    const update = await User.findByIdAndUpdate(
+      id,
+      {
+        verified: true,
+        admin_message:""
+      },
+      { new: true }
+    );
+    return res.status(200).json({
+      success: true,
+      message: "Document Verified successfully",
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+exports.getSubmitAndVerification = async(req,res)=>{
+  try{
+const {id} = req.params;
+const statusUpdate = await User.findById(id).select("submitted verified admin_message");
+console.log("the submited and verification data",statusUpdate);
+return res.status(200).json({
+  success:true,
+  message:"Verification and Submit status",
+  data:statusUpdate
+})
+
+  }catch(err){
+return res.status(500).json({
+  success:false,
+  message:err.message
+})
+  }
+}
+exports.adminMessage = async(req,res)=>{
+  try{
+const {id}=req.params;
+const {message}=req.body;
+const adminMessage = await User.findByIdAndUpdate(id,{admin_message:message},{new:true});
+return res.status(200).json({
+  success:true,
+  message:"Message sent successfully to User",
+  message:adminMessage.admin_message
+})
+
+  }catch(err){
+return res.status(500).json({
+  success:false,
+  message:err.message
+})
+  }
+}

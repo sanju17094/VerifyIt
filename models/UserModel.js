@@ -51,6 +51,18 @@ const userSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Documents",
     },
+    submitted:{
+      type:Boolean,
+      default:false
+    },
+    verified:{
+      type:Boolean,
+      default:false
+    },
+    admin_message:{
+      type:String,
+      default:"" 
+    }
   },
   {
     timestamps: true,

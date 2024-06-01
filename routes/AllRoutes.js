@@ -11,6 +11,10 @@ router.post("/login/otp/verify", user.loginCheckOTP);
 router.get("/user/get", user.getAllUserDetails);
 router.get("/users/get-id/:id", user.getUserDetailsById);
 router.get("/usersList/get", user.getUsers);
+router.get("/submit/all/:id", user.SubmitDoc);
+router.get("/verify/user/:id", user.Verfication);
+router.get("/fetch/submit-verification/:id", user.getSubmitAndVerification);
+router.post("/send/message-to-user/:id", user.adminMessage);
 
 // Personal Details Routes
 const personal = require("../controllers/PersonalDetailsController");
@@ -81,4 +85,8 @@ const contactUs = require("../controllers/ContactUsController");
 router.post("/contact-us/create", contactUs.createContactUs);
 router.get("/contact-us/get", contactUs.getContactUsEntries);
 
+
+//mail
+const mail = require("../controllers/NodeMailerController");
+router.post("/mail/send", mail.mail);
 module.exports = router;

@@ -1,0 +1,362 @@
+{
+	"info": {
+		"_postman_id": "92d2772d-9191-45a7-933e-432e35f9dec7",
+		"name": "VerifyIt",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27641549",
+		"_collection_link": "https://www.postman.com/spaceflight-saganist-97038180/workspace/mywork/collection/27641549-92d2772d-9191-45a7-933e-432e35f9dec7?action=share&source=collection_link&creator=27641549"
+	},
+	"item": [
+		{
+			"name": "Personal details",
+			"item": [
+				{
+					"name": "Create Personal Details",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"gender\": \"Male\",\r\n  \"dob\": \"1990-01-01\",\r\n  \"location\": {\r\n    \"address\": \"123 Street\",\r\n    \"city\": \"City\",\r\n    \"state\": \"State\",\r\n    \"country\": \"Country\",\r\n    \"zipcode\": \"12345\"\r\n  },\r\n  \"idProof\": \"Aadhar Card\",\r\n  \"idProofNumber\": \"9999999999999\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/v1/Verifyit/personal-details/create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"Verifyit",
+								"personal-details",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Personal details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/v1/Verifyit/personal-details/get",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"Verifyit",
+								"personal-details",
+								"get"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "User SignUp",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"first_name\": \"John\",\r\n  \"last_name\": \"Doe\",\r\n  \"email\": \"johndoe@example.com\",\r\n  \"mobile\": 1234567890,\r\n  \"password\": \"password123\",\r\n\t\"confirm_password\":\"password123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/v1/Verifyit/signup",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"Verifyit",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "signup-verify",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOjEyMzQ1Njc4OTAsImVtYWlsIjoiam9obmRvZUBleGFtcGxlLmNvbSIsImlhdCI6MTcxNjE5ODEwMiwiZXhwIjoxNzE2MTk4NDAyfQ.lbHfDMjJwL0ZWkpOYbJPJwt1CdJaimO3ciaMUu403NY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"otp\":\"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/v1/Verifyit/signup/verify-otp",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"Verifyit",
+								"signup",
+								"verify-otp"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login-password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"email\": \"johndoe@example.com\",\r\n    \"password\":\"password123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/v1/Verifyit/login/password",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"Verifyit",
+								"login",
+								"password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login-otp-mobile",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"mobile\":\"1234567890\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/v1/Verifyit/login/otp/mobile",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"Verifyit",
+								"login",
+								"otp",
+								"mobile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login otp verify",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIxMjM0NTY3ODkwIiwiaWF0IjoxNzE2MjAwNjMxLCJleHAiOjE3MTYyMDA5MzF9.KuejBTiq_9YfDVwenGp6qia3Z69aSPXqdnoIgs3dCb4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"otp\":\"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/v1/Verifyit/login/otp/verify",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"Verifyit",
+								"login",
+								"otp",
+								"verify"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "fetch data",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Educational Details",
+			"item": [
+				{
+					"name": "Create Education Details",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_id\":\"664b1aed6572b7eec46a1efd\",\r\n\"education\":[\r\n  {\r\n    \"program\": \"BCA\",\r\n    \"school_college_name\": \"Holkar\",\r\n    \"board_university\": \"XYZ University\",\r\n    \"score\": \"3.8 GPA\",\r\n    \"start_date\": \"2015-09-01T00:00:00.000Z\",\r\n    \"end_date\": \"2019-05-15T00:00:00.000Z\",\r\n    \"branch_specialization\": \"Software Engineering\"\r\n  },\r\n  {\r\n    \"program\": \"Master of Business Administration\",\r\n    \"school_college_name\": \"ABC Business School\",\r\n    \"board_university\": \"ABC University\",\r\n    \"score\": \"3.9 GPA\",\r\n    \"start_date\": \"2020-01-15T00:00:00.000Z\",\r\n    \"end_date\": \"2022-12-10T00:00:00.000Z\",\r\n    \"branch_specialization\": \"Marketing\"\r\n  },\r\n  {\r\n    \"program\": \"High School Diploma\",\r\n    \"school_college_name\": \"DEF High School\",\r\n    \"board_university\": \"State Education Board\",\r\n    \"score\": \"90%\",\r\n    \"start_date\": \"2012-06-01T00:00:00.000Z\",\r\n    \"end_date\": \"2015-05-30T00:00:00.000Z\",\r\n    \"branch_specialization\": \"\"\r\n  }\r\n]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/v1/Verifyit/education/add",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"Verifyit",
+								"education",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Educational Details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/v1/Verifyit/educational-details/get",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"Verifyit",
+								"educational-details",
+								"get"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Professional Details",
+			"item": [
+				{
+					"name": "Create Professional Details",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"details\": [\r\n    {\r\n      \"company_name\": \"ZXCdret3 Corp\",\r\n      \"job_title\": \"Software Engineer\",\r\n      \"location\": \"San Francisco\",\r\n      \"position_type\": \"Full-time\",\r\n      \"company_sector\": \"Technology\",\r\n      \"start_time\": \"2020-01-01T00:00:00.000Z\",\r\n      \"end_time\": \"2021-01-01T00:00:00.000Z\",\r\n      \"salary\": 120000,\r\n      \"more_details\": \"Worked on various projects.\"\r\n    },\r\n    {\r\n      \"company_name\": \"ABC Corp1\",\r\n      \"job_title\": \"Software Engineer\",\r\n      \"location\": \"San Francisco\",\r\n      \"position_type\": \"Full-time\",\r\n      \"company_sector\": \"Technology\",\r\n      \"start_time\": \"2020-01-01T00:00:00.000Z\",\r\n      \"end_time\": \"2021-01-01T00:00:00.000Z\",\r\n      \"salary\": 120000,\r\n      \"more_details\": \"Worked on various projects.\"\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/v1/Verifyit/professional-details/create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"Verifyit",
+								"professional-details",
+								"create"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
