@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
@@ -26,16 +26,16 @@ const ProfessionalDetails = () => {
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
   const ProfessionalDoc = ["job1", "job2", "job3"];
-   const token = localStorage.getItem("token");
-   let user_id = "";
-   if (token) {
-     try {
-       const decodedToken = jwtDecode(token);
-       user_id = decodedToken.userID; // Assuming the payload contains the user_id
-     } catch (error) {
-       console.error("Invalid token:", error);
-     }
-   }
+  const token = localStorage.getItem("token");
+  let user_id = "";
+  if (token) {
+    try {
+      const decodedToken = jwtDecode(token);
+      user_id = decodedToken.userID; // Assuming the payload contains the user_id
+    } catch (error) {
+      console.error("Invalid token:", error);
+    }
+  }
   useEffect(() => {
     async function setField() {
       try {
@@ -43,12 +43,14 @@ const ProfessionalDetails = () => {
           `http://localhost:8000/api/v1/Verifyit/professional-details/get-id/${user_id}`
         );
         const result = await response.json();
+        if (!result.success) {
+          return;
+        }
         console.log("result ka data ", result.data.details);
 
         const data = result.data.details;
 
         const formattedData = data.map((item) => {
-        
           const parseDate = (dateString) => {
             const date = new Date(dateString);
             return isNaN(date) ? "" : date.toISOString().split("T")[0];
@@ -73,7 +75,7 @@ const ProfessionalDetails = () => {
       }
     }
     setField();
-  }, []); 
+  }, []);
   const handleChange = (e, index) => {
     const { name, value } = e.target;
     const updatedDetails = [...professionalDetails];

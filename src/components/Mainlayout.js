@@ -10,15 +10,25 @@ function Mainlayout() {
  
  const [sequenceArray, setSequenceArray] = useState([]);
  let id = null;
-   const token = localStorage.getItem("token");
 
-   if (!token) {
-     console.log("token ni mili");
-     navigate("/loginpage");
-   }
-   const decode = jwtDecode(token);
-   id = decode.userID;
-   console.log("usrer ki id", id);
+
+    useEffect(() => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.log("Token not found", token);
+        navigate("/loginpage");
+        return;
+      }
+
+      try {
+        const decode = jwtDecode(token);
+        id = decode.userID;
+        console.log("User ID", id);
+      } catch (error) {
+        console.log("Invalid token", error);
+        navigate("/loginpage");
+      }
+    }, [navigate]);
     
 
 

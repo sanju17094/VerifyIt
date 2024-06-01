@@ -209,6 +209,7 @@ const UploadDocuments = () => {
 
           const data = await response.json();
           console.log("response Data of Last Upload", data);
+          navigate('/preview_all')
         } catch (error) {
           console.error("Error uploading final data:", error);
         }
@@ -586,7 +587,7 @@ const UploadDocuments = () => {
                 </button>
 
                 <button type="submit" className="submit-button">
-                  Save and Next
+                  Save and Preview
                 </button>
               </div>
             </Col>

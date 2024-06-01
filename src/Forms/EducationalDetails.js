@@ -43,7 +43,10 @@ useEffect(() => {
         `http://localhost:8000/api/v1/Verifyit/education-details/get-id/${user_id}`
       );
       const result = await response.json();
-      console.log("result ka data ", result.data.education);
+      if (!result.success) {
+        return;
+      }
+      console.log("result ka data ", result);
 
       const data = result.data.education;
 

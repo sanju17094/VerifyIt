@@ -44,10 +44,17 @@ const PersonalDetails = () => {
 const response = await fetch(
   `http://localhost:8000/api/v1/Verifyit/personal-details/get-id/${userData.userID}`
 );
+
 const result = await response.json();
-console.log("result ka data ", result.personalDetails);
+if(!result.success){
+  return;
+}
+console.log("result ka data ", result);
 const data=result.personalDetails;
-const dateObj = new Date(data.dob).toISOString().split("T")[0];
+let dateObj;
+if(data.dob){
+   dateObj = new Date(data.dob).toISOString().split("T")[0];
+}
 
 setFormData({
   dob: dateObj || "",

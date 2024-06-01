@@ -6,21 +6,23 @@ import {
   Card,
   Spinner,
   Alert,
-  Image,
+  Modal,
 } from "react-bootstrap";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import {jwtDecode} from 'jwt-decode'
+import { useParams, useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
+
 const PreviewAll = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  const [pdfUrl, setPdfUrl] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const { _id } = useParams();
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
-  const decode = jwtDecode(token);
-  const id = decode.userID;
-
+const token = localStorage.getItem('token');
+const decode = jwtDecode(token);
+const id = decode.userID;
   useEffect(() => {
     const fetchDetails = async () => {
       try {
@@ -33,12 +35,29 @@ const PreviewAll = () => {
       } finally {
         setLoading(false);
       }
-      fetchDetails();
-    }
-  },[])
+    };
 
-  const handleSubmit = () => {
+    fetchDetails();
+  }, []);
+
+  const handleSubmit = async() => {
     console.log("Submit clicked");
+    const response = await fetch(
+      `http://localhost:8000/api/v1/Verifyit/submit/all/${id}`
+    );
+    const result = await response.json();
+    console.log("submit document result->>>",result);
+    if(!result.success){
+      console.log("there some error in submit the documents");
+    }else{
+      
+      navigate("/verification-status");
+    }
+  };
+
+  const handlePdfClick = (url) => {
+    setPdfUrl(url);
+    setShowModal(true);
   };
 
   if (loading) {
@@ -151,11 +170,16 @@ const PreviewAll = () => {
                 >
                   {user.documents_details &&
                     user.documents_details.profilePhoto && (
-                      <Image
-                        src={user.documents_details.profilePhoto.src}
-                        alt="Profile"
-                        style={{ maxWidth: "100px" }}
-                      />
+                      <div>
+                        <img
+                          src={`http://localhost:8000/${user.documents_details.profilePhoto.src.replace(
+                            /\\/g,
+                            "/"
+                          )}`}
+                          alt="Profile"
+                          style={{ width: "100px", height: "100px" }}
+                        />
+                      </div>
                     )}
                 </Col>
               </Row>
@@ -276,13 +300,18 @@ const PreviewAll = () => {
                   <strong>Adhar Card:</strong>
                 </Col>
                 <Col md={6}>
-                  <a
-                    href={user.documents_details.adharCard.src}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {user.documents_details.adharCard.orgname}
-                  </a>
+                  {user.documents_details.adharCard && (
+                    <a
+                      href={`http://localhost:8000/${user.documents_details.adharCard.src.replace(
+                        /\\/g,
+                        "/"
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {user.documents_details.adharCard.orgname}
+                    </a>
+                  )}
                 </Col>
               </Row>
               <Row>
@@ -290,13 +319,18 @@ const PreviewAll = () => {
                   <strong>High School Marksheet:</strong>
                 </Col>
                 <Col md={6}>
-                  <a
-                    href={user.documents_details.x_marksheet.src}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {user.documents_details.x_marksheet.orgname}
-                  </a>
+                  {user.documents_details.x_marksheet && (
+                    <a
+                      href={`http://localhost:8000/${user.documents_details.x_marksheet.src.replace(
+                        /\\/g,
+                        "/"
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {user.documents_details.x_marksheet.orgname}
+                    </a>
+                  )}
                 </Col>
               </Row>
               <Row>
@@ -304,13 +338,18 @@ const PreviewAll = () => {
                   <strong>Intermediate Marksheet:</strong>
                 </Col>
                 <Col md={6}>
-                  <a
-                    href={user.documents_details.xii_marksheet.src}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {user.documents_details.xii_marksheet.orgname}
-                  </a>
+                  {user.documents_details.xii_marksheet && (
+                    <a
+                      href={`http://localhost:8000/${user.documents_details.xii_marksheet.src.replace(
+                        /\\/g,
+                        "/"
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {user.documents_details.xii_marksheet.orgname}
+                    </a>
+                  )}
                 </Col>
               </Row>
               <Row>
@@ -318,13 +357,18 @@ const PreviewAll = () => {
                   <strong>Graduation Marksheet:</strong>
                 </Col>
                 <Col md={6}>
-                  <a
-                    href={user.documents_details.graduationMarksheet.src}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {user.documents_details.graduationMarksheet.orgname}
-                  </a>
+                  {user.documents_details.graduationMarksheet && (
+                    <a
+                      href={`http://localhost:8000/${user.documents_details.graduationMarksheet.src.replace(
+                        /\\/g,
+                        "/"
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {user.documents_details.graduationMarksheet.orgname}
+                    </a>
+                  )}
                 </Col>
               </Row>
               <Row>
@@ -332,22 +376,45 @@ const PreviewAll = () => {
                   <strong>Offer Letters:</strong>
                 </Col>
                 <Col md={6}>
-                  {user.documents_details.offerLetter.map((doc) => (
-                    <div key={doc._id}>
-                      <a
-                        href={doc.src}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {doc.orgname}
-                      </a>
-                    </div>
-                  ))}
+                  {user.documents_details.offerLetter &&
+                    user.documents_details.offerLetter.map((doc, index) => (
+                      <div key={index}>
+                        <a
+                          href={`http://localhost:8000/${doc.src.replace(
+                            /\\/g,
+                            "/"
+                          )}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {doc.orgname}
+                        </a>
+                      </div>
+                    ))}
                 </Col>
               </Row>
             </Card.Body>
           </Card>
         )}
+
+        <Modal show={showModal} onHide={() => setShowModal(false)} size="xl">
+          <Modal.Header closeButton>
+            <Modal.Title>Document Preview</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <iframe
+              src={pdfUrl}
+              style={{ width: "100%", height: "600px" }}
+              title="PDF Viewer"
+            ></iframe>
+          </Modal.Body>
+          <Modal.Footer>
+            <button variant="secondary" onClick={() => setShowModal(false)}>
+              Close
+            </button>
+          </Modal.Footer>
+        </Modal>
+
         <div className="mb-4">
           <button className="cancel-button" onClick={() => navigate(-1)}>
             Go Back

@@ -1,0 +1,65 @@
+.verification-container {
+    background-color: #f7f7f7;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 500px;
+    margin: 50px auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-family: 'Arial, sans-serif';
+}
+
+.verification-container h1 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.verification-container h2 {
+    font-size: 20px;
+    color: #666;
+}
+
+.verification-container .verified {
+    color: green;
+    font-weight: bold;
+}
+
+.verification-container .not-verified {
+    color: red;
+    font-weight: bold;
+}
+
+.admin-message {
+    margin-top: 20px;
+    background-color: #fff3cd;
+    border-left: 4px solid #ffeeba;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.admin-message h3 {
+    margin: 0 0 10px 0;
+    color: #856404;
+}
+
+.admin-message p {
+    margin: 0;
+    color: #856404;
+}
+button {
+  background-color: #0f2e10;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+button:hover {
+  background-color: #45a049;
+  transform: scale(1.05);
+}
