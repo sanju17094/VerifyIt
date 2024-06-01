@@ -1,12 +1,11 @@
-
-
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Dropdown, Form, Button } from 'react-bootstrap';
 import axios from 'axios';
+import { useParams } from "react-router-dom";
 import './FieldManagement.css';
 
-
 function FieldManagement() {
+  const { _id } = useParams();
   const [data, setData] = useState({});
   const [selectedFields, setSelectedFields] = useState([]);
   const [selectedPrograms, setSelectedPrograms] = useState([]);
@@ -14,15 +13,17 @@ function FieldManagement() {
   const [selectedProfessionalDetails, setSelectedProfessionalDetails] = useState([]);
   const [selectedDocumentsDetails, setSelectedDocumentsDetails] = useState([]);
 
+  console.log(data, "DATA<---------------------")
+
   useEffect(() => {
-    axios.get('http://localhost:8000/api/v1/Verifyit/users/get-id/665712fa66b5401e28ee4a34')
+    axios.get(`http://localhost:8000/api/v1/Verifyit/users/get-id/${_id}`)
       .then(response => {
         setData(response.data.data);
       })
       .catch(error => {
         console.error('Error fetching data:', error);
       });
-  }, []);
+  }, [_id]);
 
   const handleFieldSelect = (field) => {
     const index = selectedFields.indexOf(field);
@@ -84,9 +85,9 @@ function FieldManagement() {
   };
 
   const renderPersonalDetails = (details) => (
-    <Row>
-     <h3>Personal Details</h3>
-      <Col md={6}>
+    <Row className="selected-details">
+      <h3>Personal Details</h3>
+      <Col md={4}>
         {selectedPersonalDetails.includes('Name') && <p>Name: {details.first_name} {details.last_name}</p>}
         {selectedPersonalDetails.includes('Email') && <p>Email: {details.email}</p>}
         {selectedPersonalDetails.includes('Mobile') && <p>Mobile: {details.mobile}</p>}
@@ -94,18 +95,25 @@ function FieldManagement() {
           <p>Location: {details.personal_details.location.address}, {details.personal_details.location.city}, {details.personal_details.location.state}, {details.personal_details.location.country}, {details.personal_details.location.zipcode}</p>
         )}
       </Col>
-      <Col md={6}>
+      <Col md={4}>
         {selectedPersonalDetails.includes('Gender') && <p>Gender: {details.personal_details.gender}</p>}
         {selectedPersonalDetails.includes('DOB') && <p>Date of Birth: {new Date(details.personal_details.dob).toDateString()}</p>}
         {selectedPersonalDetails.includes('ID Proof') && <p>ID Proof: {details.personal_details.idProof}</p>}
         {selectedPersonalDetails.includes('ID Proof Number') && <p>ID Proof Number: {details.personal_details.idProofNumber}</p>}
       </Col>
+      <Col md={4}>
+        {selectedPersonalDetails.includes('Profile Picture') && details.documents_details.profilePhoto && (
+          <div>
+            <img src={`http://localhost:8000/${details.documents_details.profilePhoto.src.replace(/\\/g, '/')}`} alt="Profile" style={{ width: '100px', height: '100px' }} />
+          </div>
+        )}
+      </Col>
     </Row>
   );
 
   const renderEducationalDetails = (details) => (
-    <Row>
-     <h3>Educational Details</h3>
+    <Row className="selected-details">
+      <h3>Educational Details</h3>
       {selectedPrograms.map((program, index) => (
         <Col md={6} key={index}>
           <h4>{program.program} - {program.board_university}</h4>
@@ -120,8 +128,8 @@ function FieldManagement() {
   );
 
   const renderProfessionalDetails = (details) => (
-    <Row>
-     <h3>Professional Details</h3>
+    <Row className="selected-details">
+      <h3>Professional Details</h3>
       {selectedProfessionalDetails.map((job, index) => (
         <Col md={6} key={index}>
           <h4>{job.company_name} - {job.job_title}</h4>
@@ -138,29 +146,26 @@ function FieldManagement() {
   );
 
   const renderDocumentsDetails = (details) => (
-    <Row>
-     <h3>Documents Details</h3>
+    <Row className="selected-details">
+      <h3>Documents Details</h3>
       <Col md={6}>
         {selectedDocumentsDetails.includes('Adhar Card') && (
-          <p>Adhar Card: <a href={details.documents_details.adharCard.src}>{details.documents_details.adharCard.orgname}</a></p>
-        )}
-        {selectedDocumentsDetails.includes('Profile Photo') && (
-          <p>Profile Photo: <a href={details.documents_details.profilePhoto.src}>{details.documents_details.profilePhoto.orgname}</a></p>
+          <p>Adhar Card: <a href={`http://localhost:8000/${details.documents_details.adharCard.src.replace(/\\/g, '/')}`}>{details.documents_details.adharCard.orgname}</a></p>
         )}
         {selectedDocumentsDetails.includes('X Marksheet') && (
-          <p>X Marksheet: <a href={details.documents_details.x_marksheet.src}>{details.documents_details.x_marksheet.orgname}</a></p>
+          <p>X Marksheet: <a href={`http://localhost:8000/${details.documents_details.x_marksheet.src.replace(/\\/g, '/')}`}>{details.documents_details.x_marksheet.orgname}</a></p>
         )}
       </Col>
       <Col md={6}>
         {selectedDocumentsDetails.includes('XII Marksheet') && (
-          <p>XII Marksheet: <a href={details.documents_details.xii_marksheet.src}>{details.documents_details.xii_marksheet.orgname}</a></p>
+          <p>XII Marksheet: <a href={`http://localhost:8000/${details.documents_details.xii_marksheet.src.replace(/\\/g, '/')}`}>{details.documents_details.xii_marksheet.orgname}</a></p>
         )}
         {selectedDocumentsDetails.includes('Graduation Marksheet') && (
-          <p>Graduation Marksheet: <a href={details.documents_details.graduationMarksheet.src}>{details.documents_details.graduationMarksheet.orgname}</a></p>
+          <p>Graduation Marksheet: <a href={`http://localhost:8000/${details.documents_details.graduationMarksheet.src.replace(/\\/g, '/')}`}>{details.documents_details.graduationMarksheet.orgname}</a></p>
         )}
         {selectedDocumentsDetails.includes('Offer Letter') && (
           details.documents_details.offerLetter.map((doc, idx) => (
-            <p key={idx}>Offer Letter: <a href={doc.src}>{doc.orgname}</a></p>
+            <p key={idx}>Offer Letter: <a href={`http://localhost:8000/${doc.src.replace(/\\/g, '/')}`}>{doc.orgname}</a></p>
           ))
         )}
       </Col>
@@ -172,9 +177,9 @@ function FieldManagement() {
       case 'Personal Details':
         return renderPersonalDetails(data);
       case 'Educational Details':
-        return renderEducationalDetails(data.educational_details);
+        return renderEducationalDetails(data);
       case 'Professional Details':
-        return renderProfessionalDetails(data.professional_details.details);
+        return renderProfessionalDetails(data);
       case 'Documents Details':
         return renderDocumentsDetails(data);
       default:
@@ -198,7 +203,7 @@ function FieldManagement() {
           <Form>
             {['Personal Details', 'Educational Details', 'Professional Details', 'Documents Details'].map((field, index) => (
               <div key={index}>
-                <Form.Check 
+                <Form.Check
                   type="checkbox"
                   label={field}
                   onChange={() => handleFieldSelect(field)}
@@ -212,8 +217,8 @@ function FieldManagement() {
                           Select Personal Details
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                          {['Name', 'Email', 'Mobile', 'Location', 'Gender', 'DOB', 'ID Proof', 'ID Proof Number'].map((detail, idx) => (
-                            <Form.Check 
+                          {['Name', 'Email', 'Mobile', 'Location', 'Gender', 'DOB', 'ID Proof', 'ID Proof Number', 'Profile Picture'].map((detail, idx) => (
+                            <Form.Check
                               key={idx}
                               type="checkbox"
                               label={detail}
@@ -231,7 +236,7 @@ function FieldManagement() {
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
                           {data.educational_details && data.educational_details.education.map((program, index) => (
-                            <Form.Check 
+                            <Form.Check
                               key={index}
                               type="checkbox"
                               label={`${program.program} - ${program.board_university}`}
@@ -249,7 +254,7 @@ function FieldManagement() {
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
                           {data.professional_details && data.professional_details.details.map((job, index) => (
-                            <Form.Check 
+                            <Form.Check
                               key={index}
                               type="checkbox"
                               label={`${job.company_name} - ${job.job_title}`}
@@ -266,8 +271,8 @@ function FieldManagement() {
                           Select Documents Details
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                          {['Adhar Card', 'Profile Photo', 'X Marksheet', 'XII Marksheet', 'Graduation Marksheet', 'Offer Letter'].map((detail, idx) => (
-                            <Form.Check 
+                          {['Adhar Card', 'X Marksheet', 'XII Marksheet', 'Graduation Marksheet', 'Offer Letter'].map((detail, idx) => (
+                            <Form.Check
                               key={idx}
                               type="checkbox"
                               label={detail}
@@ -285,14 +290,14 @@ function FieldManagement() {
           </Form>
         </Col>
         {/* Main Content */}
-        <Col md={9}>
-          <h4>Selected Details</h4>
+        <Col md={9} className="main-content">
+          <h4>Selected Details</h4><Button variant="danger" onClick={clearSelection}>Clear Selection</Button>
           {selectedFields.map((field, index) => (
             <div key={index}>
               {renderDetails(field)}
             </div>
           ))}
-          <Button variant="danger" onClick={clearSelection}>Clear Selection</Button>
+
         </Col>
       </Row>
     </Container>
@@ -300,4 +305,3 @@ function FieldManagement() {
 }
 
 export default FieldManagement;
-

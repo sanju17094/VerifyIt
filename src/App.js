@@ -15,7 +15,7 @@ function App() {
   return (
     <Router>
       <Routes>
-      <Route path="/fieldmanagement" element={<FieldManagement/>}/>
+      <Route path="/fieldmanagement/:_id" element={<FieldManagement/>}/>
          <Route path="/" element={<Loginadmin />} />
         <Route path="*" element={<Loginadmin />} />
         <Route path="/" element={<CheckValidate />}>

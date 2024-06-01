@@ -28,7 +28,7 @@ function UserList() {
 
   const fetchData = async () => {
     try {
-      const apiUrl = `https://11951e54e5139431c2affc92e6e27798.serveo.net/api/v1/Verifyit/usersList/get?page=${currentPage}&limit=${itemsPerPage}&search=${searchQuery}`;
+      const apiUrl = `http://localhost:8000/api/v1/Verifyit/usersList/get?page=${currentPage}&limit=${itemsPerPage}&search=${searchQuery}`;
       const response = await fetch(apiUrl);
       const result = await response.json();
 
@@ -219,7 +219,7 @@ function UserList() {
                     </td>
                     <td>
                       <div style={{ display: "flex" }}>
-                        <Link to="/fieldmanagement">
+                        <Link to={`/fieldmanagement/${user._id}`}>
                           <Button variant="success" className="view-more-button">View More</Button>
                         </Link>
                       </div>

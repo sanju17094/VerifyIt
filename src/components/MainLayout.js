@@ -11,7 +11,7 @@ import { BiCategoryAlt } from "react-icons/bi";
 import { Layout, Menu, theme } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
-import logoImage from "../Khelo Indore Logo/Group 86.png";
+import logoImage from "../Khelo Indore Logo/Verify_logo.png";
 import "../../src/MainLayout.css";
 import { useSelector } from "react-redux";
 
@@ -40,9 +40,9 @@ const MainLayout = () => {
       >
         <div className={`sidelogo_${themeColor}`}>
           <h2 className="text-white fs-5 text-center py-3 mb-0">
-            <span className="sm-logo">KI</span>
+            <span className="sm-logo">VI</span>
             <img src={logoImage} alt="Khelo Indore Logo" className="lg-logo" />
-            <span className="lg-logo"></span>
+            <span className="lg-logo">VerifyIt</span>
           </h2>
         </div>
         <Menu
