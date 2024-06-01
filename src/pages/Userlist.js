@@ -52,7 +52,7 @@ function UserList() {
       "Last Name": row.last_name,
       Email: row.email,
       Mobile: row.mobile,
-      Status: row.status ? "Approved" : "Pending",
+      Status: row.verified ? "Approved" : "Pending",
     }));
 
     setCsvData(formattedData);
@@ -184,7 +184,7 @@ function UserList() {
                     content={
                       <Select
                         placeholder="Select status"
-                        onChange={(value) => handleColumnFilter("status", value)}
+                        onChange={(value) => handleColumnFilter("varified", value)}
                         style={{ width: 190 }}
                       >
                         <Option value="all">All</Option>
@@ -211,11 +211,11 @@ function UserList() {
                     <td>{user.mobile}</td>
                     <td
                       style={{
-                        color: user.status ? "#4fd104" : "#ff0000",
+                        color: user.verified ? "#4fd104" : "#ff0000",
                         fontWeight: "bold",
                       }}
                     >
-                      {user.status ? "Approved" : "Pending"}
+                      {user.verified ? "Approved" : "Pending"}
                     </td>
                     <td>
                       <div style={{ display: "flex" }}>
