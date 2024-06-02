@@ -51,10 +51,7 @@ const ProfessionalDetails = () => {
         const data = result.data.details;
 
         const formattedData = data.map((item) => {
-          const parseDate = (dateString) => {
-            const date = new Date(dateString);
-            return isNaN(date) ? "" : date.toISOString().split("T")[0];
-          };
+     
 
           return {
             companyName: item.company_name || "",
@@ -62,8 +59,8 @@ const ProfessionalDetails = () => {
             location: item.location || "",
             positionType: item.position_type || "",
             companySector: item.company_sector || "",
-            startTime: parseDate(item.start_date),
-            endTime: parseDate(item.end_date),
+            startTime: new Date(item.start_time).toISOString().split("T")[0],
+            endTime: new Date(item.end_time).toISOString().split("T")[0],
             salary: item.salary || "",
             moreDetails: item.more_details || "",
           };
