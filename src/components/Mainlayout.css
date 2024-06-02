@@ -1,4 +1,4 @@
-.main-container {
+.main-auth {
     display: flex;
 }
 
@@ -13,6 +13,11 @@
     left: 0;
     z-index: 100; 
   }
+  
+  .sidebar h5 .fa-check {
+    border: 1px solid red; 
+  }
+  
 
 .sidebar h5 {
     font-size: 18px; 

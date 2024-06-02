@@ -7,10 +7,11 @@ import {
   Spinner,
   Alert,
   Modal,
+  Button,
 } from "react-bootstrap";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
+import {jwtDecode} from "jwt-decode";
 
 const PreviewAll = () => {
   const [user, setUser] = useState(null);
@@ -20,9 +21,10 @@ const PreviewAll = () => {
   const [showModal, setShowModal] = useState(false);
   const { _id } = useParams();
   const navigate = useNavigate();
-const token = localStorage.getItem('token');
-const decode = jwtDecode(token);
-const id = decode.userID;
+  const token = localStorage.getItem('token');
+  const decode = jwtDecode(token);
+  const id = decode.userID;
+
   useEffect(() => {
     const fetchDetails = async () => {
       try {
@@ -40,17 +42,16 @@ const id = decode.userID;
     fetchDetails();
   }, []);
 
-  const handleSubmit = async() => {
+  const handleSubmit = async () => {
     console.log("Submit clicked");
     const response = await fetch(
       `http://localhost:8000/api/v1/Verifyit/submit/all/${id}`
     );
     const result = await response.json();
-    console.log("submit document result->>>",result);
-    if(!result.success){
-      console.log("there some error in submit the documents");
-    }else{
-      
+    console.log("submit document result->>>", result);
+    if (!result.success) {
+      console.log("There is some error in submitting the documents");
+    } else {
       navigate("/verification-status");
     }
   };
@@ -59,6 +60,8 @@ const id = decode.userID;
     setPdfUrl(url);
     setShowModal(true);
   };
+
+  const handleCloseModal = () => setShowModal(false);
 
   if (loading) {
     return (
@@ -301,16 +304,9 @@ const id = decode.userID;
                 </Col>
                 <Col md={6}>
                   {user.documents_details.adharCard && (
-                    <a
-                      href={`http://localhost:8000/${user.documents_details.adharCard.src.replace(
-                        /\\/g,
-                        "/"
-                      )}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
+                    <Button variant="link" onClick={() => handlePdfClick(`http://localhost:8000/${user.documents_details.adharCard.src.replace(/\\/g, "/")}`)}>
                       {user.documents_details.adharCard.orgname}
-                    </a>
+                    </Button>
                   )}
                 </Col>
               </Row>
@@ -320,16 +316,9 @@ const id = decode.userID;
                 </Col>
                 <Col md={6}>
                   {user.documents_details.x_marksheet && (
-                    <a
-                      href={`http://localhost:8000/${user.documents_details.x_marksheet.src.replace(
-                        /\\/g,
-                        "/"
-                      )}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
+                    <Button variant="link" onClick={() => handlePdfClick(`http://localhost:8000/${user.documents_details.x_marksheet.src.replace(/\\/g, "/")}`)}>
                       {user.documents_details.x_marksheet.orgname}
-                    </a>
+                    </Button>
                   )}
                 </Col>
               </Row>
@@ -339,16 +328,9 @@ const id = decode.userID;
                 </Col>
                 <Col md={6}>
                   {user.documents_details.xii_marksheet && (
-                    <a
-                      href={`http://localhost:8000/${user.documents_details.xii_marksheet.src.replace(
-                        /\\/g,
-                        "/"
-                      )}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
+                    <Button variant="link" onClick={() => handlePdfClick(`http://localhost:8000/${user.documents_details.xii_marksheet.src.replace(/\\/g, "/")}`)}>
                       {user.documents_details.xii_marksheet.orgname}
-                    </a>
+                    </Button>
                   )}
                 </Col>
               </Row>
@@ -358,16 +340,9 @@ const id = decode.userID;
                 </Col>
                 <Col md={6}>
                   {user.documents_details.graduationMarksheet && (
-                    <a
-                      href={`http://localhost:8000/${user.documents_details.graduationMarksheet.src.replace(
-                        /\\/g,
-                        "/"
-                      )}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
+                    <Button variant="link" onClick={() => handlePdfClick(`http://localhost:8000/${user.documents_details.graduationMarksheet.src.replace(/\\/g, "/")}`)}>
                       {user.documents_details.graduationMarksheet.orgname}
-                    </a>
+                    </Button>
                   )}
                 </Col>
               </Row>
@@ -379,16 +354,9 @@ const id = decode.userID;
                   {user.documents_details.offerLetter &&
                     user.documents_details.offerLetter.map((doc, index) => (
                       <div key={index}>
-                        <a
-                          href={`http://localhost:8000/${doc.src.replace(
-                            /\\/g,
-                            "/"
-                          )}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
+                        <Button variant="link" onClick={() => handlePdfClick(`http://localhost:8000/${doc.src.replace(/\\/g, "/")}`)}>
                           {doc.orgname}
-                        </a>
+                        </Button>
                       </div>
                     ))}
                 </Col>
@@ -397,22 +365,13 @@ const id = decode.userID;
           </Card>
         )}
 
-        <Modal show={showModal} onHide={() => setShowModal(false)} size="xl">
+        <Modal show={showModal} onHide={handleCloseModal} size="xl">
           <Modal.Header closeButton>
             <Modal.Title>Document Preview</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <iframe
-              src={pdfUrl}
-              style={{ width: "100%", height: "600px" }}
-              title="PDF Viewer"
-            ></iframe>
+            <iframe src={pdfUrl} style={{ width: '100%', height: '600px' }} title="PDF Viewer"></iframe>
           </Modal.Body>
-          <Modal.Footer>
-            <button variant="secondary" onClick={() => setShowModal(false)}>
-              Close
-            </button>
-          </Modal.Footer>
         </Modal>
 
         <div className="mb-4">

@@ -65,6 +65,10 @@ mb-4 {
   font-weight: bold;
 }
 
+.cancel-button:hover {
+  background-color: #5d629f !important;
+}
+
 .submit-button:hover {
   background-color: #1a1e5e !important;
 }
@@ -73,29 +77,6 @@ mb-4 {
   margin-left: 8px;
   color:#1a1e5e;
 }
-
-/* .add-icon{
-  background-color: #1a1e5e;
-  color: #fff;
-  font-size: 24px; 
-  padding: 1px;
-  border-radius: 7px;
-  margin: 5px;
-} */
-
-
-
-
-
-/* .container {
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  background-color: rgb(255, 255, 255);
-  font-weight: bold;
-  width: 100%;
-  overflow-y: auto; 
-} */
 
 #h3{
   font-size: 28px;
@@ -197,10 +178,62 @@ mb-4 {
   margin-right: 0.3rem;/* Space between icon and text */
 }
 
+/* Adjust container padding and font size for smaller screens */
+@media (max-width: 700px) {
+  .container {
+    padding: 10px; /* Reduce container padding */
+    font-size: 14px; /* Decrease font size */
+  }
 
+  /* Decrease font size for h3 */
+  #h3 {
+    font-size: 24px;
+  }
 
+  /* Decrease margin bottom for form group */
+  .form-group {
+    margin-bottom: 10px;
+  }
 
+  /* Adjust position and size of dropdown arrow */
+  .custom-dropdown .dropdown-arrow {
+    right: 5px; /* Adjust position */
+  }
 
+  /* Adjust padding and font size for form control */
+  .form-control {
+    padding: 8px 12px; /* Reduce padding */
+    font-size: 14px; /* Decrease font size */
+  }
+
+  /* Adjust padding and font size for buttons */
+  .submit-button,
+  .cancel-button {
+    padding: 8px 16px; /* Reduce padding */
+    font-size: 14px; /* Decrease font size */
+    margin-right: 2%; /* Adjust margin */
+  }
+
+  /* Adjust size and margin for add icon */
+  .add-icon {
+    font-size: 20px; /* Decrease icon size */
+    margin: 3px; /* Adjust margin */
+  }
+
+  /* Adjust font size and margin for custom button */
+  .custom-button {
+    height: 30px; /* Decrease button height */
+    font-size: 12px; /* Decrease font size */
+    margin-top: 10px; /* Adjust margin */
+  }
+
+  /* Adjust size and margin for plus icon within custom button */
+  .custom-button .plus-icon {
+    width: 0.8em; /* Decrease icon size */
+    height: 0.8em;
+    margin-right: 0.2rem; /* Adjust margin */
+  }
+}
 
 
 

@@ -4,7 +4,8 @@ import { Form, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
-import '../../../src/custom.css';
+// import './Custom.css';
+import logo  from '../../Assets/logo.jpeg'
 
 function SignupForm() {
   const navigate = useNavigate();
@@ -61,12 +62,11 @@ function SignupForm() {
   };
 
   return (
-    <div className="container sgn mt-5">
+    <div className="container-sgn">
       <div className="text-center mb-4">
-        <img src="/path-to-your-logo.png" alt="Logo" className="logo" />
+        <img src={logo} alt="Logo" className="logo"  /><h2>Registration</h2>
       </div>
       <Form onSubmit={handleSubmit}>
-        <h3>Registration</h3>
         {[
           { name: 'first_name', placeholder: 'Enter first name' },
           { name: 'last_name', placeholder: 'Enter last name' },

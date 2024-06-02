@@ -1,0 +1,138 @@
+/* Base Styles */
+.cnt {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto; 
+}
+
+.container-sgn {
+  max-width: 500px;
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto; 
+}
+
+h2 {
+  margin-bottom: 1.5rem;
+  color: #343a40;
+  text-align: center;
+  font-family: fangsong;
+  font-size: 35px;
+  font-weight: bold;
+}
+
+form .form-group {
+  margin-bottom: 1rem;
+}
+
+form .form-label {
+  font-weight: bold;
+  color: #495057;
+}
+
+form .form-control {
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+}
+
+form .form-control:focus {
+  box-shadow: none;
+  border-color: #80bdff;
+}
+
+form .btn {
+  background-color: #041446;
+  border-color: #041446;
+  width: 100%;
+  font-family: cursive;
+}
+
+form .btn:hover {
+  background-color: #042a54;
+  border-color: #093361;
+}
+
+form .form-control.is-invalid {
+  border-color: #dc3545;
+}
+
+form .invalid-feedback {
+  display: block;
+  color: #dc3545;
+}
+
+.alrext {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.alrext p {
+  margin: 0;
+  color: #6c757d;
+}
+
+.alrext a {
+  text-decoration: none;
+  font-weight: bold;
+  color: #01052e;
+}
+
+.alrext a:hover {
+  text-decoration: underline;
+}
+
+.logo {
+  max-width: 50px;
+}
+@media (max-width: 600px) {
+  .cnt,
+  .container-sgn {
+    max-width: 90%;
+    padding: 1.5rem;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  h2 {
+    font-size: 28px;
+    margin-bottom: 1rem;
+  }
+
+  form .form-group {
+    margin-bottom: 0.75rem;
+  }
+
+  form .form-label {
+    font-size: 0.9rem;
+  }
+
+  form .form-control {
+    font-size: 0.9rem;
+    padding: 0.5rem;
+  }
+
+  form .btn {
+    padding: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .alrext {
+    margin-top: 0.75rem;
+  }
+
+  .alrext p,
+  .alrext a {
+    font-size: 0.9rem;
+  }
+}

@@ -1,0 +1,48 @@
+.contact-us-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 40px;
+    padding-bottom: 40px;
+    background-color: none !important;
+    border-radius: 8px;
+    box-shadow: none !important;
+    width: 100%;
+    
+  }
+  
+  .contact-us-container .form-control {
+    margin-top: 5px;
+    margin-bottom: 15px;
+    text-align: left;
+    
+  }
+  
+  .contact-us-container .form-label {
+    text-align: start !important;
+    display: flex;
+    margin-bottom: 5px;
+    margin-top: 0px;
+  }
+  
+  .submit-button1 {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-top: 20px;
+    background-color: #03274f;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .submit-button:hover {
+    background-color: #35485d !important;
+  }
+
+  .thank-you-container{
+    font-family: fangsong;
+    background-color: none !important;
+    box-shadow: none !important;
+    
+  }

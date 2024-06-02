@@ -69,6 +69,7 @@ useEffect(() => {
   }
   setField();
 }, []);
+
   const handleChange = (e, index) => {
     const { name, value } = e.target;
     const updatedDetails = [...educationDetails];
@@ -77,12 +78,23 @@ useEffect(() => {
       [name]: value,
     };
     setEducationDetails(updatedDetails);
-
+    const error = validateField(name, value);
     setErrors({
       ...errors,
       [`${name}${index}`]: "",
     });
   };
+
+  const validateField = (name, value) => {
+    let error = "";
+    if (name === "program" || name === "school_college_name" || name === "board_university" || name === "score" || name === "score_type" || name === "start_date" || name === "end_date") {
+      if (!value.trim()) {
+        error = "This field is required";
+      }
+    }
+    return error;
+  };
+  
 
   let pageIndex;
   const sequenceArray = JSON.parse(localStorage.getItem("sequenceArrayData"));
@@ -116,6 +128,20 @@ useEffect(() => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Perform final validation before submission
+  const newErrors = {};
+  educationDetails.forEach((detail, index) => {
+    Object.keys(detail).forEach((key) => {
+      const error = validateField(key, detail[key]);
+      if (error) {
+        newErrors[`${key}${index}`] = error;
+      }
+    });
+  });
+  setErrors(newErrors);
+
+  // Check if there are any errors, and if not, proceed with form submission
+  if (Object.keys(newErrors).length === 0) {
     try {
       const response = await axios.post(
         "http://localhost:8000/api/v1/Verifyit/education/add",
@@ -133,7 +159,8 @@ useEffect(() => {
         error.response ? error.response.data : error.message
       );
     }
-  };
+  }
+};
 
   const addEducationDetail = () => {
     if (educationDetails.length >= 4) {
@@ -155,6 +182,12 @@ useEffect(() => {
     }
   };
 
+  const removeEducationDetail = (index) => {
+    const updatedDetails = educationDetails.filter((_, i) => i !== index);
+    setEducationDetails(updatedDetails);
+  };
+  
+
   return (
     <>
       <h3 className="mb-4 title">Educational Details</h3>
@@ -166,6 +199,7 @@ useEffect(() => {
               index={index}
               formData={detail}
               handleChange={handleChange}
+              removeEducationDetail={removeEducationDetail}
               errors={errors}
             />
           ))}

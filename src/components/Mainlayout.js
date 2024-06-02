@@ -101,7 +101,7 @@ function Mainlayout() {
   return (
     <>
       <Header />
-      <div className="main-container">
+      <div className="main-auth">
         <div className="sidebar">
           {sequenceArray.map((item, index) => (
             <h5 key={index}>

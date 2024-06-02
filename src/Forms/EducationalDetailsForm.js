@@ -68,62 +68,6 @@ const EducationDetailForm = ({
       </Row>
       <Row>
         <Col md={6}>
-          <Form.Group controlId={`formBoardUniversity${index}`}>
-            <Form.Label>
-              Board/University<span className="text-danger">*</span>
-            </Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter Board/University"
-              name="board_university"
-              value={formData.board_university}
-              onChange={(e) => handleChange(e, index)}
-              isInvalid={!!errors[`board_university${index}`]}
-              style={{ marginTop: "5px", marginBottom: "15px" }}
-            />
-            <Form.Control.Feedback type="invalid">
-              {errors[`board_university${index}`]}
-            </Form.Control.Feedback>
-          </Form.Group>
-        </Col>
-
-        <Col md={6}>
-          <Form.Group controlId={`formBranchSpecialization${index}`}>
-            <Form.Label>Branch/Specialization</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter Branch/Specialization"
-              name="branch_specialization"
-              value={formData.branch_specialization}
-              onChange={(e) => handleChange(e, index)}
-              isInvalid={!!errors[`branch_specialization${index}`]}
-              style={{ marginTop: "5px", marginBottom: "15px" }}
-            />
-            <Form.Control.Feedback type="invalid">
-              {errors[`branch_specialization${index}`]}
-            </Form.Control.Feedback>
-          </Form.Group>
-        </Col>
-        <Col md={6}>
-          <Form.Group controlId={`formScoreType${index}`}>
-            <Form.Label>
-              Score Type<span className="text-danger">*</span>
-            </Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter Score Type"
-              name="score_type"
-              value={formData.score_type}
-              onChange={(e) => handleChange(e, index)}
-              isInvalid={!!errors[`score_type${index}`]}
-              style={{ marginTop: "5px", marginBottom: "15px" }}
-            />
-            <Form.Control.Feedback type="invalid">
-              {errors[`score_type${index}`]}
-            </Form.Control.Feedback>
-          </Form.Group>
-        </Col>
-        <Col md={6}>
           <Form.Group controlId={`formScore${index}`}>
             <Form.Label>
               Score<span className="text-danger">*</span>
@@ -142,6 +86,27 @@ const EducationDetailForm = ({
             </Form.Control.Feedback>
           </Form.Group>
         </Col>
+        <Col md={6}>
+          <Form.Group controlId={`formScoreType${index}`}>
+            <Form.Label>
+              Score Type<span className="text-danger">*</span>
+            </Form.Label>
+            <Form.Select
+              value={formData.score_type}
+              onChange={(e) => handleChange(e, index)}
+              isInvalid={!!errors[`score_type${index}`]}
+              style={{ marginTop: "5px", marginBottom: "15px" }}
+            >
+              <option value="">Select Score Type</option>
+              <option value="CGPA">CGPA</option>
+              <option value="Percentage">Percentage</option>
+            </Form.Select>
+            <Form.Control.Feedback type="invalid">
+              {errors[`score_type${index}`]}
+            </Form.Control.Feedback>
+          </Form.Group>
+        </Col>
+
       </Row>
       <Row>
         <Col md={6}>
@@ -177,6 +142,44 @@ const EducationDetailForm = ({
             />
             <Form.Control.Feedback type="invalid">
               {errors[`end_date${index}`]}
+            </Form.Control.Feedback>
+          </Form.Group>
+        </Col>
+      </Row>
+      <Row>
+        <Col md={6}>
+          <Form.Group controlId={`formBoardUniversity${index}`}>
+            <Form.Label>
+              Board/University<span className="text-danger">*</span>
+            </Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter Board/University"
+              name="board_university"
+              value={formData.board_university}
+              onChange={(e) => handleChange(e, index)}
+              isInvalid={!!errors[`board_university${index}`]}
+              style={{ marginTop: "5px", marginBottom: "15px" }}
+            />
+            <Form.Control.Feedback type="invalid">
+              {errors[`board_university${index}`]}
+            </Form.Control.Feedback>
+          </Form.Group>
+        </Col>
+        <Col md={6}>
+          <Form.Group controlId={`formBranchSpecialization${index}`}>
+            <Form.Label>Branch/Specialization</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter Branch/Specialization"
+              name="branch_specialization"
+              value={formData.branch_specialization}
+              onChange={(e) => handleChange(e, index)}
+              isInvalid={!!errors[`branch_specialization${index}`]}
+              style={{ marginTop: "5px", marginBottom: "15px" }}
+            />
+            <Form.Control.Feedback type="invalid">
+              {errors[`branch_specialization${index}`]}
             </Form.Control.Feedback>
           </Form.Group>
         </Col>

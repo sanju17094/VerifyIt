@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
-import { Form, Button, Container } from 'react-bootstrap';
+import { Form, Button, Container, Spinner } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
-import '../../../src/custom.css';
-import { jwtDecode } from 'jwt-decode';
+import './Custom.css';
+import {jwtDecode} from 'jwt-decode';
+import logo  from '../../Assets/logo.jpeg'
+
+
 function LoginPage() {
-  const [identifier, setIdentifier] = useState(''); 
+  const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false); 
   const navigate = useNavigate();
 
   const handleIdentifierChange = (e) => setIdentifier(e.target.value);
@@ -16,7 +20,8 @@ function LoginPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(''); 
+    setError('');
+    setLoading(true); // Set loading to true
 
     const data = identifier.includes('@')
       ? { email: identifier, password }
@@ -46,12 +51,16 @@ function LoginPage() {
       } else {
         setError('Login failed. Please try again.');
       }
+    } finally {
+      setLoading(false); // Set loading to false
     }
   };
 
   return (
-    <Container className=" sgn mt-5">
-      <h3>Login</h3>
+    <div className="cnt">
+      <div className="text-center mb-4">
+        <img src={logo} alt="Logo" className="logo"  /><h2>Login</h2>
+      </div>
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="identifier" className="mb-3">
           <Form.Label>Email or Mobile Number</Form.Label>
@@ -61,6 +70,7 @@ function LoginPage() {
             onChange={handleIdentifierChange}
             isInvalid={!!error}
             placeholder="Enter Email Address or Mobile Number"
+            maxLength={10}
             required
           />
         </Form.Group>
@@ -78,18 +88,15 @@ function LoginPage() {
             {error}
           </Form.Control.Feedback>
         </Form.Group>
-        <Button variant="primary" type="submit">
-          Login
+        <Button className='btn' type="submit" disabled={loading}>
+          {loading ? <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" /> : 'Login'}
         </Button>
       </Form>
-      <div className=" alrext mt-3">
-      <p>Already have account? <Link to="/signup" style={{ color: '#01052e' }}>signup</Link>.</p>
-
+      <div className="alrext mt-3">
+        <p>Already have an account? <Link to="/signup" style={{ color: '#01052e' }}>Sign up</Link>.</p>
       </div>
-    </Container>
+    </div>
   );
 }
 
 export default LoginPage;
-
-

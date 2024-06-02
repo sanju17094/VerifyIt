@@ -29,7 +29,7 @@ const ProfessionalDetailsForm = ({ index, formData, handleChange, removeProfessi
               onChange={(e) => handleChange(e, index)}
               isInvalid={!!errors[`companyName${index}`]}
               style={{ marginTop: "5px", marginBottom: "15px" }}
-              required
+              
             />
             <Form.Control.Feedback type="invalid">
               {errors[`companyName${index}`]}
@@ -48,7 +48,7 @@ const ProfessionalDetailsForm = ({ index, formData, handleChange, removeProfessi
               onChange={(e) => handleChange(e, index)}
               isInvalid={!!errors[`jobTitle${index}`]}
               style={{ marginTop: "5px", marginBottom: "15px" }}
-              required
+              
             />
             <Form.Control.Feedback type="invalid">
               {errors[`jobTitle${index}`]}
@@ -66,7 +66,7 @@ const ProfessionalDetailsForm = ({ index, formData, handleChange, removeProfessi
               value={formData.location}
               onChange={(e) => handleChange(e, index)}
               style={{ marginTop: "5px", marginBottom: "15px" }}
-              required
+              
             />
           </Form.Group>
         </Col>
@@ -82,7 +82,7 @@ const ProfessionalDetailsForm = ({ index, formData, handleChange, removeProfessi
               value={formData.positionType}
               onChange={(e) => handleChange(e, index)}
               style={{ marginTop: "5px", marginBottom: "15px" }}
-              required
+              
             >
               <option value="">Select Position Type</option>
               <option value="Full-time">Full-time</option>
@@ -104,7 +104,7 @@ const ProfessionalDetailsForm = ({ index, formData, handleChange, removeProfessi
               value={formData.companySector}
               onChange={(e) => handleChange(e, index)}
               style={{ marginTop: "5px", marginBottom: "15px" }}
-              required
+              
             />
           </Form.Group>
         </Col>
@@ -119,7 +119,7 @@ const ProfessionalDetailsForm = ({ index, formData, handleChange, removeProfessi
               value={formData.salary}
               onChange={(e) => handleChange(e, index)}
               style={{ marginTop: "5px", marginBottom: "15px" }}
-              required
+              
             />
           </Form.Group>
         </Col>
@@ -135,7 +135,7 @@ const ProfessionalDetailsForm = ({ index, formData, handleChange, removeProfessi
               value={formData.startTime}
               onChange={(e) => handleChange(e, index)}
               style={{ marginTop: "5px", marginBottom: "15px" }}
-              required
+              
             />
           </Form.Group>
         </Col>
@@ -149,7 +149,7 @@ const ProfessionalDetailsForm = ({ index, formData, handleChange, removeProfessi
               value={formData.endTime}
               onChange={(e) => handleChange(e, index)}
               style={{ marginTop: "5px", marginBottom: "15px" }}
-              required
+              
             />
           </Form.Group>
         </Col>

@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import jwtDecode from 'jwt-decode'; // Import jwt-decode
-import '../../../src/custom.css';
+// import './Custom.css';
 
 function OTPPage() {
   const [otp, setOtp] = useState('');
@@ -56,7 +56,7 @@ function OTPPage() {
 
   return (
     <div className=" sgn container mt-5">
-      <h3>Enter OTP</h3>
+      <h2>Enter OTP</h2>
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="otp" className="mb-3">
           <Form.Label>OTP</Form.Label>

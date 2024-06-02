@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Form } from "react-bootstrap";
+import { Container, Form, Alert } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
@@ -24,6 +24,7 @@ const ProfessionalDetails = () => {
   ]);
 
   const [errors, setErrors] = useState({});
+  const [formError, setFormError] = useState("");
   const navigate = useNavigate();
   const ProfessionalDoc = ["job1", "job2", "job3"];
   const token = localStorage.getItem("token");
@@ -76,6 +77,7 @@ const ProfessionalDetails = () => {
     }
     setField();
   }, []);
+
   const handleChange = (e, index) => {
     const { name, value } = e.target;
     const updatedDetails = [...professionalDetails];
@@ -90,6 +92,22 @@ const ProfessionalDetails = () => {
       ...errors,
       [`${name}${index}`]: "",
     });
+  };
+
+  const validateField = (name, value) => {
+    let error = "";
+    if (name === "companyName" || name === "jobTitle" || name === "location"|| name === "positionType" || name === "companySector" || name === "startTime" || name === "endTime" || name === "salary") {
+      if (!value.trim()) {
+        error = "This field is required";
+      }
+    }
+    if (name === "salary") {
+      const regex = /^\d+(\.\d{1,2})?$/;
+      if (!regex.test(value)) {
+        error = "Please enter a valid salary amount";
+      }
+    }
+    return error;
   };
 
   let index;
@@ -124,6 +142,18 @@ const ProfessionalDetails = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+  const newErrors = {};
+  professionalDetails.forEach((detail, index) => {
+    Object.keys(detail).forEach((key) => {
+      const error = validateField(key, detail[key]);
+      if (error) {
+        newErrors[`${key}${index}`] = error;
+      }
+    });
+  });
+  setErrors(newErrors);
+
+if (Object.keys(newErrors).length === 0) {
     const details = professionalDetails.map((detail) => ({
       company_name: detail.companyName,
       job_title: detail.jobTitle,
@@ -153,7 +183,8 @@ const ProfessionalDetails = () => {
         error.response ? error.response.data : error.message
       );
     }
-  };
+  }
+};
 
   const addProfessionalDetail = () => {
     if (professionalDetails.length >= 3) {
@@ -185,6 +216,7 @@ const ProfessionalDetails = () => {
     <>
       <h3 className="mb-4 title">Professional Details</h3>
       <Container>
+      {formError && <Alert variant="danger">{formError}</Alert>} 
         <Form onSubmit={handleSubmit}>
           {professionalDetails.map((detail, index) => (
             <ProfessionalDetailsForm
