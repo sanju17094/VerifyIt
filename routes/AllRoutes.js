@@ -1,9 +1,11 @@
 const express = require("express");
 const router = express.Router();
-
+//mail
+const mail = require("../controllers/NodeMailerController");
+// router.post("/mail/send", mail.mail);
 // User Routes
 const user = require("../controllers/UserController");
-router.post("/signup", user.signup);
+router.post("/signup", user.signup,mail.mail);
 router.post("/signup/verify-otp", user.signupVerifyOTP);
 router.post("/login/password", user.loginWithPassword);
 router.post("/login/otp/mobile", user.loginUserWithMobile);
@@ -86,7 +88,5 @@ router.post("/contact-us/create", contactUs.createContactUs);
 router.get("/contact-us/get", contactUs.getContactUsEntries);
 
 
-//mail
-const mail = require("../controllers/NodeMailerController");
-router.post("/mail/send", mail.mail);
+
 module.exports = router;

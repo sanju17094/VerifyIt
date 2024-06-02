@@ -2,8 +2,8 @@ const nodemailer = require("nodemailer");
 
 exports.mail = async (req, res) => {
   try {
-    const { senderEmail, senderName, recipientEmail, subject, text } = req.body;
-
+    const { senderEmail, senderName, recipientEmail, subject, text ,token} = req.body.mail;
+console.log("token in mail",token);
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -20,10 +20,10 @@ exports.mail = async (req, res) => {
       text: text,
     });
 
-    res.json({
+    res.status(200).json({
       success: true,
       message: "Email sent successfully",
-      data: info,
+      token:token
     });
   } catch (err) {
     console.error("Error sending email:", err);

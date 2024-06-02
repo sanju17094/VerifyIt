@@ -4,7 +4,7 @@ const otpGenerator = require("otp-generator");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
-exports.signup = async (req, res) => {
+exports.signup = async (req, res,next) => {
   try {
     const {
       first_name,
@@ -129,12 +129,20 @@ exports.signup = async (req, res) => {
       email: email,
     };
     const token = jwt.sign(payload, process.env.JWT_AUTH, { expiresIn: "5m" });
-
-    return res.status(200).json({
-      success: true,
-      message: "Please verify your mobile number and email",
-      token,
-    });
+    req.body.mail = {
+     senderEmail:"iamvikas.j30n@gmail.com",
+     senderName:" Vikas Parmar",
+     recipientEmail:email,
+     subject:"OTP Verfication",
+     text:`Your Verification OTP is -> ${otp}`,
+     token:token
+    }
+next();
+    // return res.status(200).json({
+    //   success: true,
+    //   message: "Please verify your mobile number and email",
+    //   token,
+    // });
   } catch (err) {
     if (err.code === 11000) {
       const duplicateKey = Object.keys(err.keyPattern)[0];
@@ -156,6 +164,7 @@ exports.signupVerifyOTP = async (req, res) => {
   try {
     const { otp } = req.body;
     const token = req.header("Authorization").replace("Bearer ", "");
+    console.log("Token->>",token)
     const decoded = jwt.verify(token, process.env.JWT_AUTH);
     const mobile = decoded.mobile;
     const email = decoded.email;
