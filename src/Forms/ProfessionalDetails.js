@@ -97,7 +97,7 @@ const ProfessionalDetails = () => {
   const validateField = (name, value) => {
     let error = "";
     if (name === "companyName" || name === "jobTitle" || name === "location"|| name === "positionType" || name === "companySector" || name === "startTime" || name === "endTime" || name === "salary") {
-      if (!value.trim()) {
+      if (typeof value !== "string" || !value.trim()) {
         error = "This field is required";
       }
     }

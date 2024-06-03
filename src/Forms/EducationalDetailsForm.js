@@ -92,6 +92,7 @@ const EducationDetailForm = ({
               Score Type<span className="text-danger">*</span>
             </Form.Label>
             <Form.Select
+              name="score_type"
               value={formData.score_type}
               onChange={(e) => handleChange(e, index)}
               isInvalid={!!errors[`score_type${index}`]}
@@ -106,7 +107,6 @@ const EducationDetailForm = ({
             </Form.Control.Feedback>
           </Form.Group>
         </Col>
-
       </Row>
       <Row>
         <Col md={6}>

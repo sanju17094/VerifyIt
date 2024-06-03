@@ -1,10 +1,10 @@
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Form } from "react-bootstrap";
 import EducationDetailForm from "./EducationalDetailsForm";
 import "./FormStyle.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
+import {jwtDecode} from "jwt-decode";
 
 const EducationalDetails = () => {
   const [educationDetails, setEducationDetails] = useState([
@@ -13,7 +13,7 @@ const EducationalDetails = () => {
       school_college_name: "",
       board_university: "",
       score: "",
-      score_type: "", // Added score_type field
+      score_type: "",
       start_date: "",
       end_date: "",
       branch_specialization: "",
@@ -36,39 +36,38 @@ const EducationalDetails = () => {
     }
   }
 
-useEffect(() => {
-  async function setField() {
-    try {
-      const response = await fetch(
-        `http://localhost:8000/api/v1/Verifyit/education-details/get-id/${user_id}`
-      );
-      const result = await response.json();
-      if (!result.success) {
-        return;
+  useEffect(() => {
+    async function setField() {
+      try {
+        const response = await fetch(
+          `http://localhost:8000/api/v1/Verifyit/education-details/get-id/${user_id}`
+        );
+        const result = await response.json();
+        if (!result.success) {
+          return;
+        }
+        console.log("result ka data ", result);
+
+        const data = result.data.education;
+
+        const formattedData = data.map((item) => ({
+          program: item.program,
+          school_college_name: item.school_college_name,
+          board_university: item.board_university,
+          score: item.score,
+          score_type: item.score_type,
+          start_date: new Date(item.start_date).toISOString().split("T")[0],
+          end_date: new Date(item.end_date).toISOString().split("T")[0],
+          branch_specialization: item.branch_specialization,
+        }));
+
+        setEducationDetails(formattedData);
+      } catch (error) {
+        console.error("Error fetching education details: ", error);
       }
-      console.log("result ka data ", result);
-
-      const data = result.data.education;
-
-   
-      const formattedData = data.map((item) => ({
-        program: item.program,
-        school_college_name: item.school_college_name,
-        board_university: item.board_university,
-        score: item.score,
-        score_type: item.score_type,
-        start_date: new Date(item.start_date).toISOString().split("T")[0],
-        end_date: new Date(item.end_date).toISOString().split("T")[0],
-        branch_specialization: item.branch_specialization,
-      }));
-
-      setEducationDetails(formattedData);
-    } catch (error) {
-      console.error("Error fetching education details: ", error);
     }
-  }
-  setField();
-}, []);
+    setField();
+  }, [user_id]);
 
   const handleChange = (e, index) => {
     const { name, value } = e.target;
@@ -79,22 +78,29 @@ useEffect(() => {
     };
     setEducationDetails(updatedDetails);
     const error = validateField(name, value);
-    setErrors({
-      ...errors,
-      [`${name}${index}`]: "",
-    });
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [`${name}${index}`]: error,
+    }));
   };
 
   const validateField = (name, value) => {
     let error = "";
-    if (name === "program" || name === "school_college_name" || name === "board_university" || name === "score" || name === "score_type" || name === "start_date" || name === "end_date") {
+    if (
+      name === "program" ||
+      name === "school_college_name" ||
+      name === "board_university" ||
+      name === "score" ||
+      name === "score_type" ||
+      name === "start_date" ||
+      name === "end_date"
+    ) {
       if (!value.trim()) {
         error = "This field is required";
       }
     }
     return error;
   };
-  
 
   let pageIndex;
   const sequenceArray = JSON.parse(localStorage.getItem("sequenceArrayData"));
@@ -129,38 +135,38 @@ useEffect(() => {
     e.preventDefault();
 
     // Perform final validation before submission
-  const newErrors = {};
-  educationDetails.forEach((detail, index) => {
-    Object.keys(detail).forEach((key) => {
-      const error = validateField(key, detail[key]);
-      if (error) {
-        newErrors[`${key}${index}`] = error;
-      }
-    });
-  });
-  setErrors(newErrors);
-
-  // Check if there are any errors, and if not, proceed with form submission
-  if (Object.keys(newErrors).length === 0) {
-    try {
-      const response = await axios.post(
-        "http://localhost:8000/api/v1/Verifyit/education/add",
-        {
-          education: educationDetails,
-          user_id: user_id,
+    const newErrors = {};
+    educationDetails.forEach((detail, index) => {
+      Object.keys(detail).forEach((key) => {
+        const error = validateField(key, detail[key]);
+        if (error) {
+          newErrors[`${key}${index}`] = error;
         }
-      );
+      });
+    });
+    setErrors(newErrors);
 
-      console.log(response.data); // Log the response
-      handleNext(); // Navigate to the next page only after a successful API call
-    } catch (error) {
-      console.error(
-        "API Error:",
-        error.response ? error.response.data : error.message
-      );
+    // Check if there are any errors, and if not, proceed with form submission
+    if (Object.keys(newErrors).length === 0) {
+      try {
+        const response = await axios.post(
+          "http://localhost:8000/api/v1/Verifyit/education/add",
+          {
+            education: educationDetails,
+            user_id: user_id,
+          }
+        );
+
+        console.log(response.data); // Log the response
+        handleNext(); // Navigate to the next page only after a successful API call
+      } catch (error) {
+        console.error(
+          "API Error:",
+          error.response ? error.response.data : error.message
+        );
+      }
     }
-  }
-};
+  };
 
   const addEducationDetail = () => {
     if (educationDetails.length >= 4) {
@@ -173,10 +179,10 @@ useEffect(() => {
           school_college_name: "",
           board_university: "",
           score: "",
-          score_type: "", // Added score_type field
+          score_type: "",
           start_date: "",
           end_date: "",
-          branch_specialization: "" || "NA",
+          branch_specialization: "",
         },
       ]);
     }
@@ -186,7 +192,6 @@ useEffect(() => {
     const updatedDetails = educationDetails.filter((_, i) => i !== index);
     setEducationDetails(updatedDetails);
   };
-  
 
   return (
     <>
