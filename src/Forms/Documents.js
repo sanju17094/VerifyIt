@@ -70,7 +70,7 @@ const UploadDocuments = () => {
     ["profilePhoto", "profilePhoto"],
   ]);
   console.log("keymapping",keyMapping)
-  const documentUpload = JSON.parse(localStorage.getItem("documentUpload"));
+  const [documentUpload,setDocUpload] =useState([]);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -118,6 +118,56 @@ const UploadDocuments = () => {
   const handleNext = () => {
     navigate("/preview_all");
   };
+useEffect(()=>{
+  async function fetchDoc (){
+    const response = await fetch(
+      `http://localhost:8000/api/v1/Verifyit/required/doc/fetch/${user_id}`
+    );
+    const result = await response.json();
+    console.log("required document ->>>",result.data)
+    setDocUpload(result.data); 
+    const fetchPre = await fetch(
+      `http://localhost:8000/api/v1/Verifyit//documentation/get-id/${user_id}`
+    );
+    const result2 = await fetchPre.json();
+    console.log("previews ->>>", result2.docDetails);
+    const dataResult = result2.docDetails;
+    if(dataResult){
+
+    
+
+    setFormData({
+      highSchoolDocument: dataResult.x_marksheet || "",
+      intermediateDocument: dataResult.xii_marksheet || "",
+      graduateDocument: dataResult.graduationMarksheet || "",
+      postGraduateDocument: dataResult.postGraduateDocument || "",
+      aadharCard: dataResult.adharCard || "",
+      panCard: dataResult.pan || "",
+      licence: dataResult.licence || "",
+      voterIdCard: dataResult.voterId || "",
+      offerLetter1: dataResult.offerLetter[0] || "",
+      offerLetter2: dataResult.offerLetter[1] || "",
+      offerLetter3: dataResult.offerLetter[2] || "",
+      profilePhoto: dataResult.profilePhoto || "",
+    });
+  setPreviews({
+    highSchoolDocument: dataResult.x_marksheet || "",
+    intermediateDocument: dataResult.xii_marksheet || "",
+    graduateDocument: dataResult.graduationMarksheet || "",
+    postGraduateDocument: dataResult.postGraduateDocument || "",
+    aadharCard: dataResult.adharCard || "",
+    panCard: dataResult.pan || "",
+    licence: dataResult.licence || "",
+    voterIdCard: dataResult.voterId.src || "",
+    offerLetter1: dataResult.offerLetter[0] || "",
+    offerLetter2: dataResult.offerLetter[1] || "",
+    offerLetter3: dataResult.offerLetter[2] || "",
+    profilePhoto: dataResult.profilePhoto || "",
+  }); 
+}
+}
+  fetchDoc();
+},[])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -222,7 +272,7 @@ const UploadDocuments = () => {
     if (!file) return null;
     return (
       <div style={{ marginTop: "10px" }}>
-        {type.startsWith("image/") ? (
+        {type?.startsWith("image/") ? (
           <img
             src={file}
             alt="Preview"
@@ -407,6 +457,7 @@ const UploadDocuments = () => {
                     Licence<span className="text-danger">*</span>
                   </Form.Label>
                   <Form.Control
+                  
                     type="file"
                     name="licence"
                     onChange={handleChange}
@@ -432,6 +483,7 @@ const UploadDocuments = () => {
                     Voter ID Card<span className="text-danger">*</span>
                   </Form.Label>
                   <Form.Control
+                  defaultValue={formData.voterIdCard}
                     type="file"
                     name="voterIdCard"
                     onChange={handleChange}

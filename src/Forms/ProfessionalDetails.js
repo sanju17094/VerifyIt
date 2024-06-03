@@ -101,16 +101,32 @@ const ProfessionalDetails = () => {
   }
   console.log("index of professional Details:", index);
 
-  const handleNext = () => {
-    const documentUpload = JSON.parse(localStorage.getItem("documentUpload"));
-    const size = professionalDetails.length;
-    const updatedDocumentUpload = documentUpload.concat(
-      ProfessionalDoc.slice(0, size)
-    );
-    localStorage.setItem(
-      "documentUpload",
-      JSON.stringify(updatedDocumentUpload)
-    );
+  const size = professionalDetails.length;
+  const handleNext =async () => {
+     const bodyData = {
+       type: "professional",
+       size: size,
+     };
+  
+  
+      const response = await fetch(
+        `http://localhost:8000/api/v1/Verifyit/required/doc/${user_id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(bodyData),
+        }
+      );
+  
+      if (response.ok) {
+        const responseData = await response.json();
+        console.log("Response:", responseData);
+      } else {
+        console.error("Failed to fetch:", response.statusText);
+      }
+  
     const nextPage = sequenceArray[index + 1];
     console.log("nextPage ki value", nextPage);
     const link = map1.get(nextPage);

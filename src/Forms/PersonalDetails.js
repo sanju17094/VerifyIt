@@ -101,18 +101,23 @@ setFormData({
   console.log("index of Personal Details:", index);
 
   const handleNext = async () => {
-    const bodyData = new FormData();
-    bodyData.append("type", "personal");
-    bodyData.append("value", formData.idProofType);
-    // Add size if necessary
-    // bodyData.append("size", size);
+    // const bodyData = new FormData();
+
+     const bodyData = {
+       type: "personal",
+       value: formData.idProofType,
+       
+     };
   
     try {
       const response = await fetch(
         `http://localhost:8000/api/v1/Verifyit/required/doc/${id}`,
         {
           method: "POST",
-          body: bodyData,
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(bodyData),
         }
       );
   
