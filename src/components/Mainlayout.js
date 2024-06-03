@@ -2,47 +2,39 @@ import React, { useEffect, useState } from "react";
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import Header from "../components/Navbar";
 import "./Mainlayout.css";
-import {jwtDecode} from "jwt-decode"; 
+import {jwtDecode} from "jwt-decode"; // Correct import
 
-function Mainlayout() {
+function MainLayout() {
   const navigate = useNavigate();
- 
- 
- const [sequenceArray, setSequenceArray] = useState([]);
- let id = null;
-
-
-    useEffect(() => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        console.log("Token not found", token);
-        navigate("/loginpage");
-        return;
-      }
-
-      try {
-        const decode = jwtDecode(token);
-        id = decode.userID;
-        console.log("User ID", id);
-      } catch (error) {
-        console.log("Invalid token", error);
-        navigate("/loginpage");
-      }
-    }, [navigate]);
-    
-
-
+  const [sequenceArray, setSequenceArray] = useState([]);
   const map1 = new Map();
+
   map1.set("Personal Details", "personal_details");
   map1.set("Professional Details", "professional_details");
   map1.set("Educational Details", "educational_details");
   map1.set("Documents Details", "documents");
 
   useEffect(() => {
-  
+    const token = localStorage.getItem("token");
+    if (!token || typeof token !== "string") {
+      console.log("Token not found or invalid", token);
+      navigate("/loginpage");
+      return;
+    }
+
+    let id;
+    try {
+      const decode = jwtDecode(token);
+      id = decode.userID;
+      console.log("User ID->>>>", id);
+    } catch (error) {
+      console.error("Invalid token:", error);
+      navigate("/loginpage");
+      return;
+    }
+
     async function sequenceFetch() {
-   
- try {
+      try {
         const userSequenceResponse = await fetch(
           `http://localhost:8000/api/v1/Verifyit/user-sequence/fetch/${id}`
         );
@@ -66,37 +58,56 @@ function Mainlayout() {
         console.error("Error fetching sequence:", error);
       }
     }
-      sequenceFetch();
 
-  }, []);
+    sequenceFetch();
+  }, [navigate]);
 
   useEffect(() => {
     async function setData() {
-      const payload = { sequence: sequenceArray };
-      const response = await fetch(
-        `http://localhost:8000/api/v1/Verifyit/user-sequence/set/${id}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-        }
-      );
-      console.log(
-        "sequenceArray before saving:",
-        JSON.stringify(sequenceArray)
-      );
+      const token = localStorage.getItem("token");
+      if (!token || typeof token !== "string") {
+        navigate("/loginpage");
+        return;
+      }
 
-      localStorage.setItem("sequenceArrayData", JSON.stringify(sequenceArray));
-      localStorage.setItem("map1", JSON.stringify(Array.from(map1.entries())));
-    localStorage.setItem("documentUpload", JSON.stringify([]));
+      let id;
+      try {
+        const decode = jwtDecode(token);
+        id = decode.userID;
+      } catch (error) {
+        navigate("/loginpage");
+        return;
+      }
+
+      const payload = { sequence: sequenceArray };
+      try {
+        const response = await fetch(
+          `http://localhost:8000/api/v1/Verifyit/user-sequence/set/${id}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+          }
+        );
+        console.log(
+          "sequenceArray before saving:",
+          JSON.stringify(sequenceArray)
+        );
+
+        localStorage.setItem("sequenceArrayData", JSON.stringify(sequenceArray));
+        localStorage.setItem("map1", JSON.stringify(Array.from(map1.entries())));
+        localStorage.setItem("documentUpload", JSON.stringify([]));
+      } catch (error) {
+        console.error("Error setting sequence data:", error);
+      }
     }
 
     if (sequenceArray.length > 0) {
       setData();
     }
-  }, [sequenceArray]);
+  }, [sequenceArray, navigate]);
 
   return (
     <>
@@ -109,7 +120,7 @@ function Mainlayout() {
             </h5>
           ))}
           <h5>
-            <Link to="preview_all">All Done!</Link>
+            <Link to="#">All Done!</Link>
           </h5>
         </div>
         <div className="right-container">
@@ -120,4 +131,4 @@ function Mainlayout() {
   );
 }
 
-export default Mainlayout;
+export default MainLayout;

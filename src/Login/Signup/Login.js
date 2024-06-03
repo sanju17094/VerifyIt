@@ -70,7 +70,7 @@ function LoginPage() {
             onChange={handleIdentifierChange}
             isInvalid={!!error}
             placeholder="Enter Email Address or Mobile Number"
-            maxLength={10}
+            // maxLength={10}
             required
           />
         </Form.Group>

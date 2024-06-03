@@ -9,12 +9,15 @@ const PersonalDetails = () => {
   const navigate = useNavigate();
 
   // Retrieve and decode the token from local storage
+  let id ;
   const token = localStorage.getItem("token");
   let userData = {};
   if (token) {
     try {
       const decodedToken = jwtDecode(token);
-      userData = decodedToken; // Assuming the payload contains the user data
+      userData = decodedToken; 
+      id = userData.userID;
+      // Assuming the payload contains the user data
     } catch (error) {
       console.error("Invalid token:", error);
     }
@@ -97,19 +100,37 @@ setFormData({
   }
   console.log("index of Personal Details:", index);
 
-  const handleNext = () => {
-    const documentUpload = JSON.parse(localStorage.getItem("documentUpload"));
-    if (!documentUpload.includes("profile")) {
-      documentUpload.push("profile");
-      documentUpload.push(formData.idProofType);
-      localStorage.setItem("documentUpload", JSON.stringify(documentUpload));
+  const handleNext = async () => {
+    const bodyData = new FormData();
+    bodyData.append("type", "personal");
+    bodyData.append("value", formData.idProofType);
+    // Add size if necessary
+    // bodyData.append("size", size);
+  
+    try {
+      const response = await fetch(
+        `http://localhost:8000/api/v1/Verifyit/required/doc/${id}`,
+        {
+          method: "POST",
+          body: bodyData,
+        }
+      );
+  
+      if (response.ok) {
+        const responseData = await response.json();
+        console.log("Response:", responseData);
+      } else {
+        console.error("Failed to fetch:", response.statusText);
+      }
+  
+      const nextPage = sequenceArray[index + 1];
+      const link = map1.get(nextPage);
+      navigate(`/${link}`);
+    } catch (error) {
+      console.error("Fetch error:", error);
     }
-    const nextPage = sequenceArray[index + 1];
-    console.log("nextPage ki value", nextPage);
-    const link = map1.get(nextPage);
-    console.log("link next page ki", link);
-    navigate(`/${link}`);
   };
+  
 
   const handleSubmit = async () => {
     const requestBody = {

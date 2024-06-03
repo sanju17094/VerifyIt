@@ -100,7 +100,8 @@ const EducationDetailForm = ({
             >
               <option value="">Select Score Type</option>
               <option value="CGPA">CGPA</option>
-              <option value="Percentage">Percentage</option>
+              <option value="GPA">GPA</option>
+              <option value="Percentage">%</option>
             </Form.Select>
             <Form.Control.Feedback type="invalid">
               {errors[`score_type${index}`]}

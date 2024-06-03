@@ -19,45 +19,58 @@ const HomePage = () => {
   const doubleClickRef = useRef(false); // Ref for double-click detection
 
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
 
-  if (!token) {
-    navigate("/loginpage");
-  }
-  const decode = jwtDecode(token);
-  const id = decode.userID;
+  useEffect(() => {
+    const token = localStorage.getItem("token");
 
-  let index;
+    if (!token) {
+      navigate("/loginpage");
+      return;
+    }
+
+    let id;
+    try {
+      const decode = jwtDecode(token);
+      id = decode.userID;
+      console.log("User ID->>>>", id);
+    } catch (error) {
+      console.error("Invalid token:", error);
+      navigate("/loginpage");
+      return;
+    }
+
+    async function fetchData() {
+      try {
+        const response = await fetch(
+          `http://localhost:8000/api/v1/Verifyit/fetch/submit-verification/${id}`
+        );
+        const result = await response.json();
+        setStatusPage({
+          submited: result.data.submitted,
+          verification: result.data.verified,
+          adminMessage: result.data.admin_message
+        });
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+
+    fetchData();
+  }, [navigate]);
+
   const sequenceArray = JSON.parse(localStorage.getItem("sequenceArrayData"));
   const storedMapArray = JSON.parse(localStorage.getItem("map1"));
   const map1 = new Map(storedMapArray);
 
-  if (Array.isArray(sequenceArray)) {
-    index = sequenceArray.indexOf("Personal Details");
-  } else {
-    console.error("sequenceArrayData is not a valid array");
-  }
-
   const handleNext = () => {
-    const nextPage = sequenceArray[0];
-    const link = map1.get(nextPage);
-    navigate(`/${link}`);
-  };
-
-  useEffect(() => {
-    async function fetchData() {
-      const response = await fetch(
-        `http://localhost:8000/api/v1/Verifyit/fetch/submit-verification/${id}`
-      );
-      const result = await response.json();
-      setStatusPage({
-        submited: result.data.submitted,
-        verification: result.data.verified,
-        adminMessage: result.data.admin_message
-      });
+    if (Array.isArray(sequenceArray)) {
+      const nextPage = sequenceArray[0];
+      const link = map1.get(nextPage);
+      navigate(`/${link}`);
+    } else {
+      console.error("sequenceArrayData is not a valid array");
     }
-    fetchData();
-  }, [id]);
+  };
 
   const handleContactUsClick = () => {
     setShowContactForm(true);
@@ -76,10 +89,9 @@ const HomePage = () => {
     setShowPopup(false);
   };
 
-
   return (
     <>
-      {statusPage.submited === true ? (
+      {statusPage.submited ? (
         <VerificationStatus
           submited={statusPage.submited}
           verification={statusPage.verification}
@@ -122,7 +134,7 @@ const HomePage = () => {
             {showContactForm && (
               <Card className="contact-form-card " ref={contactFormRef}>
                 <Card.Body>
-                  <ContactUsForm onSubmit={handleContactUsClick} />
+                  <ContactUsForm onSubmit={handleSubmitContactForm} />
                 </Card.Body>
               </Card>
             )}
