@@ -87,6 +87,13 @@ const contactUs = require("../controllers/ContactUsController");
 router.post("/contact-us/create", contactUs.createContactUs);
 router.get("/contact-us/get", contactUs.getContactUsEntries);
 
+//documnet uplooad required doc
+const {
+  updateUserDocuments,
+  DocUpload,
+} = require("../controllers/SequencingController");
+router.post('/required/doc/:id',updateUserDocuments);
+router.get("/required/doc/fetch/:id", DocUpload);
 
 
 module.exports = router;

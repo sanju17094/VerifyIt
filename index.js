@@ -19,6 +19,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
 app.use(express.json());
 
+
 // Import routes
 const router = require("./routes/AllRoutes");
 app.use("/api/v1/Verifyit", router);

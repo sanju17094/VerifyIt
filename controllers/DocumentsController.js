@@ -89,13 +89,14 @@ exports.getAllDocument = async(req, res) =>{
 exports.getDocumentById = async (req, res) => {
   const {id} = req.params;
   try{
-    const  docDetails = await Documents.findById(id).populate('user_id');
+    const  docDetails = await Documents.findOne({user_id:id})
     if(!docDetails){
       return res.status(400).json({
         success : false,
         message : "Document details not found"
       })
     }
+    console.log("document data",docDetails)
 
     return res.status(200).json({
       success : true,

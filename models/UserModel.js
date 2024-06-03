@@ -62,6 +62,11 @@ const userSchema = new mongoose.Schema(
     admin_message:{
       type:String,
       default:"" 
+    },
+    documet_upload_array:{
+     personal:[String],
+     education:[String],
+     professional:[String]
     }
   },
   {
