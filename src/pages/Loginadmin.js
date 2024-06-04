@@ -6,7 +6,7 @@ import { css } from '@emotion/react';
 import { ClipLoader } from 'react-spinners';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
-import logoImage from '../../src/Khelo Indore Logo/Group 88.png';
+import logoImage from '../../src/Khelo Indore Logo/Verify_logo.png';
 import '../../src/Loginadmin.css';
 import { API_URL } from '../ApiUrl';
 
@@ -91,7 +91,8 @@ function Loginadmin() {
           <div className="card mt-5">
             <div className="card-body">
             {/* <h2>Login</h2> */}
-              <img src={logoImage} alt="Logo" className="logo-image" style={{ maxWidth: '150px' }} />
+              <img src={logoImage} alt="Logo" className="logo-image ms-5" style={{ maxWidth: '100px' }} />
+              <h1>erifyIt</h1>
               <form onSubmit={formik.handleSubmit}>
                 <div className="form-group">
                   <label htmlFor="mobile" style={{ fontWeight: 'bold' }}>Mobile Number</label>

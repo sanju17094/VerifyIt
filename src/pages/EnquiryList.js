@@ -29,7 +29,7 @@ function Enquirylist() {
 
   const fetchData = async () => {
     try {
-      const apiUrl = `${API_URL}/contactUs/fetchAll?page=${currentPage}&limit=${itemsPerPage}&search=${searchQuery}`;
+      const apiUrl = `http://localhost:8000/api/v1/Verifyit/contact-us/get?page=${currentPage}&limit=${itemsPerPage}&search=${searchQuery}`;
       const response = await fetch(apiUrl);
       const result = await response.json();
 
@@ -79,7 +79,7 @@ function Enquirylist() {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = data
     .filter((row) =>
-      row.first_name.toLowerCase().includes(searchText.toLowerCase())
+      row.full_name.toLowerCase().includes(searchText.toLowerCase())
     )
     .slice(indexOfFirstItem, indexOfLastItem);
 
@@ -127,7 +127,7 @@ function Enquirylist() {
                 {currentItems.map((row, index) => (
                   <tr key={row._id}>
                     <td>{index + 1 + indexOfFirstItem}</td>
-                    <td>{row.first_name}</td>
+                    <td>{row.full_name}</td>
                     <td>{row.email}</td>
                     <td>{row.mobile}</td>
                     <td>{row.subject}</td>
@@ -155,9 +155,6 @@ function Enquirylist() {
                       ) : (
                         row.comments
                       )}
-                    </td>
-                    <td>
-                      {/* Action buttons */}
                     </td>
                   </tr>
                 ))}

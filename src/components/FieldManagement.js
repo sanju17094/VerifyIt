@@ -1,23 +1,23 @@
+
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Dropdown, Form, Button } from "react-bootstrap";
+import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import "./FieldManagement.css";
 
 function FieldManagement() {
-  const {_id}  = useParams();
-  console.log("vlaue of id->>", _id);
+  const { _id } = useParams();
   const [data, setData] = useState({});
   const [selectedFields, setSelectedFields] = useState([]);
   const [selectedPrograms, setSelectedPrograms] = useState([]);
   const [selectedPersonalDetails, setSelectedPersonalDetails] = useState([]);
-  const [selectedProfessionalDetails, setSelectedProfessionalDetails] =
-    useState([]);
+  const [selectedProfessionalDetails, setSelectedProfessionalDetails] = useState([]);
   const [selectedDocumentsDetails, setSelectedDocumentsDetails] = useState([]);
   const [adminMessage, setAdminMessage] = useState("");
+  const [dropdownVisible, setDropdownVisible] = useState({});
 
-  console.log(data, "DATA<---------------------");
-const navigate = useNavigate();
+  const navigate = useNavigate();
+
   useEffect(() => {
     axios
       .get(`http://localhost:8000/api/v1/Verifyit/users/get-id/${_id}`)
@@ -86,6 +86,13 @@ const navigate = useNavigate();
       updatedDetails.splice(index, 1);
       setSelectedDocumentsDetails(updatedDetails);
     }
+  };
+
+  const toggleDropdown = (field) => {
+    setDropdownVisible((prevState) => ({
+      ...prevState,
+      [field]: !prevState[field],
+    }));
   };
 
   const renderPersonalDetails = (details) => (
@@ -286,33 +293,32 @@ const navigate = useNavigate();
     setAdminMessage(event.target.value);
   };
 
-  const handleSendAdminMessage = async() => {
-   
+  const handleSendAdminMessage = async () => {
     console.log("Admin message sent:", adminMessage);
-   const url = `http://localhost:8000/api/v1/Verifyit/send/message-to-user/${_id}`;
+    const url = `http://localhost:8000/api/v1/Verifyit/send/message-to-user/${_id}`;
 
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ message: adminMessage }),
+    });
+    const result = await response.json();
 
-   const response = await fetch(url, {
-     method: "POST", 
-     headers: {
-       "Content-Type": "application/json", 
-     },
-     body: JSON.stringify({message:adminMessage}), 
-   });
-   const result = await response.json();
+    console.log("result ki value admin message", result);
 
-   console.log("result ki value admin message",result)
- 
     setAdminMessage("");
     navigate("/userlist");
   };
-  async function Varification(){
+
+  async function Varification() {
     const response = await fetch(
       `http://localhost:8000/api/v1/Verifyit/verify/user/${_id}`
     );
     const result = await response.json();
-    console.log("verification ki buttion ka response:->>",result);
-    navigate('/userlist')
+    console.log("verification ki buttion ka response:->>", result);
+    navigate("/userlist");
   }
 
   return (
@@ -327,7 +333,7 @@ const navigate = useNavigate();
               "Professional Details",
               "Documents Details",
             ].map((field, index) => (
-              <div key={index}>
+              <div key={index} className="field-container">
                 <Form.Check
                   type="checkbox"
                   label={field}
@@ -335,110 +341,94 @@ const navigate = useNavigate();
                   checked={selectedFields.includes(field)}
                 />
                 {selectedFields.includes(field) && (
-                  <div>
-                    {field === "Personal Details" && (
-                      <Dropdown>
-                        <Dropdown.Toggle variant="success" id="dropdown-basic">
-                          Select Personal Details
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                          {[
-                            "Name",
-                            "Email",
-                            "Mobile",
-                            "Location",
-                            "Gender",
-                            "DOB",
-                            "ID Proof",
-                            "ID Proof Number",
-                            "Profile Picture",
-                          ].map((detail, idx) => (
-                            <Form.Check
-                              key={idx}
-                              type="checkbox"
-                              label={detail}
-                              onChange={() =>
-                                handlePersonalDetailSelect(detail)
-                              }
-                              checked={selectedPersonalDetails.includes(detail)}
-                            />
-                          ))}
-                        </Dropdown.Menu>
-                      </Dropdown>
-                    )}
-                    {field === "Educational Details" && (
-                      <Dropdown>
-                        <Dropdown.Toggle variant="success" id="dropdown-basic">
-                          Select Program
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                          {data.educational_details &&
-                            data.educational_details.education.map(
-                              (program, index) => (
-                                <Form.Check
-                                  key={index}
-                                  type="checkbox"
-                                  label={`${program.program} - ${program.board_university}`}
-                                  onChange={() => handleProgramSelect(program)}
-                                  checked={selectedPrograms.includes(program)}
-                                />
-                              )
-                            )}
-                        </Dropdown.Menu>
-                      </Dropdown>
-                    )}
-                    {field === "Professional Details" && (
-                      <Dropdown>
-                        <Dropdown.Toggle variant="success" id="dropdown-basic">
-                          Select Professional Details
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                          {data.professional_details &&
-                            data.professional_details.details.map(
-                              (job, index) => (
-                                <Form.Check
-                                  key={index}
-                                  type="checkbox"
-                                  label={`${job.company_name} - ${job.job_title}`}
-                                  onChange={() =>
-                                    handleProfessionalDetailSelect(job)
-                                  }
-                                  checked={selectedProfessionalDetails.includes(
-                                    job
-                                  )}
-                                />
-                              )
-                            )}
-                        </Dropdown.Menu>
-                      </Dropdown>
-                    )}
-                    {field === "Documents Details" && (
-                      <Dropdown>
-                        <Dropdown.Toggle variant="success" id="dropdown-basic">
-                          Select Documents Details
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                          {[
-                            "Adhar Card",
-                            "X Marksheet",
-                            "XII Marksheet",
-                            "Graduation Marksheet",
-                            "Offer Letter",
-                          ].map((detail, idx) => (
-                            <Form.Check
-                              key={idx}
-                              type="checkbox"
-                              label={detail}
-                              onChange={() =>
-                                handleDocumentsDetailSelect(detail)
-                              }
-                              checked={selectedDocumentsDetails.includes(
-                                detail
+                  <div className="dropdown-container">
+                    <Button
+                      variant="success"
+                      onClick={() => toggleDropdown(field)}
+                    >
+                      Select {field}
+                    </Button>
+                    {dropdownVisible[field] && (
+                      <div className="dropdown-menu">
+                        {field === "Personal Details" && (
+                          <>
+                            {[
+                              "Name",
+                              "Email",
+                              "Mobile",
+                              "Location",
+                              "Gender",
+                              "DOB",
+                              "ID Proof",
+                              "ID Proof Number",
+                              "Profile Picture",
+                            ].map((detail, idx) => (
+                              <Form.Check
+                                key={idx}
+                                type="checkbox"
+                                label={detail}
+                                onChange={() => handlePersonalDetailSelect(detail)}
+                                checked={selectedPersonalDetails.includes(detail)}
+                              />
+                            ))}
+                          </>
+                        )}
+                        {field === "Educational Details" && (
+                          <>
+                            {data.educational_details &&
+                              data.educational_details.education.map(
+                                (program, index) => (
+                                  <Form.Check
+                                    key={index}
+                                    type="checkbox"
+                                    label={`${program.program} - ${program.board_university}`}
+                                    onChange={() => handleProgramSelect(program)}
+                                    checked={selectedPrograms.includes(program)}
+                                  />
+                                )
                               )}
-                            />
-                          ))}
-                        </Dropdown.Menu>
-                      </Dropdown>
+                          </>
+                        )}
+                        {field === "Professional Details" && (
+                          <>
+                            {data.professional_details &&
+                              data.professional_details.details.map(
+                                (job, index) => (
+                                  <Form.Check
+                                    key={index}
+                                    type="checkbox"
+                                    label={`${job.company_name} - ${job.job_title}`}
+                                    onChange={() =>
+                                      handleProfessionalDetailSelect(job)
+                                    }
+                                    checked={selectedProfessionalDetails.includes(
+                                      job
+                                    )}
+                                  />
+                                )
+                              )}
+                          </>
+                        )}
+                        {field === "Documents Details" && (
+                          <>
+                            {[
+                              "Adhar Card",
+                              "X Marksheet",
+                              "XII Marksheet",
+                              "Graduation Marksheet",
+                              "Offer Letter",
+                            ].map((detail, idx) => (
+                              <Form.Check
+                                key={idx}
+                                type="checkbox"
+                                label={detail}
+                                onChange={() => handleDocumentsDetailSelect(detail)}
+                                checked={selectedDocumentsDetails.includes(detail)}
+                              />
+                            ))}
+                          </>
+                        )}
+                      </div>
                     )}
                   </div>
                 )}
@@ -447,32 +437,50 @@ const navigate = useNavigate();
           </Form>
         </Col>
         {/* Main Content */}
+
         <Col md={9} className="main-content">
-          <h4>Selected Details</h4>
-          <Button variant="danger" onClick={clearSelection}>
-            Clear Selection
-          </Button>
-          {selectedFields.map((field, index) => (
-            <div key={index}>{renderDetails(field)}</div>
-          ))}
-          <div className="admin-message-container">
-            <Form.Group controlId="adminMessage">
-              <Form.Label>Message to User</Form.Label>
-              <Form.Control
-                as="textarea"
-                rows={3}
-                value={adminMessage}
-                onChange={handleAdminMessageChange}
-                placeholder="Enter message here..."
-              />
-            </Form.Group>
-            <Button variant="primary" onClick={handleSendAdminMessage}>
-              Send Message
-            </Button>
-          </div>
-      <Button onClick={()=>{navigate('/userlist')}}>Go Back</Button>
-      <Button onClick={Varification}>Approve The Form</Button>
-        </Col>
+  <div className="clear-selection-container">
+    <Button variant="danger mx-4 mt-2" onClick={clearSelection}>
+      Clear Selection
+    </Button>
+  </div>
+  <h4>Selected Details</h4>
+  {selectedFields.map((field, index) => (
+    <div key={index}>{renderDetails(field)}</div>
+  ))}
+  <div className="admin-message-container">
+    <div className="left-buttons">
+      <Button onClick={() => navigate("/userlist")} className="back-button">
+        Go Back
+      </Button>
+      <Button onClick={Varification} className="approve-button">
+        Approve The Form
+      </Button>
+    </div>
+    <div className="right-controls">
+      <Form.Group controlId="adminMessage" className="admin-message-form-group">
+      <Form.Label style={{ display: 'inline-block', marginRight: '10px' }}></Form.Label>
+
+        <Form.Control
+          as="textarea"
+          rows={2}
+          value={adminMessage}
+          onChange={handleAdminMessageChange}
+          placeholder="Enter message here..."
+          className="message-textarea"
+        />
+      </Form.Group>
+      <Button variant="primary" onClick={handleSendAdminMessage} className="send-message-button">
+        Send
+      </Button>
+    </div>
+  </div>
+</Col>
+
+
+
+
+
       </Row>
     </Container>
   );

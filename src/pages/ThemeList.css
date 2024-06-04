@@ -22,3 +22,9 @@
   background-color: #e0f2fe !important; /* Light sky blue */
   color: #0c4a6e !important; /* Darker text color */
 }
+
+.card-body{
+  margin-top: 10%;
+  margin-bottom: 10%;
+
+}

@@ -32,6 +32,8 @@ function ThemeList() {
           <h2>Select Theme Color</h2>
         </div>
         <div className="card-body d-flex justify-content-around">
+          <div className="row">
+            <div className="col-md-6">
           <button
             className="btn btn-success btn-lg theme-btn"
             onClick={() => dispatch(green())}
@@ -40,7 +42,9 @@ function ThemeList() {
             title="Select Green Theme"
           >
             <i className="bi bi-palette me-2"></i>Green
-          </button>
+          </button> </div>
+
+          <div className="col-md-6">
           <button
             className="btn btn-danger btn-lg theme-btn"
             onClick={() => dispatch(red())}
@@ -49,7 +53,12 @@ function ThemeList() {
             title="Select Red Theme"
           >
             <i className="bi bi-palette me-2"></i>Red
-          </button>
+          </button></div> </div>
+
+
+<div className="row">
+
+          <div className="col-md-6">
           <button
             className="btn btn-dark-blue btn-lg theme-btn"
             onClick={() => dispatch(black())}
@@ -59,6 +68,10 @@ function ThemeList() {
           >
             <i className="bi bi-palette me-2"></i>Blue
           </button>
+          
+          </div>
+
+          <div className="col-md-6">
           <button
             className="btn btn-light btn-lg theme-btn"
             onClick={() => dispatch(white())}
@@ -67,8 +80,10 @@ function ThemeList() {
             title="Select Light Theme"
           >
             <i className="bi bi-palette me-2"></i>Night
-          </button>
-        </div>
+          </button> </div>
+
+
+        </div> </div>
       </div>
     </div>
   );

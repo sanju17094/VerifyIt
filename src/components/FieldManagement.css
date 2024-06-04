@@ -46,6 +46,7 @@
   --bs-btn-disabled-bg: #7d96ba;
   --bs-btn-disabled-border-color: #7d96ba;
 }
+
 .btn-check:active+.btn-success, .btn-check:checked+.btn-success, .btn-success.active, .btn-success:active, .show>.btn-success.dropdown-toggle {
   color: #fff;
   background-color: #7d96ba;
@@ -72,12 +73,12 @@
   font-size: 30px;
 }
 
-.selected-details {
+/* .selected-details {
   margin-bottom: 20px;
   padding: 15px;
   border: 1px solid #e9ecef;
   border-radius: 5px;
-}
+} */
 
 .selected-details h3 {
   border-bottom: 1px solid #e9ecef;
@@ -97,7 +98,6 @@
   margin-top: 20px;
 }
 
-
 @media (max-width: 768px) {
   .container-fluid {
     flex-direction: column;
@@ -112,4 +112,147 @@
     width: 100%;
     height: calc(100vh - 20px);
   }
+}
+
+.field-container {
+  margin-bottom: 20px;
+}
+
+.dropdown-container {
+  margin-top: 10px;
+}
+
+.dropdown-menu {
+  max-height: 350px;
+  overflow-y: auto;
+  padding-left: 5%;
+}
+
+.dropdown-menu.show {
+  display: block;
+  position: relative;
+  margin-top: 10px;
+}
+
+.dropdown-container .dropdown-menu {
+  display: block;
+  position: relative;
+  z-index: 1;
+}
+
+
+/* Ensure the container takes the full viewport height and enables scrolling */
+.container-fluid {
+  height: 100vh;
+  overflow: hidden;
+}
+
+.row {
+  height: 100%;
+}
+
+.sidebar {
+  height: 100%;
+  overflow-y: auto; /* Scrollable sidebar */
+}
+
+.main-content {
+  height: 100%;
+  overflow-y: auto; /* Scrollable main content */
+  position: relative;
+  padding-bottom: 150px; /* Give space for the fixed message container */
+}
+
+.clear-selection-container {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+/* Fix the position of the admin-message-container */
+.admin-message-container {
+  position: fixed;
+  bottom: 0;
+  left: 20%; /* Move it 20% to the right */
+  width: 80%; /* Adjust the width to take remaining 80% */
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Styling for the form group inside admin message container */
+.admin-message-form-group {
+  width: 70%; /* Make the form group take 70% width */
+}
+
+.left-buttons {
+  display: flex;
+  align-items: center;
+}
+
+.right-controls {
+  display: flex;
+  align-items: center;
+}
+
+/* Styling for the buttons */
+.back-button {
+  margin-right: 10px;
+}
+
+.approve-button {
+  margin-right: 10px;
+}
+
+
+
+.send-message-button {
+  width: auto; 
+  margin-left: 10px;
+  margin-top: 55px;
+}
+
+
+/* Adjust for smaller screens */
+@media (max-width: 768px) {
+  .admin-message-container {
+    left: 0;
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .admin-message-form-group {
+    width: 100%;
+  }
+
+  .buttons-container {
+    width: 100%;
+    justify-content: flex-end;
+    margin-top: 10px;
+  }
+  .message-textarea{
+    width: 250%;
+    margin-right: 80px;
+    margin-left: 40px;
+
+  }
+  
+  .send-message-button {
+    width: 50%; 
+     /* margin-left: 10%;
+    margin-right: 10%; */
+    height: 50px;
+    margin-top: 70px;
+    /* padding-right: 2px;
+   padding-left: 2px; */
+   /* padding: auto; */
+   padding: 0%; 
+  }
+
+  
 }
