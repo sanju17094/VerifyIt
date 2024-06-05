@@ -130,8 +130,8 @@ exports.signup = async (req, res,next) => {
     };
     const token = jwt.sign(payload, process.env.JWT_AUTH, { expiresIn: "5m" });
     req.body.mail = {
-     senderEmail:"iamvikas.j30n@gmail.com",
-     senderName:" Vikas Parmar",
+     senderEmail:"sanjay2795744@gmail.com",
+     senderName:" Sanjay Choudhary",
      recipientEmail:email,
      subject:"OTP Verfication",
      text:`Your Verification OTP is -> ${otp}`,
@@ -425,7 +425,7 @@ exports.getAllUserDetails = async (req, res) => {
       .populate("personal_details")
       .populate("educational_details")
       .populate("professional_details")
-      .populate("documents_details");
+      .populate("documents_details").sort({ createdAt: -1 });
 
     return res.status(200).json({
       success: true,
@@ -443,13 +443,17 @@ exports.getAllUserDetails = async (req, res) => {
 
 exports.getUsers = async (req, res) => {
   try {
-    const users = await User.find().select("first_name last_name mobile email verified");
+    const users = await User.find()
+      .select("first_name last_name mobile email verified createdAt")
+      .sort({ createdAt: -1 }); // Sort by createdAt in descending order
+
     if (!users.length) {
       return res.status(400).json({
         success: false,
         message: "No users found",
       });
     }
+
     return res.status(200).json({
       success: true,
       message: "Users retrieved successfully",
@@ -501,6 +505,7 @@ exports.getUserDetailsById = async (req, res) => {
     });
   }
 };
+
 exports.SubmitDoc = async (req,res)=>{
   try {
     const { id } = req.params;
@@ -524,6 +529,7 @@ return res.status(500).json({
 })
   }
 }
+
 exports.Verfication = async (req, res) => {
   try {
     const { id } = req.params;
@@ -552,6 +558,7 @@ exports.Verfication = async (req, res) => {
     });
   }
 };
+
 exports.getSubmitAndVerification = async(req,res)=>{
   try{
 const {id} = req.params;
@@ -570,6 +577,7 @@ return res.status(500).json({
 })
   }
 }
+
 exports.adminMessage = async(req,res)=>{
   try{
 const {id}=req.params;
@@ -589,3 +597,26 @@ return res.status(500).json({
   }
 }
 
+exports.getUserCount = async (req, res) => {
+  try {
+    const totalUsers = await User.countDocuments();
+    const trueStatusCount = await User.countDocuments({ verified: true });
+    const falseStatusCount = await User.countDocuments({ verified: false });
+
+    return res.status(200).json({
+      success: true,
+      message: "User counts retrieved successfully",
+      data: {
+        totalUsers,
+        trueStatusCount,
+        falseStatusCount,
+      }
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};

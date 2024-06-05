@@ -13,6 +13,7 @@ router.post("/login/otp/verify", user.loginCheckOTP);
 router.get("/user/get", user.getAllUserDetails);
 router.get("/users/get-id/:id", user.getUserDetailsById);
 router.get("/usersList/get", user.getUsers);
+router.get('/user-count', user.getUserCount);
 router.get("/submit/all/:id", user.SubmitDoc);
 router.get("/verify/user/:id", user.Verfication);
 router.get("/fetch/submit-verification/:id", user.getSubmitAndVerification);

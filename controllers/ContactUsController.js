@@ -65,7 +65,7 @@ exports.createContactUs = async (req, res) => {
 
 exports.getContactUsEntries = async (req, res) => {
   try {
-    const contactUsEntries = await ContactUs.find();
+    const contactUsEntries = await ContactUs.find().sort({ createdAt: -1 });
     return res.status(200).json({
       success: true,
       message: "Contact Us entries retrieved successfully",

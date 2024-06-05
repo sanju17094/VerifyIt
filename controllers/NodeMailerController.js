@@ -7,8 +7,8 @@ console.log("token in mail",token);
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: "iamvikas.j30n@gmail.com",
-        pass: "mvbn oslu uiuu rfke",
+        user: "sanjay2795744@gmail.com",
+        pass: "bjex juzk ezdr uiap",
       },
     });
 
