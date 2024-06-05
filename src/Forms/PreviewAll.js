@@ -12,7 +12,7 @@ import {
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import {jwtDecode} from "jwt-decode";
-
+import './preview.css'
 const PreviewAll = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -173,14 +173,14 @@ const PreviewAll = () => {
                 >
                   {user.documents_details &&
                     user.documents_details.profilePhoto && (
-                      <div>
+                      <div className="img1">
                         <img
                           src={`http://localhost:8000/${user.documents_details.profilePhoto.src.replace(
                             /\\/g,
                             "/"
                           )}`}
                           alt="Profile"
-                          style={{ width: "100px", height: "100px" }}
+                          style={{ width: "130px", height: "140px" }}
                         />
                       </div>
                     )}
