@@ -10,7 +10,7 @@ const dbConnect = () => {
     })
     .catch((err) => {
       console.log(
-        "Database is not Connected. "
+        "Database is not Connected. ",process.env.DATABASE_URL
       );
       console.log(err.message);
       process.exit(1);

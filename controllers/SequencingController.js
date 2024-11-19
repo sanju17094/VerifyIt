@@ -48,6 +48,8 @@ exports.updateSquence = async (req, res) => {
     });
   }
 };
+
+
 exports.fetchSequence = async (req, res) => {
   try {
     const data = await Squence.find();
@@ -81,7 +83,7 @@ exports.UserSquence = async (req, res) => {
       });
     }
     const data = await User.findById(id).select("sequence");
-    console.log("sequence", data);
+    // console.log("sequence", data);
     if (!data) {
       return res.status(400).json({
         success: false,
@@ -105,7 +107,7 @@ exports.setSequenceUser = async (req, res) => {
   try {
     const { sequence } = req.body;
     const { id } = req.params;
-    console.log("Id ki value->>", id);
+    // console.log("Id ki value->>", id);
     if (!id) {
       return res.status(400).json({
         success: false,
@@ -136,6 +138,7 @@ exports.setSequenceUser = async (req, res) => {
     });
   }
 };
+
 exports.updateUserDocuments = async (req, res) => {
   const { id } = req.params;
   const { size, type, value } = req.body;

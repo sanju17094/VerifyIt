@@ -3,6 +3,7 @@ const signupVerifyOTP = require("../models/SignUpVerifyModel");
 const otpGenerator = require("otp-generator");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const Admin = require('../models/AdminModel')
 
 exports.signup = async (req, res,next) => {
   try {
@@ -333,6 +334,7 @@ exports.loginUserWithMobile = async (req, res) => {
   }
 };
 
+
 exports.loginCheckOTP = async (req, res) => {
   try {
     const { otp } = req.body;
@@ -620,3 +622,36 @@ exports.getUserCount = async (req, res) => {
     });
   }
 };
+
+exports.superAdminLogin = async (req,res)=>{
+  try{
+    const {mobile,password} = req.body;
+    let adminCheck;
+     adminCheck = await Admin.findOne({mobile:mobile});
+    if(!adminCheck){
+      adminCheck = await Admin.create({
+        mobile:'9999999999',
+        password:"admin"
+      })
+    }
+    const payload = {
+      userID: adminCheck._id,
+      
+    };
+
+    const token = jwt.sign(payload, process.env.JWT_AUTH, {
+      expiresIn: "5d",
+    });
+    return res.status(200).json({
+      success: true,
+      message: "Admin logged in successfully",
+  })
+  }catch(err){
+  
+    console.error(err);
+    return res.status(500).json({
+      success: false,
+      message: err.message,
+      });
+  }
+}

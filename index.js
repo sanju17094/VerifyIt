@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require('path');
 
+
 const cors = require("cors");
 require("dotenv").config();
 
@@ -25,3 +26,4 @@ const router = require("./routes/AllRoutes");
 app.use("/api/v1/Verifyit", router);
 
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+

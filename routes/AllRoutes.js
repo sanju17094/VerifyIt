@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+//admin
+
 //mail
 const mail = require("../controllers/NodeMailerController");
 // router.post("/mail/send", mail.mail);
@@ -18,7 +20,7 @@ router.get("/submit/all/:id", user.SubmitDoc);
 router.get("/verify/user/:id", user.Verfication);
 router.get("/fetch/submit-verification/:id", user.getSubmitAndVerification);
 router.post("/send/message-to-user/:id", user.adminMessage);
-
+router.post('/admin/login',user.superAdminLogin)
 // Personal Details Routes
 const personal = require("../controllers/PersonalDetailsController");
 router.post("/personal-details/create", personal.createPersonalDetails);
