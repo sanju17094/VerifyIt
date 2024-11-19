@@ -9,13 +9,13 @@ const PersonalDetails = () => {
   const navigate = useNavigate();
 
   // Retrieve and decode the token from local storage
-  let id ;
+  let id;
   const token = localStorage.getItem("token");
   let userData = {};
   if (token) {
     try {
       const decodedToken = jwtDecode(token);
-      userData = decodedToken; 
+      userData = decodedToken;
       id = userData.userID;
       // Assuming the payload contains the user data
     } catch (error) {
@@ -42,39 +42,41 @@ const PersonalDetails = () => {
   });
 
   const [errors, setErrors] = useState({});
-  useEffect(()=>{
-    async function setField(){
-const response = await fetch(
-  `http://localhost:8000/api/v1/Verifyit/personal-details/get-id/${userData.userID}`
-);
+  useEffect(() => {
+    async function setField() {
+      const response = await fetch(
+        `http://localhost:8000/api/v1/Verifyit/personal-details/get-id/${userData.userID}`
+      );
 
-const result = await response.json();
-if(!result.success){
-  return;
-}
-console.log("result ka data ", result);
-const data=result.personalDetails;
-let dateObj;
-if(data.dob){
-   dateObj = new Date(data.dob).toISOString().split("T")[0];
-}
+      const result = await response.json();
+      if (!result.success) {
+        return;
+      }
+      console.log("result ka data ", result);
+      const data = result.personalDetails;
+      let dateObj;
+      if (data.dob) {
+        dateObj = new Date(data.dob).toISOString().split("T")[0];
+      }
 
-setFormData({
-  dob: dateObj || "",
-  address: data.location.address || "",
-  city: data.location.city || "",
-  state: data.location.state || "",
-  country: data.location.country || "",
-  zipcode: data.location.zipcode || "",
+      setFormData({
+        dob: dateObj || "",
+        address: data.location.address || "",
+        city: data.location.city || "",
+        state: data.location.state || "",
+        country: data.location.country || "",
+        zipcode: data.location.zipcode || "",
 
-  gender: data.gender || "",
-  idProofType: data.idProof || "",
-  idProofNum: data.idProofNumber || "",
-});
+        gender: data.gender || "",
+        idProofType: data.idProof || "",
+        idProofNum: data.idProofNumber || "",
+      });
 
     }
     setField();
-  },[])
+  }, [])
+
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -103,12 +105,12 @@ setFormData({
   const handleNext = async () => {
     // const bodyData = new FormData();
 
-     const bodyData = {
-       type: "personal",
-       value: formData.idProofType,
-       
-     };
-  
+    const bodyData = {
+      type: "personal",
+      value: formData.idProofType,
+
+    };
+
     try {
       const response = await fetch(
         `http://localhost:8000/api/v1/Verifyit/required/doc/${id}`,
@@ -120,14 +122,14 @@ setFormData({
           body: JSON.stringify(bodyData),
         }
       );
-  
+
       if (response.ok) {
         const responseData = await response.json();
         console.log("Response:", responseData);
       } else {
         console.error("Failed to fetch:", response.statusText);
       }
-  
+
       const nextPage = sequenceArray[index + 1];
       const link = map1.get(nextPage);
       navigate(`/${link}`);
@@ -135,7 +137,7 @@ setFormData({
       console.error("Fetch error:", error);
     }
   };
-  
+
 
   const handleSubmit = async () => {
     const requestBody = {

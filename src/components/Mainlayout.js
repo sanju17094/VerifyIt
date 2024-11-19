@@ -40,6 +40,7 @@ function MainLayout() {
         );
         const userSequenceJson = await userSequenceResponse.json();
 
+        
         if (userSequenceJson.data && userSequenceJson.data.length > 0) {
           console.log("User sequence API result:", userSequenceJson.data);
           setSequenceArray(userSequenceJson.data);

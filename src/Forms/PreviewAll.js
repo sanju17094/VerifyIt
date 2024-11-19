@@ -24,6 +24,18 @@ const PreviewAll = () => {
   const token = localStorage.getItem('token');
   const decode = jwtDecode(token);
   const id = decode.userID;
+  const sequenceArray = JSON.parse(localStorage.getItem("sequenceArrayData"));
+  const storedMapArray = JSON.parse(localStorage.getItem("map1"));
+  const map1 = new Map(storedMapArray);
+
+  const handleNext = () => {
+    if (Array.isArray(sequenceArray)) {
+      const nextPage = sequenceArray[0];
+      const link = map1.get(nextPage);
+      navigate(`/${link}`);
+    }
+    }
+
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -375,7 +387,7 @@ const PreviewAll = () => {
         </Modal>
 
         <div className="mb-4">
-          <button className="cancel-button" onClick={() => navigate(-1)}>
+          <button className="cancel-button" onClick={handleNext}>
             Go Back
           </button>
           <button className="submit-button" onClick={handleSubmit}>

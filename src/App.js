@@ -13,6 +13,7 @@ import LoginPage from '../src/Login/Signup/Login';
 import HomePage from '../src/Forms/Home'
 import ContactUsForm from './Forms/ContactUs';
 import VerificationStatus from './Forms/VerificationStatus';
+import Demo from './Forms/demo'
 
 
 
@@ -27,6 +28,7 @@ function App() {
           <Route index element={<HomePage />} />
           <Route path="personal_details" element={<PersonalDetails />} />
           <Route path="contact_us" element={<ContactUsForm />} />
+
           <Route
             path="professional_details"
             element={<ProfessionalDetails />}
