@@ -1,8 +1,19 @@
 
 .lg-logo {
-    height: 50%;
-    max-width: 45px; 
+    /* height: 60%;
+    max-width: 35px; 
     width: auto; 
+    margin-top: 2%;
+    margin-bottom: 2%; */
+    /* text-decoration: dotted; */
+    /* font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important; */
+    color: aliceblue !important;
+    margin-top: 0%;
+    margin-bottom: 4%;
+    padding-top: 5%;
+    padding-bottom:6%;
+    margin-left: 20%;
+    font-family:'Times New Roman', Times, serif;
   }
   
 

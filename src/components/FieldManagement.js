@@ -8,9 +8,19 @@ import "./FieldManagement.css";
 function FieldManagement() {
   const { _id } = useParams();
   const [data, setData] = useState({});
-  const [selectedFields, setSelectedFields] = useState([]);
+  // const [selectedFields, setSelectedFields] = useState([]);
+  const [selectedFields, setSelectedFields] = useState([ "Personal Details" ]);
+
+
+
   const [selectedPrograms, setSelectedPrograms] = useState([]);
-  const [selectedPersonalDetails, setSelectedPersonalDetails] = useState([]);
+  // const [selectedPersonalDetails, setSelectedPersonalDetails] = useState([]);
+  const [selectedPersonalDetails, setSelectedPersonalDetails] = useState([
+    "Name",
+    "Email",
+    "Mobile",
+    // "Profile Picture"
+  ]);
   const [selectedProfessionalDetails, setSelectedProfessionalDetails] = useState([]);
   const [selectedDocumentsDetails, setSelectedDocumentsDetails] = useState([]);
   const [adminMessage, setAdminMessage] = useState("");
@@ -147,7 +157,7 @@ function FieldManagement() {
                   "/"
                 )}`}
                 alt="Profile"
-                style={{ width: "100px", height: "100px" }}
+                style={{ width: "130px", height: "130px" }}
               />
             </div>
           )}
@@ -201,14 +211,14 @@ function FieldManagement() {
       <Col md={6}>
         {selectedDocumentsDetails.includes("Adhar Card") && (
           <p>
-            Id Proof:{" "}
+            Adhar Card: {" "}
             <a
-              href={`http://localhost:8000/${details.documents_details.pan?.src.replace(
+              href={`http://localhost:8000/${details.documents_details.adharCard?.src.replace(
                 /\\/g,
                 "/"
               )}`}
             >
-              {details.documents_details.pan?.orgname}
+              {details.documents_details.adharCard?.orgname}
             </a>
           </p>
         )}

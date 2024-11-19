@@ -39,11 +39,11 @@ const MainLayout = () => {
         collapsed={collapsed}
       >
         <div className={`sidelogo_${themeColor}`}>
-          <h2 className="text-white fs-5 text-center py-3 mb-0">
-            <span className="sm-logo">VI</span>
-            <img src={logoImage} alt="Khelo Indore Logo" className="lg-logo" />
-            <span className="lg-logo">VerifyIt</span>
-          </h2>
+          {/* <h2 className="text-white fs-5 text-center py-3 mb-0">
+            {/* <span className="sm-logo">VI</span> */}
+            {/* <img src={logoImage} alt="" className="lg-logo" /> */}
+          {/* </h2>  */}
+            <h2 className="lg-logo">VerifyIt</h2>
         </div>
         <Menu
           className={`SideBar_${themeColor}`}

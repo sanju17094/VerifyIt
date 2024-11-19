@@ -24,7 +24,16 @@
 }
 
 .card-body{
-  margin-top: 10%;
-  margin-bottom: 10%;
+  margin-bottom: 15%;
 
+}
+
+.theme-image{
+  width: 180px;
+  height: 150px;
+}
+
+h6{
+  margin-left: 40%;
+  margin-top: 7%;
 }

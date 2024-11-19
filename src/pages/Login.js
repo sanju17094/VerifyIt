@@ -50,7 +50,7 @@ function Loginuser() {
 
   const handleApi = () => {
     console.log({ mobile, password })
-    axios.post('http://localhost:4000/api/v1/kheloindore/user/login', {
+    axios.post('http://localhost:8000/api/v1/Verifyit/admin/login', {
       mobile:mobile,
       password: password
     }).then((result) => {

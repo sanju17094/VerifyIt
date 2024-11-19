@@ -34,8 +34,8 @@ const userColumns = [
   },
   {
     title: 'Status',
-    dataIndex: 'status',
-    render: (status) => (status ? "Approved" : "Pending"),
+    dataIndex: 'verified',
+    render: (verified) => (verified ? "Approved" : "Pending"),
   },
 ];
 
@@ -61,7 +61,7 @@ const Dashboard = () => {
           email: user.email,
           gender: user.personal_details?.gender || 'N/A',
           city: user.personal_details?.location.city || 'N/A',
-          status: user.status,  // Assuming the status is directly available in the user object
+          status: user.verified,  // Assuming the status is directly available in the user object
         }));
         setUserData(formattedUserData);
       })

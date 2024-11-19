@@ -60,7 +60,7 @@ function Loginadmin() {
     console.log('Password:', formData.password);
 
     axios
-      .post(`${API_URL}/user/login`, {
+      .post(`http://localhost:8000/api/v1/Verifyit/admin/login`, {
         mobile: formData.mobile,
         password: formData.password,
       })

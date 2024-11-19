@@ -101,7 +101,7 @@ function UserList() {
           </Col>
           <Col sm={6} className="d-flex justify-content-end">
             <Link to="/users/add">
-              <Button variant="primary" className="mr-2">Add User</Button>
+              {/* <Button variant="primary" className="mr-2">Add User</Button> */}
             </Link>
             <CSVLink data={csvData} filename={"user_list.csv"}>
               <Button variant="success">Download</Button>
@@ -220,7 +220,7 @@ function UserList() {
                     <td>
                       <div style={{ display: "flex" }}>
                         <Link to={`/fieldmanagement/${user._id}`}>
-                          <Button variant="success" className="view-more-button">View More</Button>
+                          <Button variant="success" className="view-more-button mt-1 mb-1">View More</Button>
                         </Link>
                       </div>
                     </td>

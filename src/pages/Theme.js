@@ -29,61 +29,51 @@ function ThemeList() {
     <div className="container my-5">
       <div className="card shadow">
         <div className="card-header text-center">
-          <h2>Select Theme Color</h2>
+          <h2>Select Theme Template</h2>
         </div>
         <div className="card-body d-flex justify-content-around">
-          <div className="row">
-            <div className="col-md-6">
-          <button
-            className="btn btn-success btn-lg theme-btn"
-            onClick={() => dispatch(green())}
-            data-bs-toggle="tooltip"
-            data-bs-placement="top"
-            title="Select Green Theme"
-          >
-            <i className="bi bi-palette me-2"></i>Green
-          </button> </div>
+        <div
+      className="theme-btn"
+      onClick={() => dispatch(green())}
+      // data-bs-toggle="tooltip"
+      // data-bs-placement="top"
+      // title="Select Green Theme"
+      style={{ cursor: 'pointer' }}
+    >
+      <img src={require('./green.png')} alt="Select Green Theme" className="theme-image" />
+      
+      <h6>Template 1</h6>
+    </div>
+    <div
+      className="theme-btn"
+      onClick={() => dispatch(black())}
+     
+      style={{ cursor: 'pointer' }}
+    >
+      <img src={require('./blue.png')} alt="Select Green Theme" className="theme-image" />
+      <h6>Template 2</h6>
 
-          <div className="col-md-6">
-          <button
-            className="btn btn-danger btn-lg theme-btn"
-            onClick={() => dispatch(red())}
-            data-bs-toggle="tooltip"
-            data-bs-placement="top"
-            title="Select Red Theme"
-          >
-            <i className="bi bi-palette me-2"></i>Red
-          </button></div> </div>
+    </div>
+    <div
+      className="theme-btn"
+      onClick={() => dispatch(red())}
+    
+      style={{ cursor: 'pointer' }}
+    >
+      <img src={require('./red.png')} alt="Select Green Theme" className="theme-image" />
+      <h6>Template 3</h6>
 
+    </div>
+    <div
+      className="theme-btn"
+      onClick={() => dispatch(white())}
+      style={{ cursor: 'pointer' }}
+    >
+      <img src={require('./night.png')} alt="Select Green Theme" className="theme-image" />
+      <h6>Template 4</h6>
 
-<div className="row">
-
-          <div className="col-md-6">
-          <button
-            className="btn btn-dark-blue btn-lg theme-btn"
-            onClick={() => dispatch(black())}
-            data-bs-toggle="tooltip"
-            data-bs-placement="top"
-            title="Select Dark Blue Theme"
-          >
-            <i className="bi bi-palette me-2"></i>Blue
-          </button>
-          
-          </div>
-
-          <div className="col-md-6">
-          <button
-            className="btn btn-light btn-lg theme-btn"
-            onClick={() => dispatch(white())}
-            data-bs-toggle="tooltip"
-            data-bs-placement="top"
-            title="Select Light Theme"
-          >
-            <i className="bi bi-palette me-2"></i>Night
-          </button> </div>
-
-
-        </div> </div>
+    </div>
+        </div>
       </div>
     </div>
   );

@@ -12,9 +12,11 @@ function Workflow() {
     { id: "1", title: "Personal Details" },
     { id: "2", title: "Educational Details" },
     { id: "3", title: "Professional Details" },
+    { id: "4", title: "Demo" },
+
   ];
 
-  const documentsBox = { id: "4", title: "Documents Details" };
+  const documentsBox = { id: "5", title: "Documents Details" };
 
   const [boxes, setBoxes] = useState(initialBoxes);
 
@@ -36,15 +38,13 @@ setBoxes([
   { id: "1", title: updatedItems[0] },
   { id: "2", title: updatedItems[1] },
   { id: "3", title: updatedItems[2] },
+  { id: "4", title: updatedItems[3] },
 ]);
 }
 fetchSequence();
 },[])
 // useEffect(() => {
-
-
 //   updateApi();
-
 // }, [initialBoxes]);
  async function updateApi() {
    console.log("the pattern", boxes, " and ", documentsBox);
@@ -52,6 +52,7 @@ fetchSequence();
      boxes[0].title,
      boxes[1].title,
      boxes[2].title,
+     boxes[3].title,
      documentsBox.title,
    ];
    console.log("formdata ", sequence);
@@ -80,7 +81,7 @@ fetchSequence();
    } catch (error) {
      console.error("Error:", error);
      toast.error("Failed to update sequence. Please try again.", {
-       autoClose: 5000, // 5 seconds
+       autoClose: 5000, 
      });
    }
  }
